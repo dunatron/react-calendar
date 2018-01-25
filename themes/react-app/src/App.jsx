@@ -17,6 +17,7 @@ import {Provider} from 'react-redux'
 import reducer from './reducers/calendarApp';
 
 // import LoginForm from './containers/JWTLoginForm';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LoginForm from './components/Login';
 
 
@@ -489,7 +490,7 @@ class App extends Component {
       modalIsOpen: false,
       open: false,
       currentEvent: {
-        ID: 5,
+        ID: 1000,
         Title: null
       }
     };
@@ -666,6 +667,10 @@ class App extends Component {
     console.log(readEvents.edges);
     console.groupEnd();
 
+    const TheCalendarBody = (props) => {
+      return <CalendarBody currentDate={this.state.currentDate} events={this.state.events} eventClick={this.eventClick}/>
+    };
+
     return (
       <MuiThemeProvider theme={theme}>
         <div className={classes.Calendar}>
@@ -674,10 +679,21 @@ class App extends Component {
                         previousMonthClick={this.previousMonthClick}
           />
 
-          {validateToken.Valid && 'You are logged in.'}
-          {!validateToken.Valid && <LoginForm />}
+          {/*{validateToken.Valid && 'You are logged in.'}*/}
+          {/*{!validateToken.Valid && <LoginForm />}*/}
 
-          <CalendarBody currentDate={this.state.currentDate} events={this.state.events} eventClick={this.eventClick}/>
+          <Switch>
+            <Route exact path='/login' component={LoginForm} />
+            <Route
+              path="/"
+              render={(routeProps) => (
+                <CalendarBody { ...routeProps} currentDate={this.state.currentDate} events={this.state.events} eventClick={this.eventClick}/>
+              )}
+            />
+          </Switch>
+
+
+
 
           <DisplayEventModal eventID={this.state.currentEvent.ID} isOpen={this.state.modalIsOpen}
                              eventData={this.state.currentEvent}/>

@@ -1,20 +1,14 @@
 import React, {Component} from 'react';
-import {gql} from 'react-apollo';
-import {propType as fragmentPropType} from 'graphql-anywhere';
+import {Link} from 'react-router-dom';
 import {withStyles} from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper'
 import ReactModal from 'react-modal';
-import Autosuggest from 'react-autosuggest';
-import TextField from 'material-ui/TextField';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
 import IconButton from 'material-ui/IconButton';
 import SettingIcon from 'material-ui-icons/Settings';
 import AddCircleIcon from 'material-ui-icons/AddCircleOutline';
 import SearchIcon from 'material-ui-icons/Search';
 import FilterListIcon from 'material-ui-icons/FilterList'
-
 import FilterSearch from './FilterSearch';
 import CategoriesList from './CategoriesList';
 
@@ -164,6 +158,9 @@ class Actions extends Component {
           >
           <MenuItem onClick={this.toggleDrawer('settingsDraw', false)}>CLOSE</MenuItem>
           <MenuItem >Select Happ Calendar</MenuItem>
+          <Link to='/login' className='ml1 no-underline black'>
+            <Button color="contrast">Login</Button>
+          </Link>
         </Drawer>
 
         <ReactModal
