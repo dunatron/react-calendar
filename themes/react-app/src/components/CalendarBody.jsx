@@ -47,7 +47,7 @@ class CalendarBody extends Component {
       currentYear: null,
       month: moment(),
       currentDate: currentDate,
-      events: []
+      events: this.props.events
     };
 
   }
@@ -69,10 +69,13 @@ class CalendarBody extends Component {
       monthIndex = date.month(),
       count = 0;
 
+    console.log('hmmmmm');
+    console.log(this.props.events);
+
     while (!done) {
       weeks.push(<Week key={date.toString()} date={date.clone()} month={this.state.month} select={this.select}
                        selected={this.props.selected}
-                       events={this.state.events}
+                       events={this.props.events}
                        eventClick={this.props.eventClick}
       />);
       date.add(1, "w");
@@ -85,7 +88,7 @@ class CalendarBody extends Component {
 
   render() {
 
-    const {classes} = this.props;
+    const {classes, currentDate, events} = this.props;
 
     return (
       <div className="Calendar__Body__Wrapper">

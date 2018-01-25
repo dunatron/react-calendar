@@ -10,16 +10,80 @@ import EventList from './components/Events/EventList';
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 import DisplayEventModal from './components/Modals/DisplayEventModal';
 import './sass/App.scss';
+import {CircularProgress} from 'material-ui/Progress';
 
 import {createStore} from 'redux'
 import {Provider} from 'react-redux'
 import reducer from './reducers/calendarApp';
+
+// import LoginForm from './containers/JWTLoginForm';
+import LoginForm from './components/Login';
 
 
 /**
  *
  * https://material-ui-next.com/demos/buttons/
  */
+
+const validateToken = gql`
+query validateToken {
+    validateToken {
+      Valid
+      Message
+      Code
+    }
+}`;
+
+const EventQuery = gql`
+query readEvents {
+  readEvents {
+    edges {
+      node {
+        ID
+        ...EventOverview
+      }
+    }
+  }
+}
+fragment EventOverview on Event {
+      Title
+      Date
+      Owner {
+        Name
+        Surname
+      }
+      SecondaryTag {
+        Title
+        Description
+      }
+    }
+`;
+
+const EventQueryWithParam = gql`
+query readEvents($startDate: String!, $endDate: String!) {
+  readEvents(startDate: $startDate, endDate: $endDate) {
+    edges {
+      node {
+        ID
+        ...EventOverview
+      }
+    }
+  }
+}
+
+fragment EventOverview on Event {
+      ID
+      Title
+      SecondaryTag {
+        Title 
+       }
+      Owner {
+        Name
+        Surname
+      }
+    }
+`;
+
 
 const theme = createMuiTheme({
   "direction": "ltr",
@@ -393,9 +457,6 @@ const theme = createMuiTheme({
   },
 });
 
-
-const store = createStore(reducer);
-
 const styles = {
   Calendar: {
     'width': '100%',
@@ -411,57 +472,6 @@ const styles = {
     height: 200,
   }
 };
-
-const EventQuery = gql`
-query readEvents {
-  readEvents {
-    edges {
-      node {
-        ID
-        ...EventOverview
-      }
-    }
-  }
-}
-
-fragment EventOverview on Event {
-      Title
-      Date
-      Owner {
-        Name
-        Surname
-      }
-      SecondaryTag {
-        Title
-        Description
-      }
-    }
-`;
-
-const EventQueryWithParam = gql`
-query readEvents($startDate: String!, $endDate: String!) {
-  readEvents(startDate: $startDate, endDate: $endDate) {
-    edges {
-      node {
-        ID
-        ...EventOverview
-      }
-    }
-  }
-}
-
-fragment EventOverview on Event {
-      ID
-      Title
-      SecondaryTag {
-        Title 
-       }
-      Owner {
-        Name
-        Surname
-      }
-    }
-`;
 
 class App extends Component {
 
@@ -508,22 +518,44 @@ class App extends Component {
     this.fetchEvents();
   }
 
-  // _createLink = async () => {
-  //
-  // }
+  fetchEvents = async () => {
 
-  async foo() {
-    console.log('brrrrat')
-  }
+    console.group('THE PROPS RENDER YOUR EXPORTED GRAPHQL');
+    console.log(this.props);
+    console.log(this.props.fetchEventsQuery);
 
-  //
-  fetchEvents() {
 
-    this.state.client.query({query: EventQuery}).then((value) => {
-      this.setState({events: value.data.readEvents.edges, loading: false})
+    await this.props.fetchEventsQuery.refetch({
+      // variables: {
+      //   linkId,
+      // },
+      // update: (store, { data: { vote } }) => {
+      //   this.props.updateStoreAfterVote(store, vote, linkId)
+      // },
+    }) .then((response) => {
+      console.log('AWAIT IS DONE');
+      console.log(response);
+      this.setState({
+        events: response.data.readEvents.edges
+      });
     });
 
-  }
+
+    console.groupEnd();
+
+    // this.state.client.query({query: EventQuery}).then((value) => {
+    //   this.setState({events: value.data.readEvents.edges, loading: false})
+    // });
+
+    // await this.props.readEvents({
+    //   variables: {
+    //     linkId,
+    //   },
+    //   update: (store, { data: { vote } }) => {
+    //     this.props.updateStoreAfterVote(store, vote, linkId)
+    //   },
+    // })
+  };
 
   runQuery() {
     // http://graphql.org/graphql-js/passing-arguments/
@@ -617,32 +649,48 @@ class App extends Component {
 
   render() {
 
-    // If still fetching Data return Loading
-
-    // Once events have been fetched by graphQL then Update our events,
-    // OR push them straight into the CalendarBody event prop
-
     const {classes} = this.props;
+
+    const {data: {validateToken, }, fetchEventsQuery: {loading, readEvents}} = this.props;
+
+    if (loading) {
+      return <CircularProgress className={classes.progress}/>;
+    }
+
+    console.group('App.jsx PROPS & token & events edges');
+    console.log('PROPS');
+    console.log(this.props);
+    console.log('TOKEN');
+    console.log(validateToken);
+    console.log('Events Edges');
+    console.log(readEvents.edges);
+    console.groupEnd();
+
     return (
-      <Provider store={store}>
-        <MuiThemeProvider theme={theme}>
-          <div className={classes.Calendar}>
-            <CalendarMenu currentDate={this.state.currentDate}
-                          nextMonthClick={this.nextMonthClick}
-                          previousMonthClick={this.previousMonthClick}
-            />
+      <MuiThemeProvider theme={theme}>
+        <div className={classes.Calendar}>
+          <CalendarMenu currentDate={this.state.currentDate}
+                        nextMonthClick={this.nextMonthClick}
+                        previousMonthClick={this.previousMonthClick}
+          />
 
-            <CalendarBody currentDate={this.state.currentDate} events={this.state.events} eventClick={this.eventClick}/>
+          {validateToken.Valid && 'You are logged in.'}
+          {!validateToken.Valid && <LoginForm />}
 
-            <DisplayEventModal eventID={this.state.currentEvent.ID} isOpen={this.state.modalIsOpen}
-                               eventData={this.state.currentEvent}/>
+          <CalendarBody currentDate={this.state.currentDate} events={this.state.events} eventClick={this.eventClick}/>
 
-          </div>
-        </MuiThemeProvider>
-      </Provider>
+          <DisplayEventModal eventID={this.state.currentEvent.ID} isOpen={this.state.modalIsOpen}
+                             eventData={this.state.currentEvent}/>
+
+        </div>
+      </MuiThemeProvider>
     )
   }
 }
 
 // export default App;
-export default withStyles(styles)(App)
+export default compose(
+  graphql(validateToken),
+  graphql(EventQuery, { name: 'fetchEventsQuery' }),
+  withStyles(styles)
+)(App);

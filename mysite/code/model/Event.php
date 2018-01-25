@@ -8,7 +8,6 @@ use GraphQL\Type\Definition\ResolveInfo;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Assets\Image;
 use SilverStripe\Security\Member;
-use SilverStripe\Security\Security;
 use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\TextField;

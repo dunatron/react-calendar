@@ -9,7 +9,8 @@
         "silverstripe-themes/simple": "~3.2.0",
         "silverstripe/graphql": "^1",
         "silverstripe/graphql-devtools": "dev-master",
-        "tractorcow/silverstripe-colorpicker": "^4@dev"
+        "tractorcow/silverstripe-colorpicker": "^4@dev",
+        "firesphere/graphql-jwt": "^1.1"
     },
     "require-dev": {
         "phpunit/PHPUnit": "^5.7"
