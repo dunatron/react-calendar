@@ -1,28 +1,11 @@
 import React, {Component} from 'react';
-import {gql, graphql, compose} from 'react-apollo';
-
+import {compose} from 'react-apollo';
 import {withStyles} from 'material-ui/styles';
 import Button from 'material-ui/Button';
-import Paper from 'material-ui/Paper'
 import ReactModal from 'react-modal';
-import AddIcon from 'material-ui-icons/Add';
-import classnames from 'classnames';
-import Card, {CardHeader, CardMedia, CardContent, CardActions} from 'material-ui/Card';
-import Collapse from 'material-ui/transitions/Collapse';
-import Avatar from 'material-ui/Avatar';
-import IconButton from 'material-ui/IconButton';
-import Typography from 'material-ui/Typography';
 import red from 'material-ui/colors/red';
-import FavoriteIcon from 'material-ui-icons/Favorite';
-import ShareIcon from 'material-ui-icons/Share';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import MoreVertIcon from 'material-ui-icons/MoreVert';
 import Drawer from 'material-ui/Drawer';
 import CloseIcon from 'material-ui-icons/Close';
-import MapIcon from 'material-ui-icons/Map';
-import TimeIcon from 'material-ui-icons/AccessTime';
-import LocationIcon from 'material-ui-icons/LocationOn';
-import {CircularProgress} from 'material-ui/Progress';
 import HappMap from '../HappMap';
 import EventDataCard from '../Events/EventDataSheet';
 
