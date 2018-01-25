@@ -1,0 +1,13 @@
+// Beats typing these rules out each time
+@mixin show_psuedo() {
+  content: '';
+  display: block;
+}
+
+// Clearfix.
+@mixin cf() {
+  &:after {
+    @include show_psuedo;
+    clear: both;
+  }
+}

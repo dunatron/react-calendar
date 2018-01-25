@@ -1,0 +1,64 @@
+---
+Name: app-graphql
+After:
+  - graphqlconfig
+---
+SilverStripe\GraphQL\Controller:
+  cors:
+    Enabled: true
+    Allow-Origin: '*'
+    Allow-Headers: 'Authorization, Content-Type'
+    Allow-Methods:  'GET, POST, OPTIONS'
+    Max-Age: 86400
+  schema:
+    scaffolding_providers: [MyOrg\Model\Event]
+    scaffolding:
+      types:
+        SilverStripe\Security\Member:
+          fields: [ID, Name, FirstName, Surname, Email]
+          operations:
+            create: true
+            read: true
+          nestedQueries:
+            Friends: true
+            Events: true
+        MyOrg\Model\Event:
+          fields: [ID, Title, Date, Owner, Description, Venue, Start, Finish, Approved, Free, Website, TicketUrl, TicketPhone, Restriction, SpecEntry, AccessType, IsEventFindaEvent, EventFindaID, EventFindaUrl, LocationText, Lat, Lon, Image, SecondaryTag]
+          operations:
+            read: true
+            create: true
+          nestedQueries:
+            Tickets: true
+            EventFindaImages: true
+            EventImages: true
+        MyOrg\Model\Category:
+          fields: [ID, Name, BgColor]
+          operations:
+            create: true
+            read: true
+        MyOrg\Model\HappTag:
+          fields: [Title, Description]
+          operations:
+            create: true
+            read: true
+          nestedQueries:
+            SecondaryTags: true
+        MyOrg\Model\Ticket:
+          fields: [TicType, TicPrice, Event]
+          operations:
+            create: true
+            read: true
+        MyOrg\Model\SecondaryTag:
+          fields: [Title, Description]
+          operations:
+            create: true
+            read: true
+        MyOrg\Model\EventFindaImage:
+          fields: [Title, URL, transformation_id, Event]
+          operations:
+            create: true
+            read: true
+  # Enforce HTTP basic authentication for GraphQL requests
+  authenticators:
+    class: SilverStripe\GraphQL\Auth\BasicAuthAuthenticator
+    priority: 10

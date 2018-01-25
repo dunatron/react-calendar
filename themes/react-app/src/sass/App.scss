@@ -1,0 +1,217 @@
+@import "base/base";
+
+html {
+  height: auto;
+  box-sizing: border-box;
+  @include breakpoint($min865) {
+    height: 100%;
+  }
+}
+
+body {
+  height: auto;
+  background: linear-gradient(135deg, #FFAB8E 0%, #FF865D 33%, #FF6733 71%, #C13100 91%);
+  @include breakpoint($min865) {
+    height: 100%;
+  }
+}
+
+#react-root {
+  height: auto;
+  //overflow: hidden;
+  @include breakpoint($min865) {
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+.Main__Menu__Wrapper {
+  height: 70px;
+  display: flex;
+  div {
+    width: 33.333%;
+  }
+  @include breakpoint($min865) {
+
+  }
+}
+
+.Calendar__Body__Wrapper {
+  height: auto;
+  border: none;
+  font-family: GustanLight;
+  display: block;
+  flex-wrap: wrap;
+  @include breakpoint($min865) {
+    display: flex;
+    height: calc(100% - 70px);
+  }
+}
+
+.Days__Wrapper {
+  display: none;
+  @include breakpoint($min865) {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .day_name {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+    letter-spacing: 3px;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+}
+
+.squares__wrapper {
+  width: 100%;
+  height: calc(100% - #{$days_wrapper_height});
+  padding: 4%;
+  @include breakpoint($min865) {
+    padding: 0;
+  }
+}
+
+.squares__inner__wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.week {
+  height: auto;
+  width: 100%;
+  border: none;
+  min-height: 50px;
+  @include breakpoint($min865) {
+    //height: calc(100% / 5);
+    border: none;
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  @include breakpoint($min865) {
+  }
+  .day {
+    display: block;
+    position: relative;
+    height: auto;
+    @include breakpoint($min865) {
+      display: inline-block;
+      box-shadow: -1px 0 0 rgba(255, 255, 255, 0.2);
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      width: calc(100% / 7);
+      border: none;
+      padding: 10px 0 10px 10px;
+      &:last-child {
+        border-right: none;
+      }
+    }
+
+  }
+  .day.different-month {
+    display: none;
+    @include breakpoint($min865) {
+      display: inline-block;
+    }
+  }
+  .inner_square {
+    height: inherit;
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: relative;
+    @include breakpoint($min865) {
+    }
+  }
+  .day_number {
+    line-height: 50px;
+    font-size: 26px;
+    text-align: center;
+    top: 0;
+    left: 0;
+    padding: 2px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #FFF;
+    min-width: 26px;
+
+    @include breakpoint($min865) {
+      position: absolute;
+      font-size: 13px;
+      line-height: 20px;
+    }
+  }
+  .events_wrapper {
+    width: 100%;
+    @include breakpoint($min865) {
+      overflow-y: scroll;
+      overflow-x: hidden;
+      position: absolute;
+      margin-top: 0;
+      height: inherit;
+      right: -20px;
+      padding: 0 30px 20px 0;
+    }
+  }
+  .event_card {
+    display: block;
+    max-width: 100%;
+    margin: 0 0 5px 0;
+    color: #000;
+    font-size: 18px;
+    text-transform: capitalize;
+    padding: 3px 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: rgba(255, 255, 255, 0.1);
+    @include breakpoint($min865) {
+      font-size: 12px;
+    }
+  }
+}
+
+.Main__Logos {
+  height: 60px;
+  animation: App-logo-spin infinite 20s linear;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.Happ__Logo {
+
+}
+
+.Client__Logo {
+
+}
+
+/*
+Using a flex layout so please do not use margin
+ */
+h1, h2, h3, h4, p, a {
+  margin: 0;
+}
+
+//Import modals
+@import "parts/modal";

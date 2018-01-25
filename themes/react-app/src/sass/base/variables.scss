@@ -1,0 +1,53 @@
+// @media queries
+//$tablet:#{$screen-sm-min})";
+//$normal:#{$screen-md-min})";
+//$wide:#{$screen-lg-min})";
+
+$min370: 370px;
+$min400: 400px;
+$min460: 460px;
+$min510: 510px;
+$min525: 525px;
+$min600: 600px;
+$min660: 660px;
+$min700: 700px;
+$max699: 699px;
+$min750: 750px;
+$min768: 768px;
+$max768: 768px;
+$min880: 880px;
+$min865: 865px;
+$min960: 960px;
+$min992: 992px;
+$max992: 992px;
+$min1000: 1000px;
+$min1100: 1100px;
+$min1200: 1200px;
+$min1280: 1280px;
+$max1200: 1199px;
+$min1400: 1500px;
+$min1500: 1500px;
+
+$font_GustanExtraBlack: GustanExtraBlack;
+$font_GustanLight: GustanLight;
+$font_Gustan: GustanMedium;
+$font_GustanBold: GustanBold;
+
+$c_orange_light_1: #FFAB8E;
+$c_orange_light_2: #FF865D;
+$c_orange_main: #FF6733;
+$c_orange_dark_1: #F03D00;
+$c_orange_dark_2: #C13100;
+
+$menu_min_height: 70px;
+$days_wrapper_height: 40px;
+
+
+// FONTS
+$font-primary: 'GustanBlack';
+
+$font-family-sans-serif: HelveticaNeue,Helvetica,sans-serif;
+$font-family-serif:       Georgia, "Times New Roman", Times, serif;
+//** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
+$font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
+$font-family-base:        $font-primary;
