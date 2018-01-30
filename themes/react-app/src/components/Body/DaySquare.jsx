@@ -50,16 +50,31 @@ class DaySquare extends Component {
 
 
   renderEvents() {
-    const events = this.state.events[0];
+    const {events, classes, dayNumber,  } = this.props;
+
+    // console.group('DaySquare.jsx renderEvents');
+    // console.log(this.props);
+    // console.log(events);
+    // console.groupEnd();
+
 
     const listItems = events.map((d) => <div
-      className="event_card" key={d.node.ID}
+      className="event_card" key={d.ID}
       // onClick={() => this.eventClick(d.node.ID, d.node.Title)}
       //onClick={this.props.eventClick}
-      onClick={()=>this.props.eventClick(d.node.ID, d.node.Title)}
+      onClick={()=>this.props.eventClick(d.ID, d.Title)}
     >
-      {d.node.Title}
-      </div>);
+      {d.Title}
+    </div>);
+
+    // const listItems = events.map((d) => <div
+    //   className="event_card" key={d.node.ID}
+    //   // onClick={() => this.eventClick(d.node.ID, d.node.Title)}
+    //   //onClick={this.props.eventClick}
+    //   onClick={()=>this.props.eventClick(d.node.ID, d.node.Title)}
+    // >
+    //   {d.node.Title}
+    //   </div>);
 
     return (
       <div className="events_wrapper">

@@ -270,7 +270,38 @@ class Event extends DataObject implements ScaffoldingProvider
                 return $event;
             })
 
-            ->setUsePagination(false);
+            ->setUsePagination(false)
+            ->end();
+
+        $scaffolder
+            ->query('getAllEvents', __CLASS__)
+            ->addArgs([
+
+            ])
+            ->setResolver(function ($object, array $args, $context, ResolveInfo $info){
+                $events = self::get();
+                return $events;
+            })
+
+            ->setUsePagination(false)
+            ->end();
+
+        $scaffolder
+            ->query('getEventsBetween', __CLASS__)
+            ->addArgs([
+                'StartDate' => 'String!',
+                'EndDate'   => 'String!'
+            ])
+            ->setResolver(function ($object, array $args, $context, ResolveInfo $info) {
+                $events = self::get()->filter([
+                    'Date:GreaterThan' => $args['StartDate'],
+                    'Date:LessThan' => $args['EndDate']
+                ]);
+
+                return $events;
+            })
+            ->setUsePagination(false)
+            ->end();
 
 
         return $scaffolder;

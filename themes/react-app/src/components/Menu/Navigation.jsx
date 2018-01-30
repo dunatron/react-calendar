@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
-import {gql} from 'react-apollo';
-import {propType as fragmentPropType} from 'graphql-anywhere';
 import {withStyles} from 'material-ui/styles';
-import Button from 'material-ui/Button';
 import LeftArrow from 'material-ui-icons/KeyboardArrowLeft';
 import RightArrow from 'material-ui-icons/KeyboardArrowRight';
 import IconButton from 'material-ui/IconButton';
@@ -35,28 +32,6 @@ const styles = {
 };
 
 class Navigation extends Component {
-
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      currentMonth: null,
-      currentYear: null
-    };
-
-    this.leftNavClick = this.leftNavClick.bind(this);
-    this.rightNavClick = this.rightNavClick.bind(this);
-
-  }
-
-  leftNavClick() {
-    this.setState({currentMonth: 'Left'})
-  }
-
-  rightNavClick() {
-    this.setState({currentMonth: 'Right'})
-  }
 
   render() {
 

@@ -5,7 +5,7 @@ import {withStyles} from 'material-ui/styles';
 import Logos from './Menu/Logos';
 import Navigation from './Menu/Navigation';
 import Actions from './Menu/Actions';
-// import moment from 'moment';
+import moment from 'moment';
 
 const styles = {
   MainMenu: {
@@ -17,69 +17,19 @@ const styles = {
 
 class CalendarMenu extends Component {
 
-  constructor(props) {
-    super(props)
-
-    const {currentDate} = props;
-
-    this.state = {
-      currentDate: currentDate,
-      currentMonth: null,
-      currentYear: null
-    };
-
-  }
-
-  componentDidMount() {
-    let month = this.state.currentDate.get('month');
-    let year = this.state.currentDate.get('year');
-    this.setState({
-      currentYear: year
-    });
-    this.formatMonth(month);
-  }
-
-  componentWillUpdate() {
-
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      currentDate: nextProps.currentDate
-    });
-    this.formatMonth(nextProps.currentDate.get('month'));
-  }
-
-  formatMonth(month) {
-
-    let monthNames = [
-      "January", "February", "March",
-      "April", "May", "June", "July",
-      "August", "September", "October",
-      "November", "December"
-    ];
-
-    let monthName = monthNames[month];
-    let year = this.state.currentDate.get('year');
-
-    console.log(year);
-
-    this.setState({
-      currentMonth: monthName,
-      currentYear: year
-    });
-
-  }
-
   render() {
 
     const {classes} = this.props;
 
+    console.group('Calendar MENU');
+    console.log(this.props);
+    console.groupEnd();
+
     return (
       <div className={classes.MainMenu}>
         <Logos/>
-        <Navigation currentMonth={this.state.currentMonth}
-                    currentYear={this.state.currentYear}
+        <Navigation currentMonth={this.props.currentMonth}
+                    currentYear={this.props.currentYear}
                     nextMonthClick={this.props.nextMonthClick}
                     previousMonthClick={this.props.previousMonthClick}
         />

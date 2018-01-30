@@ -1,11 +1,13 @@
-import React, { Component } from 'react'
-import { graphql, gql, compose } from 'react-apollo'
+import React, {Component} from 'react'
+import {graphql, gql, compose} from 'react-apollo'
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import Icon from 'material-ui/Icon';
 import {withStyles} from "material-ui/styles/index";
 import LoginForm from '../containers/JWTLoginForm';
+
+import store from '../state/store';
 
 const styles = theme => ({
   TextField: {
@@ -36,12 +38,14 @@ class Login extends Component {
 
   render() {
 
-    const { classes } = this.props;
+    const {classes} = this.props;
 
     console.log('Props in Login')
     console.log(this.props)
 
-    const { data: { validateToken, loading } } = this.props;
+    const {token} = store.getState();
+
+    const {data: {validateToken, loading}} = this.props;
     if (loading) {
       return null;
     }
@@ -50,58 +54,71 @@ class Login extends Component {
       <div>
 
         {validateToken.Valid && 'You are logged in.'}
-        {!validateToken.Valid && <LoginForm />}
+        {!validateToken.Valid && <LoginForm/>}
 
 
-        <h4 className='mv3'>{this.state.login ? 'Login' : 'Sign Up'}</h4>
-        <div className='flex flex-column'>
-          {!this.state.login &&
-          <TextField
-            label="First Name"
-            className={classes.TextField}
-            value={this.state.FirstName}
-            onChange={(e) => this.setState({ FirstName: e.target.value })}
-            type='text'
-            placeholder='Your name'
-            margin="normal"
-          />}
-          <TextField
-            label="Email"
-            className={classes.TextField}
-            value={this.state.Email}
-            onChange={(e) => this.setState({ Email: e.target.value })}
-            type='text'
-            placeholder='Your email address'
-            margin="normal"
-          />
-          <TextField
-            label="Password"
-            className={classes.TextField}
-            value={this.state.Password}
-            onChange={(e) => this.setState({ Password: e.target.value })}
-            type='password'
-            placeholder='Choose a safe password'
-            margin="normal"
-          />
+        {!validateToken.Valid && <div>
+          <h4 className='mv3'>{this.state.login ? 'Login' : 'Sign Up'}</h4>
+          <div className='flex flex-column'>
+            {!this.state.login &&
+            <TextField
+              label="First Name"
+              className={classes.TextField}
+              value={this.state.FirstName}
+              onChange={(e) => this.setState({FirstName: e.target.value})}
+              type='text'
+              placeholder='Your name'
+              margin="normal"
+            />}
+            <TextField
+              label="Email"
+              className={classes.TextField}
+              value={this.state.Email}
+              onChange={(e) => this.setState({Email: e.target.value})}
+              type='text'
+              placeholder='Your email address'
+              margin="normal"
+            />
+            <TextField
+              label="Password"
+              className={classes.TextField}
+              value={this.state.Password}
+              onChange={(e) => this.setState({Password: e.target.value})}
+              type='password'
+              placeholder='Choose a safe password'
+              margin="normal"
+            />
+          </div>
+          <div className='flex mt3'>
+            <Button
+              className={classes.button} raised color="primary"
+              onClick={() => this._confirm()}>
+              {this.state.login ? 'login' : 'create account'}
+            </Button>
+            <Button
+              className={classes.button} raised color="primary"
+              onClick={() => this.setState({login: !this.state.login})}>
+              {this.state.login ? 'need to create an account?' : 'already have an account?'}
+            </Button>
+          </div>
         </div>
-        <div className='flex mt3'>
-          <Button
-            className={classes.button} raised color="primary"
-            onClick={() => this._confirm()} >
-            {this.state.login ? 'login' : 'create account' }
-          </Button>
-          <Button
-            className={classes.button} raised color="primary"
-            onClick={() => this.setState({ login: !this.state.login })} >
-            {this.state.login ? 'need to create an account?' : 'already have an account?'}
-          </Button>
-        </div>
+        }
+
+        {validateToken.Valid && 'Logout Button'}
+
+
+        {token ?
+          <Button color="contrast" onClick={() => this._logout()}>Logout</Button>
+          :
+          <Button color="contrast">Login</Button>
+        }
+
       </div>
     )
   }
 
   _confirm = async () => {
-    const { FirstName, Email, Password } = this.state;
+    const {FirstName, Email, Password} = this.state;
     if (this.state.login) {
       // LOGIN
       const result = await this.props.loginMutation({
@@ -113,12 +130,12 @@ class Login extends Component {
 
         .then(response => {
           //localStorage.setItem('jwt', response.data.createToken.Token);
-          const { ID, Token } = response.data.createToken;
+          const {ID, Token} = response.data.createToken;
 
-          if(typeof Token === 'undefined') {
+          if (typeof Token === 'undefined') {
             console.log('TOKEN IS NOT DEFINED')
             alert('Please Try again')
-          }else {
+          } else {
             this._saveUserData(ID, Token)
             this.props.history.push(`/`)
           }
@@ -136,7 +153,7 @@ class Login extends Component {
         },
       });
 
-      const { ID, token } = result.data.createMember
+      const {ID, token} = result.data.createMember
       this._saveUserData(ID, token)
       this.props.history.push(`/`)
     }
@@ -147,6 +164,16 @@ class Login extends Component {
     localStorage.setItem('USER_ID', id);
     localStorage.setItem('AUTH_TOKEN', token)
   }
+
+  _logout = async () => {
+
+    localStorage.removeItem('USER_ID');
+    localStorage.removeItem('AUTH_TOKEN');
+    localStorage.removeItem('jwt');
+    // ToDO : this for whatever reason is not working
+    this.forceUpdate()
+    // this.props.history.push(`/`)
+  };
 
 }
 
@@ -190,7 +217,7 @@ query validateToken {
 
 export default compose(
   graphql(validateToken),
-  graphql(SIGNUP_MUTATION, { name: 'signupMutation' }),
-  graphql(LOGIN_MUTATION, { name: 'loginMutation' }),
+  graphql(SIGNUP_MUTATION, {name: 'signupMutation'}),
+  graphql(LOGIN_MUTATION, {name: 'loginMutation'}),
   withStyles(styles)
 )(Login);

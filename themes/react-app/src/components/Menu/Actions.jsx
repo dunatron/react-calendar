@@ -11,9 +11,11 @@ import SearchIcon from 'material-ui-icons/Search';
 import FilterListIcon from 'material-ui-icons/FilterList'
 import FilterSearch from './FilterSearch';
 import CategoriesList from './CategoriesList';
+import LoginForm from '../Login';
 
-import { Drawer, AppBar, MenuItem, RaisedButton} from 'material-ui'
-
+import { Drawer, MenuItem} from 'material-ui'
+import {compose, gql, graphql} from "react-apollo/index";
+import store from '../../state/store';
 
 const styles = {
   ActionsWrapper: {
@@ -75,6 +77,7 @@ class Actions extends Component {
 
     this.state = {
       modalIsOpen: false,
+      loginModalIsOpen: false,
       filterDraw: false, // left
       searchDraw: false, // top
       settingsDraw: false, // right
@@ -85,7 +88,15 @@ class Actions extends Component {
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
 
+    this.openLoginModal = this.openLoginModal.bind(this);
+    this.afterOpenLoginModal = this.afterOpenLoginModal.bind(this);
+    this.closeLoginModal = this.closeLoginModal.bind(this);
+
   }
+
+  // shouldComponentUpdate = () => {
+  //
+  // };
 
   toggleDrawer = (side, open) => () => {
     this.setState({
@@ -106,10 +117,40 @@ class Actions extends Component {
     this.setState({modalIsOpen: false});
   }
 
+  openLoginModal() {
+    this.setState({loginModalIsOpen: true});
+    this.toggleDrawer('settingsDraw', false)
+  }
+
+  closeLoginModal() {
+    this.setState({loginModalIsOpen: false});
+  }
+
+  afterOpenLoginModal() {
+    console.log('clsoe the setting drawer');
+    this.toggleDrawer('settingsDraw', false)
+  }
+
+  _logout = async () => {
+
+    localStorage.removeItem('USER_ID');
+    localStorage.removeItem('AUTH_TOKEN');
+    localStorage.removeItem('jwt');
+    // ToDO : this for whatever reason is not working
+    this.forceUpdate()
+    // this.props.history.push(`/`)
+  };
 
   render() {
 
     const {classes} = this.props;
+
+    const {token} = store.getState();
+
+    const {data: {validateToken, loading}} = this.props;
+    if (loading) {
+      return null;
+    }
 
     return (
       <div className={classes.ActionsWrapper}>
@@ -158,10 +199,40 @@ class Actions extends Component {
           >
           <MenuItem onClick={this.toggleDrawer('settingsDraw', false)}>CLOSE</MenuItem>
           <MenuItem >Select Happ Calendar</MenuItem>
-          <Link to='/login' className='ml1 no-underline black'>
-            <Button color="contrast">Login</Button>
-          </Link>
+          <MenuItem>
+
+
+            {token ?
+              <Button color="contrast" onClick={() => this._logout()}>Logout</Button>
+              :
+              <IconButton aria-label="Add to favorites" onClick={this.openLoginModal}>
+                <AddCircleIcon />
+              </IconButton>
+            }
+          </MenuItem>
+
+          {validateToken.Valid && 'You are logged in according to validateToken.'}
+          {!validateToken.Valid && 'You are not logged in according to validateToken.'}
+
         </Drawer>
+
+
+        <ReactModal
+          isOpen={this.state.loginModalIsOpen}
+          onAfterOpen={this.afterOpenLoginModal}
+          onRequestClose={this.closeLoginModal}
+          closeTimeoutMS={200}
+          shouldCloseOnOverlayClick={true}
+          contentLabel="Example Modal"
+        >
+
+          <Button dense color='primary' onClick={this.closeLoginModal}>
+            CLOSE
+          </Button>
+
+          <LoginForm />
+
+        </ReactModal>
 
         <ReactModal
           isOpen={this.state.modalIsOpen}
@@ -197,4 +268,16 @@ class Actions extends Component {
   }
 }
 
-export default withStyles(styles)(Actions);
+const validateToken = gql`
+query validateToken {
+    validateToken {
+      Valid
+      Message
+      Code
+    }
+}`;
+
+export default compose(
+  graphql(validateToken),
+  withStyles(styles)
+)(Actions);

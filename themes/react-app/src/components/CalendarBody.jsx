@@ -69,9 +69,6 @@ class CalendarBody extends Component {
       monthIndex = date.month(),
       count = 0;
 
-    console.log('hmmmmm');
-    console.log(this.props.events);
-
     while (!done) {
       weeks.push(<Week key={date.toString()} date={date.clone()} month={this.state.month} select={this.select}
                        selected={this.props.selected}
