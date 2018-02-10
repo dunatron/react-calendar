@@ -78,10 +78,16 @@ class CalendarBody extends Component {
       let startWeek = moment(date).startOf('week').format();
       let endOfWeek = moment(date).endOf('week').format();
 
+
+      console.group('Weeks Comparison Dates');
+      console.log(startWeek);
+      console.log(endOfWeek);
+      console.groupEnd();
+
       for (let event of this.state.events) {
         let eventDate = moment(event.Date).format();
 
-        if (moment(eventDate).isBefore(endOfWeek) && moment(eventDate).isAfter(startWeek)) {
+        if (moment(eventDate).isSameOrBefore(endOfWeek) && moment(eventDate).isSameOrAfter(startWeek)) {
           // console.group('DATE COMPARE');
           // console.log('event date : ', eventDate);
           // console.log('endOfWeek : ', endOfWeek);
