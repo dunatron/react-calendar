@@ -53,6 +53,41 @@ class DaySquare extends Component {
     const {events, classes, dayNumber,  } = this.props;
 
 
+    const filter = ['test', 'test2', 'Public Talks & Tours'];
+
+    console.log('DAY SQUARE EVENTS', events);
+
+    // Filter has been set, filter the events
+    if(filter.length >= 1) {
+
+      const newEvents = [];
+
+      for (let event of events) {
+
+        if(event.SecondaryTag){
+          if(filter.includes(event.SecondaryTag.Title)){
+            console.log('This event should be included', event);
+            newEvents.push(event)
+          }
+        }
+
+      }
+
+      const listItems = newEvents.map((d) => <div
+        className="event_card" key={d.ID}
+        onClick={()=>this.props.eventClick(d.ID, d.Title)}
+      >
+        {d.Title}
+      </div>);
+
+      return (
+        <div className="events_wrapper">
+          {listItems }
+        </div>
+      );
+    }
+
+    // Filter has not been set, return all events
     const listItems = events.map((d) => <div
       className="event_card" key={d.ID}
       onClick={()=>this.props.eventClick(d.ID, d.Title)}

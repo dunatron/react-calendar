@@ -1,11 +1,20 @@
 const initialState = {
-  events: [{ID: 1}],
+  events: [
+    {
+      ID: 1,
+      Title: "My Project",
+      Date: "2018-02-27",
+      SecondaryTag: {
+        Title: "Business & Professional"
+      }
+    }
+  ],
   fetching: false,
   fetched: false,
   error: null,
 };
 
-export default function reducer(state=initialState, action) {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case "FETCH_EVENTS": {
       return {...state, fetching: true}

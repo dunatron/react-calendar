@@ -143,13 +143,16 @@ class CalendarBodyContainer extends Component {
 }
 
 export const ALL_EVENTS_BETWEEN_QUERY = gql`  
-  query eventsBetween($startDate: String!, $endDate: String!) {
-  getEventsBetween(StartDate: $startDate, EndDate: $endDate) {
+query eventsBetween {
+  getEventsBetween(StartDate: "2018-01-28", EndDate: "2018-02-28") {
     ID
     Title
     Date
+    SecondaryTag {
+      Title
+    }
   }
-}  
+}
 `;
 
 const reduxWrapper = connect(
