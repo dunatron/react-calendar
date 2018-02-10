@@ -120,12 +120,12 @@ body {
     }
 
   }
-  .day.different-month {
-    display: none;
-    @include breakpoint($min865) {
-      display: inline-block;
-    }
-  }
+  //.day.different-month {
+  //  display: none;
+  //  @include breakpoint($min865) {
+  //    display: inline-block;
+  //  }
+  //}
   .inner_square {
     height: inherit;
     margin: 0;
