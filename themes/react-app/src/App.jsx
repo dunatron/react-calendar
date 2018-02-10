@@ -16,16 +16,15 @@ import {CircularProgress} from 'material-ui/Progress';
 // import LoginForm from './containers/JWTLoginForm';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import * as user from './actions/userActions';
-
+import CalendarBodyContainer from './containers/CalendarBodyContainer';
 
 // Connect Redux
 import {connect } from "react-redux";
-import {setUserName} from "./actions/userActions";
-import {getNewEvents} from "./actions/eventsActions";
 import {nextMonth, prevMonth} from './actions/headerActions';
 
-
-
+import {ALL_EVENTS_BETWEEN_QUERY} from './containers/CalendarBodyContainer';
+import {getNewEvents, startFetchNewEvents} from "./actions/eventsActions";
+import {withApollo} from "react-apollo/index";
 
 /**
  *
@@ -99,7 +98,6 @@ const styles = {
   return {
     header: store.header,
     user: store.user,
-    events: store.event
   }
 })
 class App extends Component {
@@ -133,62 +131,12 @@ class App extends Component {
 
   componentWillMount() {
     // This is the only lifecycle hook called on server rendering.
-    this.fetchEventsForMonth();
+    // this.fetchEventsForMonth();
   }
 
   componentDidMount() {
     // this.fetchEventsForMonth();
   }
-
-  fetchEvents = async () => {
-
-    await this.props.fetchEventsQuery.refetch({
-      // variables: {
-      //   linkId,
-      // },
-      // update: (store, { data: { vote } }) => {
-      //   this.props.updateStoreAfterVote(store, vote, linkId)
-      // },
-    }) .then((response) => {
-      console.log('GOOD A RESPONSE');
-      console.log(response);
-      this.setState({
-        events: response.data.readEvents.edges
-      });
-      this.props.dispatch(getNewEvents(response.data.readEvents.edges));
-      // dispatch({type: "getNewEvents", payload: response.data.readEvents.edges})
-    });
-
-
-    // this.state.client.query({query: EventQuery}).then((value) => {
-    //   this.setState({events: value.data.readEvents.edges, loading: false})
-    // });
-
-    // await this.props.readEvents({
-    //   variables: {
-    //     linkId,
-    //   },
-    //   update: (store, { data: { vote } }) => {
-    //     this.props.updateStoreAfterVote(store, vote, linkId)
-    //   },
-    // })
-  };
-
-  fetchEventsForMonth = async () => {
-
-    await this.props.fetchEventsBetweenQuery.refetch({
-      startDate: this.props.header.startOfMonth,
-      endDate: this.props.header.endOfMonth
-    })
-      .then((response) =>{
-        this.props.dispatch(getNewEvents(response.data.getEventsBetween));
-      });
-
-    console.group("runQuery");
-    console.log(this.props);
-    console.groupEnd();
-
-  };
 
   eventClick(id, title) {
     this.setState({
@@ -224,27 +172,51 @@ class App extends Component {
     })
   }
 
-  nextMonthClick = async (e) => {
+  nextMonthClick = (e) => {
     e.preventDefault();
-    await this.props.dispatch(nextMonth());
+    this.props.dispatch(nextMonth());
     this.fetchEventsForMonth();
   };
 
   previousMonthClick = async (e) => {
     e.preventDefault();
     await this.props.dispatch(prevMonth());
-    this.fetchEventsForMonth();
+
+    this.fetchEventsForMonth().then(() => {
+      //this.forceUpdate()
+    });
+  };
+
+  fetchEventsForMonth = async () => {
+
+    // 1. Place Component into loading mode
+    await this.props.dispatch(startFetchNewEvents());
+
+    // 2. Start Fetching the events
+    await this.props.client.query({
+      query: ALL_EVENTS_BETWEEN_QUERY,
+      variables: {
+        startDate: this.props.header.startOfMonth,
+        endDate: this.props.header.endOfMonth
+      }
+    })
+      .then((res) => {
+        // 3. Events have been updated and loading mode will be false
+        this.props.dispatch(getNewEvents(res.data.getEventsBetween));
+        return res.data.getEventsBetween
+      })
+
   };
 
   render() {
 
     const {classes} = this.props;
 
-    const {data: {validateToken, }, fetchEventsBetweenQuery: {loading, getEventsBetween}, events, header} = this.props;
+    const {data: {validateToken }, header} = this.props;
 
-    if (loading) {
-      return <CircularProgress className={classes.progress}/>;
-    }
+    // if (loading) {
+    //   return <CircularProgress className={classes.progress}/>;
+    // }
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -256,7 +228,12 @@ class App extends Component {
                         previousMonthClick={this.previousMonthClick}
           />
 
-          <CalendarBody currentDate={header.currentDate} events={events.events} eventClick={this.eventClick}/>
+          <CalendarBodyContainer
+            currentDate={header.currentDate}
+            startDate={header.startOfMonth}
+            endDate={header.endOfMonth}
+            eventClick={this.eventClick}
+          />
 
           <DisplayEventModal eventID={this.state.currentEvent.ID} isOpen={this.state.modalIsOpen}
                              eventData={this.state.currentEvent}/>
@@ -267,10 +244,17 @@ class App extends Component {
   }
 }
 
+const reduxWrapper = connect(
+  state => ({
+    token: state.token,
+    header: state.header,
+  })
+);
+
 // export default App;
 export default compose(
   graphql(validateToken),
-  graphql(EventQuery, { name: 'fetchEventsQuery' }),
-  graphql(EventsBetweenDateQuery, { name: 'fetchEventsBetweenQuery' }),
+  withApollo,
+  reduxWrapper,
   withStyles(styles)
 )(App);

@@ -28,7 +28,8 @@ class Week extends Component {
     super(props)
 
     this.state = {
-      events: []
+      // events: []
+      events: this.props.events
     };
 
   }
@@ -43,20 +44,12 @@ class Week extends Component {
     })
   }
 
-  // getNumWeeksForMonth(year,month){
-  //   date = new Date(year,month-1,1);
-  //   day = date.getDay();
-  //   numDaysInMonth = new Date(year, month, 0).getDate();
-  //   return Math.ceil((numDaysInMonth + day) / 7);
-  // }
-
   render() {
 
     const {classes} = this.props;
 
     let daysInMonth = moment().daysInMonth();
     let weeksInMonth = Math.ceil(((daysInMonth + 5) / 7));
-
 
     let days = [],
       date = this.props.date,
@@ -77,7 +70,7 @@ class Week extends Component {
                            dayNumber={day.number}
                            events={this.state.events}
                            eventClick={this.props.eventClick}
-      />)
+      />);
       date = date.clone();
       date.add(1, "d");
 

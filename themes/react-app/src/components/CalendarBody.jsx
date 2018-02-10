@@ -66,15 +66,36 @@ class CalendarBody extends Component {
     let weeks = [],
       done = false,
       date = moment(this.state.currentDate).startOf("month").add("w" - 1).day("Sunday"),
+      //date = moment(this.state.currentDate).startOf("month").day("Sunday"),
+      //date = moment(this.state.currentDate).startOf('month'),
       monthIndex = date.month(),
       count = 0;
 
     while (!done) {
+
+      const weeksEvents = [];
+
+      let startWeek = moment(date).startOf('week').format();
+      let endOfWeek = moment(date).endOf('week').format();
+
+      for (let event of this.state.events) {
+        let eventDate = moment(event.Date).format();
+
+        if (moment(eventDate).isBefore(endOfWeek) && moment(eventDate).isAfter(startWeek)) {
+          // console.group('DATE COMPARE');
+          // console.log('event date : ', eventDate);
+          // console.log('endOfWeek : ', endOfWeek);
+          // console.groupEnd();
+          weeksEvents.push(event);
+        }
+      }
+
       weeks.push(<Week key={date.toString()} date={date.clone()} month={this.state.month} select={this.select}
                        selected={this.props.selected}
-                       events={this.props.events}
+                       events={weeksEvents}
                        eventClick={this.props.eventClick}
       />);
+
       date.add(1, "w");
       done = count++ > 2 && monthIndex !== date.month();
       monthIndex = date.month();
