@@ -29,14 +29,19 @@ class SecondaryTagsList extends Component {
   };
 
   handleToggle = value => () => {
+
     const {checked} = this.state;
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
     if (currentIndex === -1) {
       newChecked.push(value);
+      // ToDO: The load is slow on the first and last tags off
+      // ToDO: so implement a loader
       // add to redux filter
       this.props.dispatch(addFilterTag(value.node.Title))
+      //
+
     } else {
       newChecked.splice(currentIndex, 1);
       // remove from redux filter
@@ -46,6 +51,8 @@ class SecondaryTagsList extends Component {
     this.setState({
       checked: newChecked,
     });
+
+
   };
 
   componentWillReceiveProps(nextProps) {

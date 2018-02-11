@@ -1,9 +1,10 @@
 const initialState = {
   allTags: [],
-  filterTags : [],
+  filterTags: [],
   fetching: false,
   fetched: false,
   error: null,
+  changingFilter: false
 };
 
 export default function reducer(state = initialState, action) {
@@ -22,7 +23,7 @@ export default function reducer(state = initialState, action) {
     case "REMOVE_FILTER_TAG": {
       return {
         ...state,
-        filterTags : state.filterTags.filter( (item, index) => item !== action.payload)
+        filterTags: state.filterTags.filter((item, index) => item !== action.payload)
       }
     }
     case "ADD_FILTER_TAG": {
