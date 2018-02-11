@@ -34,7 +34,6 @@ class SecondaryTagsList extends Component {
 
     if (currentIndex === -1) {
       newChecked.push(value);
-
       // add to redux filter
       this.props.dispatch(addFilterTag(value.node.Title))
     } else {

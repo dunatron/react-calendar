@@ -24,7 +24,7 @@
  **/
 
 import React, {Component} from 'react';
-import {gql, graphql, compose} from 'react-apollo';
+import {gql, compose} from 'react-apollo';
 import {withStyles} from 'material-ui/styles';
 import {CircularProgress} from 'material-ui/Progress';
 import HappTag from './HappTag';
@@ -103,41 +103,31 @@ class CategoriesList extends Component {
     await this.props.dispatch(startFetchTags());
 
 
-    // 2. Start Fetching the events
+    // 2. Start Fetching the tags
     await this.props.client.query({
       query: ALL_TAGS_QUERY,
     })
+    // 3. tags have been fetched, do something with them
       .then((res) => {
-
-        console.log('TAGS ON MOUNT', res);
-
         let Tags = [];
-
+        // Loop tags edges and push into Tags[array]
         res.data.readHappTags.edges.map(edge => {
-          console.log(edge);
           Tags.push(edge.node);
         });
-
-
-        // 3. Events have been updated and loading mode will be false
+        // 4. Push tags into redux store (tagsReducer allTags)
         this.props.dispatch(fetchTags(Tags));
-        // return res.data.getEventsBetween
+
       })
 
   };
 
   componentWillMount() {
-
-    console.log('CATEGORIESLIST PLEASE JUST LOAD ONCE....');
-
     this.fetchTags().then(() => {
-      console.log('EVENTS TAGS HAVE BEEN STORED IN REDUX');
+      console.log('Tags have been loaded into redux store');
     })
   }
 
   render() {
-
-    console.log('Categories List render method', this.props);
 
     const {classes, tags:{fetching, allTags, fetched, error}} = this.props;
 

@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
-import {gql} from 'react-apollo';
-import {propType as fragmentPropType} from 'graphql-anywhere';
 import {withStyles} from 'material-ui/styles';
-import moment from 'moment';
-import Day from './DaySquare.jsx';
 import {connect} from "react-redux";
 import {compose, withApollo} from "react-apollo/index";
 
@@ -120,5 +116,3 @@ export default compose(
   withApollo,
   reduxWrapper,
 )(DaySquare);
-
-// export default withStyles(styles)(DaySquare);

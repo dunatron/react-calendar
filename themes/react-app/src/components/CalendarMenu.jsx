@@ -18,10 +18,6 @@ class CalendarMenu extends Component {
 
     const {classes} = this.props;
 
-    console.group('Calendar MENU');
-    console.log(this.props);
-    console.groupEnd();
-
     return (
       <div className={classes.MainMenu}>
         <Logos/>
