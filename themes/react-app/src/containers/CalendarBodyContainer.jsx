@@ -3,9 +3,7 @@ import CalendarBody from '../components/CalendarBody';
 import { withApollo } from 'react-apollo'
 
 import {withStyles} from 'material-ui/styles';
-import moment from 'moment';
-import {gql, graphql, compose, buildSchema} from 'react-apollo';
-import {execute} from 'graphql'; // ES6
+import {gql, compose} from 'react-apollo';
 
 import {CircularProgress} from 'material-ui/Progress';
 
@@ -14,15 +12,6 @@ import {CircularProgress} from 'material-ui/Progress';
 import {connect } from "react-redux";
 import {startFetchNewEvents, getNewEvents} from "../actions/eventsActions";
 
-const EventsBetweenDateQuery = gql`
-  query eventsBetween($startDate: String!, $endDate: String!) {
-  getEventsBetween(StartDate: $startDate, EndDate: $endDate) {
-    ID
-    Title
-    Date
-  }
-}
-`;
 
 const styles = {
   loadingContainer: {
@@ -54,13 +43,6 @@ const styles = {
     height: 200,
   }
 };
-
-// @connect((store) => {
-//   return {
-//     header: store.header,
-//     user: store.user,
-//   }
-// })
 
 @connect((store) => {
   return {
@@ -100,19 +82,13 @@ class CalendarBodyContainer extends Component {
   };
 
   componentWillMount() {
-    // This is the only lifecycle hook called on server rendering.
-    // this.fetchEventsForMonth();
-    // this.fetchEventsForMonth();
     this.fetchEventsForMonth().then(() => {
       console.log('FINISHED fetch Events for month inside componentWillMount');
     });
   }
 
   componentDidMount() {
-    // this.fetchEventsForMonth();
-    // this.fetchEventsForMonth().then(() => {
-    //   console.log('FINISHED fetch Events for month inside componentDidMount');
-    // });
+
   }
 
   render() {
@@ -121,20 +97,12 @@ class CalendarBodyContainer extends Component {
 
     const {events: {events, fetching}} = this.props;
 
-    // const { fetchEventsBetweenQuery: {loading, getEventsBetween}, events} = this.props;
-    //
-    // if (loading) {
-    //   return <CircularProgress className={classes.progress}/>;
-    // }
-
     if (fetching) {
       return <div className={classes.loadingContainer}>
         <h2 className={classes.loadingText}>Loading Events for Calendar</h2>
         <CircularProgress className={classes.progress}/>
       </div>;
     }
-
-    // this.props.dispatch(getNewEvents(getEventsBetween));
 
     return (
       <CalendarBody currentDate={this.props.currentDate} events={events} eventClick={()=>console.log('lol')}/>
@@ -143,8 +111,8 @@ class CalendarBodyContainer extends Component {
 }
 
 export const ALL_EVENTS_BETWEEN_QUERY = gql`  
-query eventsBetween {
-  getEventsBetween(StartDate: "2018-01-28", EndDate: "2018-02-28") {
+  query eventsBetween($startDate: String!, $endDate: String!) {
+  getEventsBetween(StartDate: $startDate, EndDate: $endDate) {
     ID
     Title
     Date
@@ -152,7 +120,7 @@ query eventsBetween {
       Title
     }
   }
-}
+}  
 `;
 
 const reduxWrapper = connect(
@@ -163,9 +131,7 @@ const reduxWrapper = connect(
   })
 );
 
-// export default App;
 export default compose(
-  // graphql(EventsBetweenDateQuery, { name: 'fetchEventsBetweenQuery' }),
   withApollo,
   reduxWrapper,
   withStyles(styles)

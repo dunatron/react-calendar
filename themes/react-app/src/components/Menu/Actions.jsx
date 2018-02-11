@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {withStyles} from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper'
@@ -9,7 +8,7 @@ import SettingIcon from 'material-ui-icons/Settings';
 import AddCircleIcon from 'material-ui-icons/AddCircleOutline';
 import SearchIcon from 'material-ui-icons/Search';
 import FilterListIcon from 'material-ui-icons/FilterList'
-import FilterSearch from './FilterSearch';
+import {CircularProgress} from 'material-ui/Progress';
 import CategoriesList from './CategoriesList';
 import LoginForm from '../Login';
 
@@ -25,8 +24,19 @@ const styles = {
     'justify-content': 'center',
     'min-height': '70px'
   },
+  loadingWrapper: {
+    'display': 'flex',
+    'flex': '1',
+    'align-items': 'center',
+    'justify-content': 'center',
+    'min-height': '70px',
+    'flex-direction': 'column-reverse',
+  },
   Button: {
     'height': '42px'
+  },
+  loadingText: {
+    'font-size': '12px'
   },
   card: {
     'display': 'flex',
@@ -149,7 +159,10 @@ class Actions extends Component {
 
     const {data: {validateToken, loading}} = this.props;
     if (loading) {
-      return null;
+      return <div className={classes.loadingWrapper}>
+        <h2 className={classes.loadingText}>applying settings</h2>
+        <CircularProgress className={classes.progress} size={20}/>
+      </div>
     }
 
     return (

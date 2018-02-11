@@ -35,8 +35,6 @@ class HappTag extends Component {
 
     const {classes, listValue} = this.props;
 
-    console.log('HappTag.jsx PROPS ', this.props);
-
     const HappTagTitle = listValue.Title;
     const SecondaryTags = listValue.SecondaryTags.edges;
 

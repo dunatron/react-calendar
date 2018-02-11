@@ -145,26 +145,6 @@ class CategoriesList extends Component {
       return <CircularProgress className={classes.progress}/>;
     }
 
-    // const {classes, data: {loading, readHappTags}} = this.props;
-    //
-    // if (loading) {
-    //   return <CircularProgress className={classes.progress}/>;
-    // }
-    //
-    //console.log(readHappTags);
-    // let Tags = [];
-    //
-    // readHappTags.edges.map(edge => {
-    //   console.log(edge);
-    //   Tags.push(edge.node);
-    // });
-    //
-    // this.props.dispatch(fetchTags(Tags));
-    //
-    // console.group('EVENTS');
-    // console.log(Tags);
-    // console.groupEnd();
-
     return (
       <div>
         {allTags.map((d,i) =>

@@ -4,7 +4,7 @@ import List, {ListItem, ListItemSecondaryAction, ListItemText} from 'material-ui
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import CommentIcon from 'material-ui-icons/Comment';
-import {toggleSecondaryTag, addFilterTag, removerFilterTag} from "../../actions/tagsReducer";
+import {addFilterTag, removerFilterTag} from "../../actions/tagsReducer";
 import {compose, withApollo} from "react-apollo/index";
 import {connect} from "react-redux";
 
@@ -48,57 +48,13 @@ class SecondaryTagsList extends Component {
     });
   };
 
-  // handleToggle = value => () => {
-  //
-  //   console.log('tagtoggle beofre being sent');
-  //   console.log(value);
-  //
-  //   this.props.dispatch(toggleSecondaryTag(value));
-  //   // const {checked} = this.state;
-  //   // const currentIndex = checked.indexOf(value);
-  //   // const newChecked = [...checked];
-  //   //
-  //   // if (currentIndex === -1) {
-  //   //   newChecked.push(value);
-  //   // } else {
-  //   //   newChecked.splice(currentIndex, 1);
-  //   // }
-  //   //
-  //   // this.setState({
-  //   //   checked: newChecked,
-  //   // });
-  // };
-
-  // handleToggle = (tag, parentIndex) => {
-  //
-  //   console.log('tagtoggle beofre being sent', tag);
-  //   console.log('parentIndex before send', parentIndex);
-  //
-  //   this.props.dispatch(toggleSecondaryTag(tag));
-  //   // const {checked} = this.state;
-  //   // const currentIndex = checked.indexOf(value);
-  //   // const newChecked = [...checked];
-  //   //
-  //   // if (currentIndex === -1) {
-  //   //   newChecked.push(value);
-  //   // } else {
-  //   //   newChecked.splice(currentIndex, 1);
-  //   // }
-  //   //
-  //   // this.setState({
-  //   //   checked: newChecked,
-  //   // });
-  // };
-
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
+
   }
 
   render() {
 
     const {classes} = this.props;
-
-    console.log('SecondaryTagsList PROPS: ', this.props);
 
     const categoriesList = this.props.categories;
 

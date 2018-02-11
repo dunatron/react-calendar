@@ -54,10 +54,6 @@ class DaySquare extends Component {
   renderEvents() {
     const {events, classes, dayNumber, filter } = this.props;
 
-    console.log('DAY SQUARE PROPS +++++++ : ', this.props);
-
-    // const filter = ['test', 'test2', 'Public Talks & Tours'];
-
     // Filter has been set, filter the events
     if(filter.length >= 1) {
 

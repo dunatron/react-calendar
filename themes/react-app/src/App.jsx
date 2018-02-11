@@ -214,10 +214,6 @@ class App extends Component {
 
     const {data: {validateToken }, header} = this.props;
 
-    // if (loading) {
-    //   return <CircularProgress className={classes.progress}/>;
-    // }
-
     return (
       <MuiThemeProvider theme={theme}>
         <div className={classes.Calendar}>

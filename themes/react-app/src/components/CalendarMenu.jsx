@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
-import {gql} from 'react-apollo';
-import {propType as fragmentPropType} from 'graphql-anywhere';
 import {withStyles} from 'material-ui/styles';
 import Logos from './Menu/Logos';
 import Navigation from './Menu/Navigation';
 import Actions from './Menu/Actions';
-import moment from 'moment';
 
 const styles = {
   MainMenu: {

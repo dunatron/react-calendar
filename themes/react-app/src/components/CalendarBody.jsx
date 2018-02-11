@@ -43,7 +43,6 @@ class CalendarBody extends Component {
     const {currentDate} = props;
 
     this.state = {
-      //currentDate: moment(),
       currentYear: null,
       month: moment(),
       currentDate: currentDate,
@@ -78,20 +77,10 @@ class CalendarBody extends Component {
       let startWeek = moment(date).startOf('week').format();
       let endOfWeek = moment(date).endOf('week').format();
 
-
-      console.group('Weeks Comparison Dates');
-      console.log(startWeek);
-      console.log(endOfWeek);
-      console.groupEnd();
-
       for (let event of this.state.events) {
         let eventDate = moment(event.Date).format();
-
-;        if (moment(eventDate).isSameOrBefore(endOfWeek) && moment(eventDate).isSameOrAfter(startWeek)) {
-          // console.group('DATE COMPARE');
-          // console.log('event date : ', eventDate);
-          // console.log('endOfWeek : ', endOfWeek);
-          // console.groupEnd();
+        ;
+        if (moment(eventDate).isSameOrBefore(endOfWeek) && moment(eventDate).isSameOrAfter(startWeek)) {
           weeksEvents.push(event);
         }
       }
