@@ -39,9 +39,11 @@ SilverStripe\GraphQL\Controller:
           fields: [Title, Description]
           operations:
             create: true
-            read: true
+            read:
+              paginate: false
           nestedQueries:
-            SecondaryTags: true
+            SecondaryTags:
+              paginate: false
         MyOrg\Model\Ticket:
           fields: [TicType, TicPrice, Event]
           operations:
@@ -50,8 +52,9 @@ SilverStripe\GraphQL\Controller:
         MyOrg\Model\SecondaryTag:
           fields: [Title, Description, Checked]
           operations:
-            create: true
-            read: true
+            read:
+              paginate: false
+            create: false
         MyOrg\Model\EventFindaImage:
           fields: [Title, URL, transformation_id, Event]
           operations:
