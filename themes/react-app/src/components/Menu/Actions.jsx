@@ -7,7 +7,8 @@ import IconButton from 'material-ui/IconButton';
 import SettingIcon from 'material-ui-icons/Settings';
 import AddCircleIcon from 'material-ui-icons/AddCircleOutline';
 import SearchIcon from 'material-ui-icons/Search';
-import FilterListIcon from 'material-ui-icons/FilterList'
+import FilterListIcon from 'material-ui-icons/FilterList';
+import CloseIcon from 'material-ui-icons/Close';
 import {CircularProgress} from 'material-ui/Progress';
 import CategoriesList from './CategoriesList';
 import LoginForm from '../Login';
@@ -16,7 +17,21 @@ import { Drawer, MenuItem} from 'material-ui'
 import {compose, gql, graphql} from "react-apollo/index";
 import store from '../../state/store';
 
-const styles = {
+
+const drawerWidth = 240;
+const styles = theme => ({
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  drawerPaper: {
+    position: 'absolute',
+    height: '100%',
+    width: drawerWidth,
+  },
   ActionsWrapper: {
     'display': 'flex',
     'flex': '1',
@@ -76,9 +91,15 @@ const styles = {
     'padding': '1.2em',
     'text-align': 'center',
     'display': 'inline-block',
+  },
+  MuiPaper: {
+    'transform': 'translateX(-408.828px)',
+  },
+  paperAnchorDockedLeft: {
+    display: 'none'
   }
+});
 
-};
 
 class Actions extends Component {
 
@@ -94,7 +115,7 @@ class Actions extends Component {
       openSecondary: true
     };
 
-    this.openModal = this.openModal.bind(this);
+    // this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
 
@@ -109,6 +130,7 @@ class Actions extends Component {
   // };
 
   toggleDrawer = (side, open) => () => {
+    console.log(side, ' has been toggled');
     this.setState({
       [side]: open,
     });
@@ -155,13 +177,15 @@ class Actions extends Component {
 
     const {classes} = this.props;
 
+    console.log('ACTIONS.jsx PROPS: ', this.props);
+
     const {token} = store.getState();
 
     const {data: {validateToken, loading}} = this.props;
     if (loading) {
       return <div className={classes.loadingWrapper}>
         <h2 className={classes.loadingText}>applying settings</h2>
-        <CircularProgress className={classes.progress} size={20}/>
+        <CircularProgress className={classes.progress}size={20}/>
       </div>
     }
 
@@ -176,7 +200,7 @@ class Actions extends Component {
           <SearchIcon />
         </IconButton>
 
-        <IconButton aria-label="Add to favorites" onClick={this.openModal}>
+        <IconButton aria-label="Add to favorites" onClick={() => this.openModal()}>
           <AddCircleIcon />
         </IconButton>
 
@@ -186,20 +210,32 @@ class Actions extends Component {
 
         {/* Filter Draw*/}
         <Drawer
-          type="persistent"
+          variant="persistent"
+          classes={{
+            paper: classes.drawerPaper,
+          }}
           anchor="left"
           open={this.state.filterDraw}
-          onRequestClose={this.toggleDrawer('filterDraw', false)}
+          onClose={this.toggleDrawer('filterDraw', false)}
+          //children={}
+          // onClose={(e) => {e.preventDefault()}}
         >
-          <MenuItem onClick={this.toggleDrawer('filterDraw', false)}>CLOSE</MenuItem>
-          <CategoriesList/>
+          <div className={classes.drawerInner}>
+            <div className={classes.drawerHeader}>
+              <IconButton onClick={this.toggleDrawer('filterDraw', false)}>
+                <CloseIcon />
+              </IconButton>
+            </div>
+            <CategoriesList/>
+          </div>
+
         </Drawer>
 
         {/* Search Draw*/}
         <Drawer
           anchor="top"
           open={this.state.searchDraw}
-          onRequestClose={this.toggleDrawer('searchDraw', false)}
+          onClose={this.toggleDrawer('searchDraw', false)}
         >
           <MenuItem onClick={this.toggleDrawer('searchDraw', false)}>CLOSE</MenuItem>
           <MenuItem >Search</MenuItem>
@@ -209,7 +245,7 @@ class Actions extends Component {
         <Drawer
           anchor="right"
           open={this.state.settingsDraw}
-          onRequestClose={this.toggleDrawer('settingsDraw', false)}
+          onClose={this.toggleDrawer('settingsDraw', false)}
           >
           <MenuItem onClick={this.toggleDrawer('settingsDraw', false)}>CLOSE</MenuItem>
           <MenuItem >Select Happ Calendar</MenuItem>
@@ -234,7 +270,7 @@ class Actions extends Component {
         <ReactModal
           isOpen={this.state.loginModalIsOpen}
           onAfterOpen={this.afterOpenLoginModal}
-          onRequestClose={this.closeLoginModal}
+          onClose={this.closeLoginModal}
           closeTimeoutMS={200}
           shouldCloseOnOverlayClick={true}
           contentLabel="Example Modal"
