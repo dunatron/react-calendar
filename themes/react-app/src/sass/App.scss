@@ -113,9 +113,14 @@ body {
       overflow-y: hidden;
       width: calc(100% / 7);
       border: none;
-      padding: 10px 0 10px 10px;
+      padding: 10px 0;
       &:last-child {
         border-right: none;
+      }
+    }
+    &:hover {
+      .day_number {
+        opacity: 0;
       }
     }
 
@@ -146,6 +151,7 @@ body {
     background-color: rgba(255, 255, 255, 0.2);
     color: #FFF;
     min-width: 26px;
+    transition: opacity 0.5s ease-in-out;
 
     @include breakpoint($min865) {
       position: absolute;
@@ -161,7 +167,7 @@ body {
       position: absolute;
       margin-top: 0;
       height: inherit;
-      right: -20px;
+      right: -15px;
       padding: 0 30px 20px 0;
     }
   }
@@ -170,7 +176,7 @@ body {
     max-width: 100%;
     margin: 0 0 5px 0;
     color: #000;
-    font-size: 18px;
+    font-size: 22px;
     text-transform: capitalize;
     padding: 3px 5px;
     border-radius: 3px;
@@ -179,7 +185,10 @@ body {
     text-overflow: ellipsis;
     background: rgba(255, 255, 255, 0.1);
     @include breakpoint($min865) {
-      font-size: 12px;
+      font-size: 16px;
+    }
+    &:hover {
+      cursor: pointer;
     }
   }
 }

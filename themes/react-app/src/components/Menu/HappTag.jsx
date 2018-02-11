@@ -3,7 +3,7 @@ import {withStyles} from "material-ui/styles/index";
 import {compose} from "react-apollo/index";
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
-import InboxIcon from 'material-ui-icons/MoveToInbox';
+import FolderIcon from 'material-ui-icons/Folder';
 import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
 import SecondaryCategories from './SecondaryTagsList';
@@ -41,14 +41,11 @@ class HappTag extends Component {
     return <List>
       <ListItem button onClick={this.handleClick}>
         <ListItemIcon>
-          <InboxIcon />
+          <FolderIcon />
         </ListItemIcon>
         <ListItemText inset primary={HappTagTitle} />
         {this.state.open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
-      {/*<Collapse component="li" in={this.state.open} timeout="auto" unmountOnExit>*/}
-        {/*<SecondaryCategories categories={SecondaryTags} />*/}
-      {/*</Collapse>*/}
       <Collapse component="li" in={this.state.open} timeout="auto" unmountOnExit={false}>
         <SecondaryCategories categories={SecondaryTags} />
       </Collapse>

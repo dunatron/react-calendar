@@ -4,6 +4,7 @@ import List, {ListItem, ListItemSecondaryAction, ListItemText} from 'material-ui
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import CommentIcon from 'material-ui-icons/Comment';
+
 import {addFilterTag, removerFilterTag} from "../../actions/tagsReducer";
 import {compose, withApollo} from "react-apollo/index";
 import {connect} from "react-redux";
@@ -62,7 +63,7 @@ class SecondaryTagsList extends Component {
         {categoriesList.map((d,i) =>
           <ListItem
             key={i}
-            dense
+            dense={true}
             button
             onClick={this.handleToggle(d, i)}
             // onClick={() => this.handleToggle(d, i)}
@@ -75,11 +76,11 @@ class SecondaryTagsList extends Component {
               disableRipple
             />
             <ListItemText primary={d.node.Title}/>
-            <ListItemSecondaryAction>
-              <IconButton aria-label="Comments">
-                <CommentIcon/>
-              </IconButton>
-            </ListItemSecondaryAction>
+            {/*<ListItemSecondaryAction>*/}
+              {/*<IconButton aria-label="Comments">*/}
+                {/*<CommentIcon/>*/}
+              {/*</IconButton>*/}
+            {/*</ListItemSecondaryAction>*/}
           </ListItem>
         )}
       </List>

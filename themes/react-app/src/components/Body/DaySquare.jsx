@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {withStyles} from 'material-ui/styles';
 import {connect} from "react-redux";
 import {compose, withApollo} from "react-apollo/index";
+import Tooltip from 'material-ui/Tooltip';
 
 const styles = {
   LogosWrapper: {
@@ -39,44 +40,54 @@ class DaySquare extends Component {
   }
 
   renderEvents() {
-    const {events, classes, dayNumber, filter } = this.props;
+    const {events, classes, dayNumber, filter} = this.props;
 
     // Filter has been set, filter the events
-    if(filter.length >= 1) {
+    if (filter.length >= 1) {
 
       const newEvents = [];
 
       for (let event of events) {
-        if(event.SecondaryTag){
-          if(filter.includes(event.SecondaryTag.Title)){
+        if (event.SecondaryTag) {
+          if (filter.includes(event.SecondaryTag.Title)) {
             newEvents.push(event)
           }
         }
       }
-      const listItems = newEvents.map((d) => <div
-        className="event_card" key={d.ID}
-        onClick={()=>this.props.eventClick(d.ID, d.Title)}
-      >
-        {d.Title}
-      </div>);
+      const listItems = newEvents.map((d) =>
+        // Tool tip enter and leave delay are in milliseconds
+        <Tooltip id={`#e-name-tip-${d.ID}`} title={d.Title} placement="top" key={d.ID} enterDelay={0} leaveDelay={0}>
+          <div
+            className="event_card" key={d.ID}
+            onClick={() => this.props.eventClick(d.ID, d.Title)}
+          >
+            {d.Title}
+          </div>
+        </Tooltip>);
       return (
+
         <div className="events_wrapper">
-          {listItems }
+          {listItems}
         </div>
       );
     }
 
     // Filter has not been set, return all events
-    const listItems = events.map((d) => <div
-      className="event_card" key={d.ID}
-      onClick={()=>this.props.eventClick(d.ID, d.Title)}
-    >
-      {d.Title}
-    </div>);
+    const listItems = events.map((d) =>
+      // Tool tip enter and leave delay are in milliseconds
+      <Tooltip id={`#e-name-tip-${d.ID}`} title={d.Title} placement="top" key={d.ID} enterDelay={0} leaveDelay={0}>
+        <div
+          className="event_card" key={d.ID}
+          onClick={() => this.props.eventClick(d.ID, d.Title)}
+        >
+          {d.Title}
+        </div>
+      </Tooltip>
+    );
 
     return (
       <div className="events_wrapper">
-        {listItems }
+        {listItems}
       </div>
     );
   }
@@ -86,13 +97,13 @@ class DaySquare extends Component {
     const {classes} = this.props;
 
     return (
-      <div className={this.props.className} >
+      <div className={this.props.className}>
         <span className="day_number">{this.props.dayNumber}</span>
         <div className="inner_square">
           {this.renderEvents()}
         </div>
       </div>
-  );
+    );
   }
 }
 
