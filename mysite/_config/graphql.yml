@@ -48,7 +48,7 @@ SilverStripe\GraphQL\Controller:
             create: true
             read: true
         MyOrg\Model\SecondaryTag:
-          fields: [Title, Description]
+          fields: [Title, Description, Checked]
           operations:
             create: true
             read: true

@@ -14,7 +14,8 @@ class SecondaryTag extends DataObject
     );
     private static $db = array(
         'Title' => 'Varchar(100)',
-        'Description' => 'Text'
+        'Description' => 'Text',
+        'Checked' => 'Boolean'
     );
     public function getCMSFields(){
         $fields = parent::getCMSFields();

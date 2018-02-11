@@ -29,6 +29,9 @@ import {withStyles} from 'material-ui/styles';
 import {CircularProgress} from 'material-ui/Progress';
 import HappTag from './HappTag';
 
+import {connect } from "react-redux";
+import {fetchTags, startFetchTags} from '../../actions/tagsReducer'
+import {withApollo} from "react-apollo/index";
 
 const styles = theme => ({
   progress: {
@@ -44,7 +47,29 @@ const styles = theme => ({
   },
 });
 
-const CategoriesQuery = gql`
+// const CategoriesQuery = gql`
+// query getCategories {
+//   readHappTags {
+//     edges {
+//       node {
+//         Title
+//         Description
+//         SecondaryTags {
+//           edges {
+//             node {
+//               Title
+//               Description
+//               Checked
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+// `;
+
+const ALL_TAGS_QUERY = gql`
 query getCategories {
   readHappTags {
     edges {
@@ -56,6 +81,7 @@ query getCategories {
             node {
               Title
               Description
+              Checked
             }
           }
         }
@@ -69,36 +95,95 @@ query getCategories {
 
 class CategoriesList extends Component {
 
-  render() {
-    const {classes, data: {loading, readHappTags}} = this.props;
+  fetchTags = async () => {
 
-    if (loading) {
+    const { header} = this.props;
+
+    // 1. Place Component into loading mode
+    await this.props.dispatch(startFetchTags());
+
+
+    // 2. Start Fetching the events
+    await this.props.client.query({
+      query: ALL_TAGS_QUERY,
+    })
+      .then((res) => {
+
+        console.log('TAGS ON MOUNT', res);
+
+        let Tags = [];
+
+        res.data.readHappTags.edges.map(edge => {
+          console.log(edge);
+          Tags.push(edge.node);
+        });
+
+
+        // 3. Events have been updated and loading mode will be false
+        this.props.dispatch(fetchTags(Tags));
+        // return res.data.getEventsBetween
+      })
+
+  };
+
+  componentWillMount() {
+
+    console.log('CATEGORIESLIST PLEASE JUST LOAD ONCE....');
+
+    this.fetchTags().then(() => {
+      console.log('EVENTS TAGS HAVE BEEN STORED IN REDUX');
+    })
+  }
+
+  render() {
+
+    console.log('Categories List render method', this.props);
+
+    const {classes, tags:{fetching, allTags, fetched, error}} = this.props;
+
+    if (fetching) {
       return <CircularProgress className={classes.progress}/>;
     }
 
-    console.log(readHappTags);
-    let Events = [];
-
-    readHappTags.edges.map(edge => {
-      console.log(edge);
-      Events.push(edge.node);
-    });
-
-    console.group('EVENTS');
-    console.log(Events);
-    console.groupEnd();
+    // const {classes, data: {loading, readHappTags}} = this.props;
+    //
+    // if (loading) {
+    //   return <CircularProgress className={classes.progress}/>;
+    // }
+    //
+    //console.log(readHappTags);
+    // let Tags = [];
+    //
+    // readHappTags.edges.map(edge => {
+    //   console.log(edge);
+    //   Tags.push(edge.node);
+    // });
+    //
+    // this.props.dispatch(fetchTags(Tags));
+    //
+    // console.group('EVENTS');
+    // console.log(Tags);
+    // console.groupEnd();
 
     return (
       <div>
-        {Events.map((d,i) =>
-          <HappTag name={d.ID} listValue={d} key={i} fill={d.color} />
+        {allTags.map((d,i) =>
+          <HappTag name={d.ID} listValue={d} key={i} parentIndex={i} fill={d.color} />
         )}
       </div>
     )
   }
 }
 
+const reduxWrapper = connect(
+  state => ({
+    tags: state.tags
+  })
+);
+
 export default compose(
   withStyles(styles),
-  graphql(CategoriesQuery)
+  withApollo,
+  reduxWrapper,
+  // graphql(CategoriesQuery)
 )(CategoriesList);

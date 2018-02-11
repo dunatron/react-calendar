@@ -4,6 +4,8 @@ import {propType as fragmentPropType} from 'graphql-anywhere';
 import {withStyles} from 'material-ui/styles';
 import moment from 'moment';
 import Day from './DaySquare.jsx';
+import {connect} from "react-redux";
+import {compose, withApollo} from "react-apollo/index";
 
 
 const styles = {
@@ -50,12 +52,11 @@ class DaySquare extends Component {
 
 
   renderEvents() {
-    const {events, classes, dayNumber,  } = this.props;
+    const {events, classes, dayNumber, filter } = this.props;
 
+    console.log('DAY SQUARE PROPS +++++++ : ', this.props);
 
-    const filter = ['test', 'test2', 'Public Talks & Tours'];
-
-    console.log('DAY SQUARE EVENTS', events);
+    // const filter = ['test', 'test2', 'Public Talks & Tours'];
 
     // Filter has been set, filter the events
     if(filter.length >= 1) {
@@ -63,23 +64,18 @@ class DaySquare extends Component {
       const newEvents = [];
 
       for (let event of events) {
-
         if(event.SecondaryTag){
           if(filter.includes(event.SecondaryTag.Title)){
-            console.log('This event should be included', event);
             newEvents.push(event)
           }
         }
-
       }
-
       const listItems = newEvents.map((d) => <div
         className="event_card" key={d.ID}
         onClick={()=>this.props.eventClick(d.ID, d.Title)}
       >
         {d.Title}
       </div>);
-
       return (
         <div className="events_wrapper">
           {listItems }
@@ -117,4 +113,16 @@ class DaySquare extends Component {
   }
 }
 
-export default withStyles(styles)(DaySquare);
+const reduxWrapper = connect(
+  state => ({
+    filter: state.tags.filterTags
+  })
+);
+
+export default compose(
+  withStyles(styles),
+  withApollo,
+  reduxWrapper,
+)(DaySquare);
+
+// export default withStyles(styles)(DaySquare);

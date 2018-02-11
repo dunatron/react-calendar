@@ -35,6 +35,8 @@ class HappTag extends Component {
 
     const {classes, listValue} = this.props;
 
+    console.log('HappTag.jsx PROPS ', this.props);
+
     const HappTagTitle = listValue.Title;
     const SecondaryTags = listValue.SecondaryTags.edges;
 
@@ -46,7 +48,10 @@ class HappTag extends Component {
         <ListItemText inset primary={HappTagTitle} />
         {this.state.open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
-      <Collapse component="li" in={this.state.open} timeout="auto" unmountOnExit>
+      {/*<Collapse component="li" in={this.state.open} timeout="auto" unmountOnExit>*/}
+        {/*<SecondaryCategories categories={SecondaryTags} />*/}
+      {/*</Collapse>*/}
+      <Collapse component="li" in={this.state.open} timeout="auto" unmountOnExit={false}>
         <SecondaryCategories categories={SecondaryTags} />
       </Collapse>
     </List>

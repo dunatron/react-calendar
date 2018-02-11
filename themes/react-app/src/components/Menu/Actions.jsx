@@ -173,6 +173,7 @@ class Actions extends Component {
 
         {/* Filter Draw*/}
         <Drawer
+          type="persistent"
           anchor="left"
           open={this.state.filterDraw}
           onRequestClose={this.toggleDrawer('filterDraw', false)}
