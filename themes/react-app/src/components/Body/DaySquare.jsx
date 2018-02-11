@@ -54,16 +54,25 @@ class DaySquare extends Component {
           }
         }
       }
+      // const listItems = newEvents.map((d) =>
+      //   // Tool tip enter and leave delay are in milliseconds
+      //   <Tooltip id={`#e-name-tip-${d.ID}`} title={d.Title} placement="top" key={d.ID} enterDelay={0} leaveDelay={0}>
+      //     <div
+      //       className="event_card" key={d.ID}
+      //       onClick={() => this.props.eventClick(d.ID, d.Title)}
+      //     >
+      //       {d.Title}
+      //     </div>
+      //   </Tooltip>);
       const listItems = newEvents.map((d) =>
         // Tool tip enter and leave delay are in milliseconds
-        <Tooltip id={`#e-name-tip-${d.ID}`} title={d.Title} placement="top" key={d.ID} enterDelay={0} leaveDelay={0}>
+
           <div
             className="event_card" key={d.ID}
             onClick={() => this.props.eventClick(d.ID, d.Title)}
           >
             {d.Title}
-          </div>
-        </Tooltip>);
+          </div>);
       return (
 
         <div className="events_wrapper">
@@ -73,17 +82,26 @@ class DaySquare extends Component {
     }
 
     // Filter has not been set, return all events
+    // const listItems = events.map((d) =>
+    //   // Tool tip enter and leave delay are in milliseconds
+    //   <Tooltip id={`#e-name-tip-${d.ID}`} title={d.Title} placement="top" key={d.ID} enterDelay={0} leaveDelay={0}>
+    //     <div
+    //       className="event_card" key={d.ID}
+    //       onClick={() => this.props.eventClick(d.ID, d.Title)}
+    //     >
+    //       {d.Title}
+    //     </div>
+    //   </Tooltip>
+    // );
     const listItems = events.map((d) =>
       // Tool tip enter and leave delay are in milliseconds
-      <Tooltip id={`#e-name-tip-${d.ID}`} title={d.Title} placement="top" key={d.ID} enterDelay={0} leaveDelay={0}>
+
         <div
           className="event_card" key={d.ID}
           onClick={() => this.props.eventClick(d.ID, d.Title)}
         >
           {d.Title}
-        </div>
-      </Tooltip>
-    );
+        </div>);
 
     return (
       <div className="events_wrapper">
