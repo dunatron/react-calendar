@@ -123,19 +123,19 @@ class DisplayEventModal extends Component {
         contentLabel="Example Modal"
         style={customStyles}
       >
-        <Button fab color="primary" aria-label="add" className={classes.closeButton} onClick={() => this.closeModal()}>
+        <Button fab color="primary" aria-label="add" className={classes.closeButton} onClick={this.props.closeModal}>
           <CloseIcon/>
         </Button>
-        <EventDataCard eventID={5}/>
-        <Drawer
-          anchor="bottom"
-          open={this.state.bottomDraw}
-          onRequestClose={this.toggleDrawer('bottomDraw', false)}
-        >
-          <div>
-            <HappMap defaultZoom={15} lat={-41.2929515} lng={174.7729421}/>
-          </div>
-        </Drawer>
+        <EventDataCard eventID={this.props.eventID} eventTitle={this.props.eventTitle}/>
+        {/*<Drawer*/}
+          {/*anchor="bottom"*/}
+          {/*open={this.state.bottomDraw}*/}
+          {/*onRequestClose={this.toggleDrawer('bottomDraw', false)}*/}
+        {/*>*/}
+          {/*<div>*/}
+            {/*<HappMap defaultZoom={15} lat={-41.2929515} lng={174.7729421}/>*/}
+          {/*</div>*/}
+        {/*</Drawer>*/}
       </ReactModal>
     );
   }

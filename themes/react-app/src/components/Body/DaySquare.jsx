@@ -3,7 +3,6 @@ import {withStyles} from 'material-ui/styles';
 import {connect} from "react-redux";
 import {compose, withApollo} from "react-apollo/index";
 
-
 const styles = {
   LogosWrapper: {
     'display': 'flex',
@@ -30,7 +29,6 @@ class DaySquare extends Component {
     this.state = {
       events: [props.events]
     };
-    this.eventClick = this.eventClick.bind(this);
 
   }
 
@@ -39,13 +37,6 @@ class DaySquare extends Component {
       events: [nextProps.events]
     })
   }
-
-  eventClick(id, title) {
-    console.log(id);
-    console.log(title);
-  }
-
-
 
   renderEvents() {
     const {events, classes, dayNumber, filter } = this.props;

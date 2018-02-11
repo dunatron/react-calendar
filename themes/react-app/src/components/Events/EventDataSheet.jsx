@@ -120,11 +120,11 @@ class EventDataSheet extends Component {
 
   render() {
 
-    const {classes, data: {loading, getSingleEvent}} = this.props;
+    const {classes, data: {loading, getSingleEvent}, eventTitle} = this.props;
 
     if (loading) {
       return <div>
-        <h2>Loading 'Insert Title' %s Data</h2>
+        <h2>Loading {eventTitle} %s Data</h2>
         <CircularProgress className={classes.progress}/>
       </div>;
     }

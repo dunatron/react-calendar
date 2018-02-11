@@ -9,6 +9,7 @@ const initialState = {
       }
     }
   ],
+  currentEvent: {},
   fetching: false,
   fetched: false,
   error: null,

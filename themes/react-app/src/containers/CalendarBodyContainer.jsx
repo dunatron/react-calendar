@@ -11,6 +11,8 @@ import {CircularProgress} from 'material-ui/Progress';
 // Connect Redux
 import {connect } from "react-redux";
 import {startFetchNewEvents, getNewEvents} from "../actions/eventsActions";
+import {getSingleEvent, getSingleEventFulfilled, closeSingleEventModal} from "../actions/currentEventActions";
+import DisplayEventModal from '../components/Modals/DisplayEventModal';
 
 
 const styles = {
@@ -55,6 +57,9 @@ class CalendarBodyContainer extends Component {
   constructor(props) {
     super(props);
 
+    this.eventClick = this.eventClick.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+
   }
 
   fetchEventsForMonth = async () => {
@@ -81,6 +86,24 @@ class CalendarBodyContainer extends Component {
 
   };
 
+  eventClick(id, title) {
+    // this.setState({
+    //   currentEvent: {
+    //     ID: id,
+    //     Title: title
+    //   }
+    // });
+    // this.openModal();
+    // Put fetching single event into loading mode
+    this.props.dispatch(getSingleEvent());
+    this.props.dispatch(getSingleEventFulfilled(id, title));
+    console.log(id, title)
+  }
+
+  closeModal() {
+    this.props.dispatch(closeSingleEventModal())
+  }
+
   componentWillMount() {
     this.fetchEventsForMonth().then(() => {
       console.log('FINISHED fetch Events for month inside componentWillMount');
@@ -104,8 +127,18 @@ class CalendarBodyContainer extends Component {
       </div>;
     }
 
-    return (
-      <CalendarBody currentDate={this.props.currentDate} events={events} eventClick={()=>console.log('lol')}/>
+    return (<div style={{height: '100%'}}>
+      <CalendarBody currentDate={this.props.currentDate} events={events} eventClick={this.eventClick}/>
+        {/*{this.props.currentEvent.eventData.eventID !== 'undefined' &&  <DisplayEventModal*/}
+          {/*eventID={this.props.currentEvent.eventData.eventID}*/}
+          {/*isOpen={this.props.currentEvent.displayModal}*/}
+          {/*closeModal={this.closeModal} />}*/}
+        <DisplayEventModal
+          eventID={this.props.currentEvent.eventData.eventID}
+          eventTitle={this.props.currentEvent.eventData.eventTitle}
+          isOpen={this.props.currentEvent.displayModal}
+          closeModal={this.closeModal} />
+      </div>
     )
   }
 }
@@ -127,7 +160,8 @@ const reduxWrapper = connect(
   state => ({
     token: state.token,
     header: state.header,
-    events: state.event
+    events: state.event,
+    currentEvent: state.currentEvent
   })
 );
 
