@@ -50,5 +50,16 @@ ErrorDocument 500 /assets/error-500.html
     RewriteCond %{REQUEST_URI} ^(.*)$
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule .* index.php
+
+#    RewriteCond %{REQUEST_URI} admin [OR]
+#    RewriteCond %{REQUEST_URI} dev [OR]
+#    RewriteCond %{REQUEST_URI} graphql
+#    RewriteCond %{REQUEST_FILENAME} !-f
+#    RewriteRule .* index.php
+#
+#    RewriteCond %{REQUEST_URI} ^(.*)$
+#    RewriteCond %{REQUEST_FILENAME} !-f
+#    RewriteRule .* themes/react-app/public/index.html
+
 </IfModule>
 ### SILVERSTRIPE END ###

@@ -113,7 +113,7 @@ body {
       overflow-y: hidden;
       width: calc(100% / 7);
       border: none;
-      padding: 10px 0;
+      padding: 15px 0;
       &:last-child {
         border-right: none;
       }
@@ -133,11 +133,11 @@ body {
   //}
   .inner_square {
     height: inherit;
-    margin: 0;
     padding: 0;
     overflow-y: hidden;
     overflow-x: hidden;
     position: relative;
+    margin: 0 15px 0 0;
     @include breakpoint($min865) {
     }
   }
@@ -152,6 +152,7 @@ body {
     color: #FFF;
     min-width: 26px;
     transition: opacity 0.5s ease-in-out;
+    z-index:1;
 
     @include breakpoint($min865) {
       position: absolute;
@@ -168,29 +169,38 @@ body {
       margin-top: 0;
       height: inherit;
       right: -15px;
-      padding: 0 30px 20px 0;
+      //padding: 0 30px 20px 0;
+      padding: 0;
     }
   }
   .event_card {
     display: block;
     max-width: 100%;
-    margin: 0 0 5px 0;
+    margin: 0 0 12px 0;
     color: #000;
     font-size: 22px;
     text-transform: capitalize;
-    padding: 3px 5px;
-    border-radius: 3px;
+    padding: 6px 12px;
+    border-radius: 18px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     background: rgba(255, 255, 255, 0.1);
     @include breakpoint($min865) {
       font-size: 16px;
+      padding: 3px 5px;
+      margin: 0 0 7px 0;
+      border-radius: 0; // because the right side side is hidden by shifting it right
     }
     &:hover {
       cursor: pointer;
     }
   }
+}
+
+.Create_Event_Container {
+  height: calc(100% - 70px);
+  overflow: scroll;
 }
 
 .Main__Logos {

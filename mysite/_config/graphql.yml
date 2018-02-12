@@ -36,22 +36,25 @@ SilverStripe\GraphQL\Controller:
             create: true
             read: true
         MyOrg\Model\HappTag:
-          fields: [Title, Description]
+          fields: [ID, Title, Description]
           operations:
             create: true
-            read: true
+            read:
+              paginate: false
           nestedQueries:
-            SecondaryTags: true
+            SecondaryTags:
+              paginate: false
         MyOrg\Model\Ticket:
           fields: [TicType, TicPrice, Event]
           operations:
             create: true
             read: true
         MyOrg\Model\SecondaryTag:
-          fields: [Title, Description, Checked]
+          fields: [ID, Title, Description, Checked, HappTagID]
           operations:
-            create: true
-            read: true
+            read:
+              paginate: false
+            create: false
         MyOrg\Model\EventFindaImage:
           fields: [Title, URL, transformation_id, Event]
           operations:
