@@ -113,7 +113,8 @@ body {
       overflow-y: hidden;
       width: calc(100% / 7);
       border: none;
-      padding: 15px 0;
+      //padding: 15px 0;
+      padding: 0;
       &:last-child {
         border-right: none;
       }
@@ -194,6 +195,16 @@ body {
     }
     &:hover {
       cursor: pointer;
+    }
+    &:first-child {
+      @include breakpoint($min865) {
+        margin: 15px 0 7px 0;
+      }
+    }
+    &:last-child {
+      @include breakpoint($min865) {
+        margin: 0 0 15px 0;
+      }
     }
   }
 }
