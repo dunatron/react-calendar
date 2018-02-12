@@ -16,7 +16,7 @@ class GraphQLConfig {
     if(endpoint.length === 0)
     {
       let getUrl = window.location;
-      endpoint = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+      endpoint = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[0];
       return endpoint + 'graphql';
     }
     return endpoint + '/graphql';

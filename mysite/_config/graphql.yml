@@ -36,7 +36,7 @@ SilverStripe\GraphQL\Controller:
             create: true
             read: true
         MyOrg\Model\HappTag:
-          fields: [Title, Description]
+          fields: [ID, Title, Description]
           operations:
             create: true
             read:
@@ -50,7 +50,7 @@ SilverStripe\GraphQL\Controller:
             create: true
             read: true
         MyOrg\Model\SecondaryTag:
-          fields: [Title, Description, Checked]
+          fields: [ID, Title, Description, Checked, HappTagID]
           operations:
             read:
               paginate: false

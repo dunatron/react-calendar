@@ -4,14 +4,17 @@ import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper'
 import ReactModal from 'react-modal';
 import IconButton from 'material-ui/IconButton';
+import DateRangeIcon from 'material-ui-icons/DateRange';
+import Tooltip from 'material-ui/Tooltip';
 import SettingIcon from 'material-ui-icons/Settings';
 import AddCircleIcon from 'material-ui-icons/AddCircleOutline';
 import SearchIcon from 'material-ui-icons/Search';
 import FilterListIcon from 'material-ui-icons/FilterList';
 import CloseIcon from 'material-ui-icons/Close';
 import {CircularProgress} from 'material-ui/Progress';
-import CategoriesList from './CategoriesList';
+import CategoriesList from '../../containers/CategoriesListContainer';
 import LoginForm from '../Login';
+import {Link} from 'react-router-dom';
 
 import { Drawer, MenuItem} from 'material-ui'
 import {compose, gql, graphql} from "react-apollo/index";
@@ -177,34 +180,43 @@ class Actions extends Component {
 
     const {classes} = this.props;
 
-    console.log('ACTIONS.jsx PROPS: ', this.props);
-
     const {token} = store.getState();
 
     const {data: {validateToken, loading}} = this.props;
     if (loading) {
       return <div className={classes.loadingWrapper}>
         <h2 className={classes.loadingText}>applying settings</h2>
-        <CircularProgress className={classes.progress}size={20}/>
+        <CircularProgress className={classes.progress} size={20}/>
       </div>
     }
 
     return (
       <div className={classes.ActionsWrapper}>
 
-        <IconButton aria-label="Add to favorites" onClick={this.toggleDrawer('filterDraw', true)}>
+        <Link to='/' >
+          <Tooltip id="tooltip-all-links" placement="top" title="main calendar">
+            <IconButton aria-label="">
+              <DateRangeIcon />
+            </IconButton>
+          </Tooltip>
+        </Link>
+        <IconButton aria-label="Filter tags for events" onClick={this.toggleDrawer('filterDraw', true)}>
           <FilterListIcon />
         </IconButton>
-
-        <IconButton aria-label="Add to favorites" onClick={this.toggleDrawer('searchDraw', true)}>
+        <IconButton aria-label="Search for events" onClick={this.toggleDrawer('searchDraw', true)}>
           <SearchIcon />
         </IconButton>
-
-        <IconButton aria-label="Add to favorites" onClick={() => this.openModal()}>
-          <AddCircleIcon />
-        </IconButton>
-
-        <IconButton aria-label="Add to favorites" onClick={this.toggleDrawer('settingsDraw', true)}>
+        {/*<IconButton aria-label="Add to favorites" onClick={() => this.openModal()}>*/}
+          {/*<AddCircleIcon />*/}
+        {/*</IconButton>*/}
+        <Link to='/create' >
+          <Tooltip id="tooltip-all-links" placement="top" title="create new event">
+            <IconButton aria-label="Create new events">
+              <AddCircleIcon />
+            </IconButton>
+          </Tooltip>
+        </Link>
+        <IconButton aria-label="Settings for application" onClick={this.toggleDrawer('settingsDraw', true)}>
           <SettingIcon />
         </IconButton>
 

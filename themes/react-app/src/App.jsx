@@ -6,17 +6,15 @@ import CalendarBody from './components/CalendarBody';
 import {withStyles} from 'material-ui/styles';
 import moment from 'moment';
 import {gql, graphql, compose, buildSchema} from 'react-apollo';
-import {execute} from 'graphql'; // ES6
 
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 import DisplayEventModal from './components/Modals/DisplayEventModal';
 import './sass/App.scss';
-import {CircularProgress} from 'material-ui/Progress';
 
 // import LoginForm from './containers/JWTLoginForm';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import * as user from './actions/userActions';
 import CalendarBodyContainer from './containers/CalendarBodyContainer';
+import CreateEventContainer from './containers/CreateEventContainer'
 
 // Connect Redux
 import {connect } from "react-redux";
@@ -25,6 +23,9 @@ import {nextMonth, prevMonth} from './actions/headerActions';
 import {ALL_EVENTS_BETWEEN_QUERY} from './containers/CalendarBodyContainer';
 import {getNewEvents, startFetchNewEvents} from "./actions/eventsActions";
 import {withApollo} from "react-apollo/index";
+
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {withRouter} from "react-router";
 
 /**
  *
@@ -208,7 +209,21 @@ class App extends Component {
 
   };
 
+
+
+
   render() {
+
+    const CalendarBody = (props) => {
+      return (
+        <CalendarBodyContainer
+          currentDate={header.currentDate}
+          startDate={header.startOfMonth}
+          endDate={header.endOfMonth}
+          eventClick={this.eventClick}
+        />
+      );
+    };
 
     const {classes} = this.props;
 
@@ -228,12 +243,12 @@ class App extends Component {
                         previousMonthClick={this.previousMonthClick}
           />
 
-          <CalendarBodyContainer
-            currentDate={header.currentDate}
-            startDate={header.startOfMonth}
-            endDate={header.endOfMonth}
-            eventClick={this.eventClick}
-          />
+          <Switch>
+            <Route exact path='/' component={CalendarBody}/>
+            <Route exact path='/create' component={CreateEventContainer}/>
+            <Route exact path='/login' component={CalendarBody}/>
+            <Route exact path='/search' component={CalendarBody}/>
+          </Switch>
 
           <DisplayEventModal eventID={this.state.currentEvent.ID} isOpen={this.state.modalIsOpen}
                              eventData={this.state.currentEvent}/>
@@ -251,10 +266,16 @@ const reduxWrapper = connect(
   })
 );
 
-// export default App;
-export default compose(
-  graphql(validateToken),
-  withApollo,
+// // export default App;
+// export default compose(
+//   graphql(validateToken),
+//   withApollo,
+//   reduxWrapper,
+//   withStyles(styles)
+// )(App);
+
+export default withRouter(compose(
   reduxWrapper,
+  graphql(validateToken),
   withStyles(styles)
-)(App);
+)(App));

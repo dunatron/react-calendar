@@ -193,6 +193,11 @@ body {
   }
 }
 
+.Create_Event_Container {
+  height: calc(100% - 70px);
+  overflow: scroll;
+}
+
 .Main__Logos {
   height: 60px;
   animation: App-logo-spin infinite 20s linear;
