@@ -47,19 +47,19 @@ ErrorDocument 500 /assets/error-500.html
     # Process through SilverStripe if no file with the requested name exists.
     # Pass through the original path as a query parameter, and retain the existing parameters.
     # Try finding framework in the vendor folder first
-#    RewriteCond %{REQUEST_URI} ^(.*)$
-#    RewriteCond %{REQUEST_FILENAME} !-f
-#    RewriteRule .* index.php
-
-    RewriteCond %{REQUEST_URI} admin [OR]
-    RewriteCond %{REQUEST_URI} dev [OR]
-    RewriteCond %{REQUEST_URI} graphql
+    RewriteCond %{REQUEST_URI} ^(.*)$
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule .* index.php
 
-    RewriteCond %{REQUEST_URI} ^(.*)$
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule .* themes/react-app/public/index.html
+#    RewriteCond %{REQUEST_URI} admin [OR]
+#    RewriteCond %{REQUEST_URI} dev [OR]
+#    RewriteCond %{REQUEST_URI} graphql
+#    RewriteCond %{REQUEST_FILENAME} !-f
+#    RewriteRule .* index.php
+#
+#    RewriteCond %{REQUEST_URI} ^(.*)$
+#    RewriteCond %{REQUEST_FILENAME} !-f
+#    RewriteRule .* themes/react-app/public/index.html
 
 </IfModule>
 ### SILVERSTRIPE END ###
