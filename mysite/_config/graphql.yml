@@ -22,7 +22,7 @@ SilverStripe\GraphQL\Controller:
           nestedQueries:
             Events: true
         MyOrg\Model\Event:
-          fields: [ID, Title, Date, Owner, Description, Venue, Start, Finish, Approved, Free, Website, TicketUrl, TicketPhone, Restriction, SpecEntry, AccessType, IsEventFindaEvent, EventFindaID, EventFindaUrl, LocationText, Lat, Lon, Image, SecondaryTag]
+          fields: [ID, Title, Date, Owner, Description, Venue, Start, Finish, Approved, Free, Website, TicketUrl, TicketPhone, Restriction, SpecEntry, AccessType, Thumbnail, IsEventFindaEvent, EventFindaID, EventFindaUrl, LocationText, Lat, Lon, Image, SecondaryTag]
           operations:
             read: true
             create: true

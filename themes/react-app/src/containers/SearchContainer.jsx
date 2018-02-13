@@ -181,7 +181,18 @@ query searchEvents($searchText: String!) {
         Restriction
         SpecEntry
         AccessType
+        IsEventFindaEvent
+        Thumbnail
         EventFindaUrl
+        EventFindaImages {
+          edges {
+            node {
+              URL
+              Title
+              transformation_id
+            }
+          }
+        }
         LocationText
         Lat
         Lon

@@ -100,7 +100,32 @@ class EventCard extends Component {
 
   render() {
 
-    const {classes, eventObject: {Title, Date, Start, Finish, LocationText, Description, Lat, Lon}} = this.props;
+    const {classes, eventObject: {Title, Date, Start, Finish, LocationText, Description, Lat, Lon, IsEventFindaEvent}} = this.props;
+
+    console.log(this.props);
+
+    const EventCardMedia = () => {
+      switch (IsEventFindaEvent) {
+        case false: {
+          return <CardMedia
+            className={classes.media}
+            image={this.props.eventObject.Thumbnail}
+            title="Contemplative Reptile" />
+        }
+        case true: {
+          return <CardMedia
+            className={classes.media}
+            image={this.props.eventObject.EventFindaImages.edges[0].node.URL}
+            title="Contemplative Reptile"/>
+        }
+        default: {
+          return <CardMedia
+            className={classes.media}
+            image="http://via.placeholder.com/350x150"
+            title="Contemplative Reptile"/>
+        }
+      }
+    };
 
     return (
       <div>
@@ -119,11 +144,20 @@ class EventCard extends Component {
             title={Title}
             subheader={Date}
           />
-          <CardMedia
-            className={classes.media}
-            image="http://via.placeholder.com/350x150"
-            title="Contemplative Reptile"
-          />
+          {/*<CardMedia*/}
+            {/*className={classes.media}*/}
+            {/*image="http://via.placeholder.com/350x150"*/}
+            {/*title="Contemplative Reptile"*/}
+          {/*/>*/}
+          {/*<CardMedia*/}
+            {/*className={classes.media}*/}
+            {/*image={this.props.eventObject.EventFindaImages.edges[0].node.URL}*/}
+            {/*title="Contemplative Reptile"*/}
+          {/*/>*/}
+
+          <EventCardMedia />
+
+
           <CardContent>
             <div className={classes.timeHolder}>
               <TimeIcon/> {Start} - {Finish}

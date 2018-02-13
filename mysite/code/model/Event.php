@@ -39,8 +39,8 @@ class Event extends DataObject implements ScaffoldingProvider
         'Date' => 'Date',
         'Description' => 'HTMLText',
         'Venue' => 'Varchar(255)',
-        'Start' => 'Date',
-        'Finish' => 'Date',
+        'Start' => 'Time',
+        'Finish' => 'Time',
         'Approved' => 'Boolean',
         'Free' => 'Boolean',
         'Website' => 'Text',
@@ -122,6 +122,7 @@ class Event extends DataObject implements ScaffoldingProvider
                     ->setDescription('e.g <strong>168.89592100000004</strong>')
             ])
         );
+        $mainImage = UploadField::create('Image', 'Main Image');
         $eventDateTime = CompositeField::create(
             HeaderField::create('DateTimeDetails', ' Date Time Details'),
             FieldGroup::create([
@@ -130,11 +131,10 @@ class Event extends DataObject implements ScaffoldingProvider
                     ->setDescription('Date for the event'),
                 // StartTime
                 TimeField::create('Start')
-                    ->setDescription('Start time for the event format-><strong>18:00:00</strong>'),
+                    ->setDescription('Start time for the event'),
                 // FinishTime
                 TimeField::create('Finish')
-                    ->setDescription('Finish time for the event format-><strong>18:01:00</strong>')
-                    ->setAttribute('autocomplete', 'on')
+                    ->setDescription('Finish time for the event')
             ])
         );
         $eventApproval = CompositeField::create(
@@ -170,6 +170,7 @@ class Event extends DataObject implements ScaffoldingProvider
             TextField::create('Ticket', 'Booking Website URL')
                 ->setDescription('Booking website URL')
         );
+
         $eventImages = UploadField::create('EventImages');
         //Set allowed upload extensions
         $eventImages->getValidator()->setAllowedExtensions(array('png', 'gif', 'jpg', 'jpeg'));
@@ -206,6 +207,7 @@ class Event extends DataObject implements ScaffoldingProvider
                 'Root',
                 new Tab('Main', 'Main Details',
                     $eventDetails,
+                    $mainImage,
                     $eventLocation,
                     $eventDateTime,
                     $eventApproval,
