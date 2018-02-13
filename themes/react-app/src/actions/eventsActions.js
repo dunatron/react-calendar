@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export function startFetchNewEvents() {
   return {
     type: "FETCH_EVENTS",

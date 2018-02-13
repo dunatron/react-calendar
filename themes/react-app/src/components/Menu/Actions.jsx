@@ -11,6 +11,9 @@ import AddCircleIcon from 'material-ui-icons/AddCircleOutline';
 import SearchIcon from 'material-ui-icons/Search';
 import FilterListIcon from 'material-ui-icons/FilterList';
 import CloseIcon from 'material-ui-icons/Close';
+import TextField from 'material-ui/TextField';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
 import {CircularProgress} from 'material-ui/Progress';
 import CategoriesList from '../../containers/CategoriesListContainer';
 import LoginForm from '../Login';
@@ -19,6 +22,7 @@ import {Link} from 'react-router-dom';
 import { Drawer, MenuItem} from 'material-ui'
 import {compose, gql, graphql} from "react-apollo/index";
 import store from '../../state/store';
+import {withRouter} from "react-router";
 
 
 const drawerWidth = 240;
@@ -95,19 +99,38 @@ const styles = theme => ({
     'text-align': 'center',
     'display': 'inline-block',
   },
-  MuiPaper: {
-    'transform': 'translateX(-408.828px)',
-  },
+  // MuiPaper: {
+  //   'transform': 'translateX(-408.828px)',
+  // },
   paperAnchorDockedLeft: {
     display: 'none'
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
+  },
+  searchFormControl: {
+    'display': 'flex',
+    'max-width': '420px',
+    'width': '100%',
+    'margin-left': 'auto',
+    'margin-right': 'auto'
+  },
+  searchBar: {
+    display: 'flex',
+    padding: '15px'
+  },
+  searchText: {
+    color: 'black'
   }
 });
 
 
 class Actions extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       modalIsOpen: false,
@@ -249,8 +272,33 @@ class Actions extends Component {
           open={this.state.searchDraw}
           onClose={this.toggleDrawer('searchDraw', false)}
         >
-          <MenuItem onClick={this.toggleDrawer('searchDraw', false)}>CLOSE</MenuItem>
-          <MenuItem >Search</MenuItem>
+          <div className={classes.searchBar}>
+            <FormControl className={classes.searchFormControl}>
+              <InputLabel htmlFor="search">Search</InputLabel>
+              <Input
+                id="Search input field"
+                type={'text'}
+                className={classes.searchText}
+                value={this.state.password}
+                onChange={() => {console.log('Search has changed value')}}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <Link to='/search' >
+                      <IconButton
+                        onClick={() => {console.log('Search icon has been clicked')}}
+                        onMouseDown={() => {console.log('Search icon mouse down event')}}
+                      >
+                        <SearchIcon/>
+                      </IconButton>
+                    </Link>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <IconButton onClick={this.toggleDrawer('searchDraw', false)}>
+              <CloseIcon />
+            </IconButton>
+          </div>
         </Drawer>
 
         {/* Settings Draw*/}
@@ -343,3 +391,8 @@ export default compose(
   graphql(validateToken),
   withStyles(styles)
 )(Actions);
+
+// export default withRouter(compose(
+//   graphql(validateToken),
+//   withStyles(styles)
+// )(Actions));

@@ -303,6 +303,22 @@ class Event extends DataObject implements ScaffoldingProvider
             ->setUsePagination(false)
             ->end();
 
+        $scaffolder
+            ->query('searchAllEvents', __CLASS__)
+            ->addArgs([
+                'filter' => 'String!',
+            ])
+            ->setResolver(function ($object, array $args, $context, ResolveInfo $info) {
+                $events = self::get()->filter([
+                    'Title:PartialMatch' => $args['filter'],
+                    'Description:PartialMatch' => $args['filter']
+                ]);
+
+                return $events;
+            })
+            ->setUsePagination(true)
+            ->end();
+
 
         return $scaffolder;
     }

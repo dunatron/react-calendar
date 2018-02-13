@@ -15,6 +15,7 @@ import './sass/App.scss';
 import * as user from './actions/userActions';
 import CalendarBodyContainer from './containers/CalendarBodyContainer';
 import CreateEventContainer from './containers/CreateEventContainer'
+import SearchContainer from './containers/SearchContainer';
 
 // Connect Redux
 import {connect } from "react-redux";
@@ -246,8 +247,7 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={CalendarBody}/>
             <Route exact path='/create' component={CreateEventContainer}/>
-            <Route exact path='/login' component={CalendarBody}/>
-            <Route exact path='/search' component={CalendarBody}/>
+            <Route exact path='/search' component={SearchContainer}/>
           </Switch>
 
           <DisplayEventModal eventID={this.state.currentEvent.ID} isOpen={this.state.modalIsOpen}
