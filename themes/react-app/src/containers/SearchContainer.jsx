@@ -35,8 +35,10 @@ const styles = theme => ({
   },
   searchResultsContainer: {
     // height: '97%',
-    height: `calc(100% - 78px)`,
-    overflow: 'scroll'
+    // height: `calc(100% - 78px)`,
+    height: `calc(100% - 148px)`, // - search bar + nav bar
+    overflow: 'scroll',
+    'justify-content': 'center',
     // height: '97%', // should be 100% - searchBarhiegit
   },
   searchInnerContainer: {
