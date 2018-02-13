@@ -38,12 +38,13 @@ const styles = theme => ({
     // height: `calc(100% - 78px)`,
     height: `calc(100% - 148px)`, // - search bar + nav bar
     overflow: 'scroll',
-    'justify-content': 'center',
+
     // height: '97%', // should be 100% - searchBarhiegit
   },
   searchInnerContainer: {
     display: 'flex',
-    'flex-wrap': 'wrap'
+    'flex-wrap': 'wrap',
+    'justify-content': 'center',
   }
 });
 
