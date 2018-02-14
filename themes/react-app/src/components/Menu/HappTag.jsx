@@ -36,7 +36,7 @@ class HappTag extends Component {
     const {classes, listValue} = this.props;
 
     const HappTagTitle = listValue.Title;
-    const SecondaryTags = listValue.SecondaryTags.edges;
+    const SecondaryTags = listValue.SecondaryTags;
 
     return <List>
       <ListItem button onClick={this.handleClick}>

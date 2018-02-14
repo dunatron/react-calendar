@@ -39,13 +39,13 @@ class SecondaryTagsList extends Component {
       // ToDO: The load is slow on the first and last tags off
       // ToDO: so implement a loader
       // add to redux filter
-      this.props.dispatch(addFilterTag(value.node.Title))
+      this.props.dispatch(addFilterTag(value.Title))
       //
 
     } else {
       newChecked.splice(currentIndex, 1);
       // remove from redux filter
-      this.props.dispatch(removerFilterTag(value.node.Title))
+      this.props.dispatch(removerFilterTag(value.Title))
     }
 
     this.setState({
@@ -82,7 +82,7 @@ class SecondaryTagsList extends Component {
               tabIndex={-1}
               disableRipple
             />
-            <ListItemText primary={d.node.Title}/>
+            <ListItemText primary={d.Title}/>
             {/*<ListItemSecondaryAction>*/}
               {/*<IconButton aria-label="Comments">*/}
                 {/*<CommentIcon/>*/}

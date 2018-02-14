@@ -27,7 +27,7 @@ import React, {Component} from 'react';
 import {gql, compose} from 'react-apollo';
 import {withStyles} from 'material-ui/styles';
 import {CircularProgress} from 'material-ui/Progress';
-// import HappTag from './HappTag';
+import HappTag from '../components/Menu/HappTag';
 
 import {connect } from "react-redux";
 import {fetchTags, startFetchTags} from '../actions/tagsReducer'
@@ -111,9 +111,9 @@ class CategoriesList extends Component {
 
     return (
       <div>
-        {/*{allTags.map((d,i) =>*/}
-          {/*/!*<HappTag name={d.ID} listValue={d} key={i} parentIndex={i} fill={d.color} />*!/*/}
-        {/*)}*/}
+        {allTags.map((d,i) =>
+          <HappTag name={d.ID} listValue={d} key={i} parentIndex={i} fill={d.color} />
+        )}
       </div>
     )
   }
