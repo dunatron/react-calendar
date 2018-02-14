@@ -250,6 +250,8 @@ class App extends Component {
             <Route exact path='/search' component={SearchContainer}/>
           </Switch>
 
+          {/*<DisplayEventModal eventID={this.state.currentEvent.ID} isOpen={this.state.modalIsOpen}*/}
+                             {/*eventData={this.state.currentEvent}/>*/}
           <DisplayEventModal eventID={this.state.currentEvent.ID} isOpen={this.state.modalIsOpen}
                              eventData={this.state.currentEvent}/>
 

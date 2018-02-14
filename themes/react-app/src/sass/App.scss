@@ -76,6 +76,7 @@ body {
   width: 100%;
   height: calc(100% - #{$days_wrapper_height});
   padding: 4%;
+  box-sizing: border-box;
   @include breakpoint($min865) {
     padding: 0;
   }

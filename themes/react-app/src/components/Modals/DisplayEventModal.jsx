@@ -1,148 +1,89 @@
-import React, {Component} from 'react';
-import {compose} from 'react-apollo';
-import {withStyles} from 'material-ui/styles';
-import Button from 'material-ui/Button';
-import ReactModal from 'react-modal';
-import red from 'material-ui/colors/red';
-import Drawer from 'material-ui/Drawer';
-import CloseIcon from 'material-ui-icons/Close';
-import HappMap from '../HappMap';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import Modal from 'material-ui/Modal';
 import EventDataCard from '../Events/EventDataSheet';
 
-const customStyles = {
-  content : {
-    'maxWidth': 'max-content',
-    'margin': 'auto',
-    'overflowX': 'hidden'
-  }
-};
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  // const top = 50 + rand();
+  // const left = 50 + rand();
+  //
+  // return {
+  //   top: `${top}%`,
+  //   left: `${left}%`,
+  //   transform: `translate(-${top}%, -${left}%)`,
+  // };
+  const marginSides = 'auto';
+  const marginTopBot = 20;
+
+  return {
+    'margin-bottom': `${marginTopBot}px`,
+    'margin-top': `${marginTopBot}px`,
+    'margin-left': `${marginSides}`,
+    'margin-right': `${marginSides}`,
+  };
+}
 
 const styles = theme => ({
-  card: {
-    'alignSelf': 'stretch',
-    'maxWidth': '650px',
-    'flex-shrink': '0',
-    'margin': '10px',
-  },
-  media: {
-    height: 194,
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
-  flexGrow: {
-    flex: '1 1 auto',
-  },
-  closeButton: {
-    'left': '30px',
-    'float': 'right',
-    'top': '-30px'
-  },
-  list: {
-    width: 250,
-  },
-  listFull: {
-    width: 'auto',
-  },
-  timeHolder: {
-    'display': 'flex',
-    'align-items': 'center'
-  },
-  MyModal: {
-    'width': 'max-content'
+  paper: {
+    position: 'relative',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    // padding: theme.spacing.unit * 4,
+    outline: 'none',
+    overflow: 'scroll',
+    'max-height': '550px',
+    'padding': '0'
   },
 });
 
-class DisplayEventModal extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      modalIsOpen: false,
-      open: false,
-      expanded: false,
-      bottomDraw: false,
-      eventData: {}
-    };
-
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-
-  }
-
-  toggleDrawer = (side, open) => () => {
-    this.setState({
-      [side]: open,
-    });
+class DisplayEventModal extends React.Component {
+  state = {
+    open: false,
   };
 
-  componentWillReceiveProps(nextProps) {
-    //eventData
-    this.setState({
-      eventData: nextProps.eventData
-    })
-  }
-
-  handleExpandClick = () => {
-    this.setState({expanded: !this.state.expanded});
+  handleOpen = () => {
+    this.setState({ open: true });
   };
 
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
-
-  afterOpenModal() {
-    // references are now sync'd and can be accessed
-  }
-
-  closeModal() {
-    this.setState({modalIsOpen: false});
-  }
+  handleClose = () => {
+    this.setState({ open: false });
+  };
 
   render() {
-
-    const {classes} = this.props;
+    const { classes } = this.props;
 
     return (
-      <ReactModal
-        isOpen={this.props.isOpen}
-        onAfterOpen={this.afterOpenModal}
-        onRequestClose={this.closeModal}
-        closeTimeoutMS={200}
-        shouldCloseOnOverlayClick={true}
-        contentLabel="Example Modal"
-        style={customStyles}
-      >
-        <Button fab color="primary" aria-label="add" className={classes.closeButton} onClick={this.props.closeModal}>
-          <CloseIcon/>
-        </Button>
-        <EventDataCard eventID={this.props.eventID} eventTitle={this.props.eventTitle}/>
-        {/*<Drawer*/}
-          {/*anchor="bottom"*/}
-          {/*open={this.state.bottomDraw}*/}
-          {/*onRequestClose={this.toggleDrawer('bottomDraw', false)}*/}
-        {/*>*/}
-          {/*<div>*/}
-            {/*<HappMap defaultZoom={15} lat={-41.2929515} lng={174.7729421}/>*/}
-          {/*</div>*/}
-        {/*</Drawer>*/}
-      </ReactModal>
+      <div>
+        {/*<Typography gutterBottom>Click to get the full Modal experience!</Typography>*/}
+        {/*<Button onClick={this.handleOpen}>Open Modal</Button>*/}
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.props.isOpen}
+          onClose={this.props.closeModal}
+        >
+          <div style={getModalStyle()} className={classes.paper}>
+            <EventDataCard eventID={this.props.eventID} eventTitle={this.props.eventTitle}/>
+            <DisplayEventModalWrapped />
+          </div>
+        </Modal>
+      </div>
     );
   }
 }
 
-export default compose(
-  withStyles(styles),
-)(DisplayEventModal);
+DisplayEventModal.propTypes = {
+  // classes: PropTypes.object.isRequired,
+};
 
+// We need an intermediary variable for handling the recursive nesting.
+const DisplayEventModalWrapped = withStyles(styles)(DisplayEventModal);
+
+export default DisplayEventModalWrapped;
 
