@@ -19,7 +19,8 @@ const styles = {
     'marginRight': '24px',
   },
   CurrentMonth: {
-    'padding': '0 10px'
+    'padding': '0 10px',
+    'font-size': '24px',
   },
   ArrowButton: {
     'width': '48px',
@@ -46,7 +47,8 @@ class Navigation extends Component {
 
           <LeftArrow className={classes.ArrowIcon} />
         </IconButton>
-        <h1 className={classes.CurrentMonth}>{this.props.currentMonth + this.props.currentYear}</h1>
+        {/*<h1 className={classes.CurrentMonth}>{this.props.currentMonth + this.props.currentYear}</h1>*/}
+        <h1 className={classes.CurrentMonth}>{this.props.currentMonth} {this.props.currentYear}</h1>
         <IconButton
           className={classes.ArrowButton}
           onClick={this.props.nextMonthClick}

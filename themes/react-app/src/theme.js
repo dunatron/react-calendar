@@ -313,26 +313,36 @@ const theme = {
     "tooltip": 3000
   },
   overrides: {
-    MuiButton: {
-      // Name of the styleSheet
-      root: {
-        // Name of the rule
-        // background: 'linear-gradient(135deg, #FFAB8E 0%, #FF865D 33%, #FF6733 71%, #C13100 91%)', // orange
-        background: 'linear-gradient(135deg, #E859B9 0%, #E42DA8 33%, #C80087 71%, #9A0068 91%)', // pink
-        borderRadius: 3,
-        border: 0,
-        color: 'white',
-        height: 48,
-        padding: '0 30px',
-        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .30)',
-      },
-    },
+    // MuiButton: {
+    //   // Name of the styleSheet
+    //   root: {
+    //     // Name of the rule
+    //     // background: 'linear-gradient(135deg, #FFAB8E 0%, #FF865D 33%, #FF6733 71%, #C13100 91%)', // orange
+    //     background: 'linear-gradient(135deg, #E859B9 0%, #E42DA8 33%, #C80087 71%, #9A0068 91%)', // pink
+    //     borderRadius: 3,
+    //     border: 0,
+    //     color: 'white',
+    //     height: 48,
+    //     padding: '0 30px',
+    //     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .30)',
+    //   },
+    // },
     MuiIconButton: {
       root: {
         // color: 'rgba(255, 0, 0, 0.54)'
         color: '#E10098'
       }
     },
+    MuiMenuItem: {
+      root: {
+        color: "#E10098"
+      }
+    },
+    MuiListItem: {
+      root: {
+        color: "#E10098"
+      }
+    }
   },
 };
 

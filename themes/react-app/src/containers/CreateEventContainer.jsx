@@ -11,9 +11,12 @@ import Typography from 'material-ui/Typography';
 import DetailsStep from '../components/CreateEvent/DetailsStep';
 import DateTimeStep from '../components/CreateEvent/DateTimeStep';
 
-
+import indigo from 'material-ui/colors/indigo';
+import pink from 'material-ui/colors/pink';
+import red from 'material-ui/colors/red';
 
 const styles = theme => ({
+
   root: {
     //width: '100%',
     height: 'calc(100% -70px)'
