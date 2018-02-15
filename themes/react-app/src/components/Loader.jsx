@@ -34,6 +34,7 @@ function Loader(props) {
 
 Loader.propTypes = {
   classes: PropTypes.object.isRequired,
+  loadingText: PropTypes.string,
 };
 
 export default withStyles(styles)(Loader);

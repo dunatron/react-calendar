@@ -20,17 +20,24 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import HappMap from '../HappMap';
 
 const styles = theme => ({
+  root: {
+
+  },
   card: {
     'alignSelf': 'stretch',
     'maxWidth': '450px',
     'flex-shrink': '0',
     'margin': '10px',
   },
+  cardActions: {
+
+  },
   media: {
     height: 194,
   },
   expand: {
     transform: 'rotate(0deg)',
+    color: theme.palette.primary.main,
     transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest,
     }),
@@ -39,7 +46,7 @@ const styles = theme => ({
     transform: 'rotate(180deg)',
   },
   avatar: {
-    backgroundColor: red[500],
+    backgroundColor: theme.palette.secondary.main,
   },
   flexGrow: {
     flex: '1 1 auto',
@@ -57,7 +64,20 @@ const styles = theme => ({
   },
   timeHolder: {
     'display': 'flex',
-    'align-items': 'center'
+    'align-items': 'center',
+    'padding': '5px 0'
+  },
+  locationHolder: {
+    'display': 'flex',
+    'align-items': 'center',
+    'padding': '5px 0'
+  },
+  description: {
+    'padding': '10px 0 0 0'
+  },
+  staticIcon: {
+    color: theme.palette.secondary.main,
+    'margin-right': '15px'
   },
   MyModal: {
     'width': 'max-content'
@@ -128,7 +148,7 @@ class EventCard extends Component {
     };
 
     return (
-      <div>
+      <div className={classes.root}>
         <Card className={classes.card}>
           <CardHeader
             avatar={
@@ -137,7 +157,7 @@ class EventCard extends Component {
               </Avatar>
             }
             action={
-              <IconButton>
+              <IconButton color={"primary"}>
                 <MoreVertIcon/>
               </IconButton>
             }
@@ -159,29 +179,35 @@ class EventCard extends Component {
 
 
           <CardContent>
+            <div className={classes.locationHolder}>
+              <LocationIcon className={classes.staticIcon}/>
+              <Typography component="p">
+                {LocationText}
+              </Typography>
+            </div>
             <div className={classes.timeHolder}>
-              <TimeIcon/> {Start} - {Finish}
+              <TimeIcon className={classes.staticIcon} />
+              <Typography component="p">
+                {Start} - {Finish}
+              </Typography>
             </div>
-            <div>
-              <LocationIcon/> {LocationText}
-            </div>
-            <Typography component="p">
+            <Typography component="p" className={classes.description}>
               {Description}
             </Typography>
           </CardContent>
-          <CardActions disableActionSpacing>
-            <IconButton aria-label="Add to favorites">
+          <CardActions disableActionSpacing className={classes.cardActions}>
+            <IconButton aria-label="Add to favorites" color={"primary"}>
               <FavoriteIcon/>
             </IconButton>
             <CopyToClipboard text={window.location.href} onCopy={this.onCopy}>
-              <IconButton aria-label="Share">
+              <IconButton aria-label="Share" color={"primary"}>
                 <ShareIcon/>
               </IconButton>
             </CopyToClipboard>
             <div>
               {this.state.copied ? <span >Copied.</span> : null}
             </div>
-            <IconButton aria-label="show-map" onClick={this.toggleDrawer('bottomDraw', true)}>
+            <IconButton aria-label="show-map" color={"primary"} onClick={this.toggleDrawer('bottomDraw', true)}>
               <MapIcon/>
             </IconButton>
 
@@ -230,7 +256,7 @@ class EventCard extends Component {
         <Drawer
           anchor="bottom"
           open={this.state.bottomDraw}
-          onRequestClose={this.toggleDrawer('bottomDraw', false)}
+          onClose={this.toggleDrawer('bottomDraw', false)}
         >
           <div>
             <HappMap defaultZoom={15} lat={parseFloat(Lat)} lng={parseFloat(Lon)}/>
