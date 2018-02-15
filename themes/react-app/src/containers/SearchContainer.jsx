@@ -28,6 +28,7 @@ const styles = theme => ({
   },
   searchedText: {
     flex: 1,
+    'text-align': 'center',
     color: theme.palette.common.lightBlack
   },
   searchText: {
@@ -117,7 +118,7 @@ class SearchContainer extends Component {
 
           <div className={classes.searchBar}>
             <Typography variant="title" color="inherit" className={classes.searchedText}>
-              {this.props.searchText}
+              Results for: {this.props.searchText}
             </Typography>
             <FormControl className={classes.searchFormControl}>
               <InputLabel htmlFor="search">Search</InputLabel>

@@ -23,6 +23,8 @@ import { Drawer, MenuItem} from 'material-ui'
 import {compose, gql, graphql} from "react-apollo/index";
 import store from '../../state/store';
 import {withRouter} from "react-router";
+import {connect} from "react-redux";
+import {searchEvents} from "../../actions/searchEventActions";
 
 
 const drawerWidth = 240;
@@ -189,6 +191,20 @@ class Actions extends Component {
     this.toggleDrawer('settingsDraw', false)
   }
 
+  handleSearch = () => {
+    // 1. Put search into loading mode
+    this.props.dispatch(searchEvents(this.state.searchText));
+
+    // 2. call search events function
+    this.searchEvents(this.state.searchText)
+      .then(() =>{
+        console.log("Finished searching events")
+      })
+
+    this.props.history.push(`/`);
+
+  };
+
   _logout = async () => {
 
     localStorage.removeItem('USER_ID');
@@ -223,15 +239,13 @@ class Actions extends Component {
             </IconButton>
           </Tooltip>
         </Link>
-        <IconButton aria-label="Filter tags for events" onClick={this.toggleDrawer('filterDraw', true)}>
-          <FilterListIcon />
-        </IconButton>
-        <IconButton aria-label="Search for events" onClick={this.toggleDrawer('searchDraw', true)}>
-          <SearchIcon />
-        </IconButton>
-        {/*<IconButton aria-label="Add to favorites" onClick={() => this.openModal()}>*/}
-          {/*<AddCircleIcon />*/}
-        {/*</IconButton>*/}
+        <Link to='/search' >
+          <Tooltip id="tooltip-all-links" placement="top" title="search area">
+            <IconButton aria-label="Search for events">
+              <SearchIcon />
+            </IconButton>
+          </Tooltip>
+        </Link>
         <Link to='/create' >
           <Tooltip id="tooltip-all-links" placement="top" title="create new event">
             <IconButton aria-label="Create new events">
@@ -239,6 +253,9 @@ class Actions extends Component {
             </IconButton>
           </Tooltip>
         </Link>
+        <IconButton aria-label="Filter tags for events" onClick={this.toggleDrawer('filterDraw', true)}>
+          <FilterListIcon />
+        </IconButton>
         <IconButton aria-label="Settings for application" onClick={this.toggleDrawer('settingsDraw', true)}>
           <SettingIcon />
         </IconButton>
@@ -265,42 +282,6 @@ class Actions extends Component {
           </div>
 
         </Drawer>
-
-        {/* Search Draw*/}
-        <Drawer
-          anchor="top"
-          open={this.state.searchDraw}
-          onClose={this.toggleDrawer('searchDraw', false)}
-        >
-          <div className={classes.searchBar}>
-            <FormControl className={classes.searchFormControl}>
-              <InputLabel htmlFor="search">Search</InputLabel>
-              <Input
-                id="Search input field"
-                type={'text'}
-                className={classes.searchText}
-                value={this.state.password}
-                onChange={() => {console.log('Search has changed value')}}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <Link to='/search' >
-                      <IconButton
-                        onClick={() => {console.log('Search icon has been clicked')}}
-                        onMouseDown={() => {console.log('Search icon mouse down event')}}
-                      >
-                        <SearchIcon/>
-                      </IconButton>
-                    </Link>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <IconButton onClick={this.toggleDrawer('searchDraw', false)}>
-              <CloseIcon />
-            </IconButton>
-          </div>
-        </Drawer>
-
         {/* Settings Draw*/}
         <Drawer
           anchor="right"

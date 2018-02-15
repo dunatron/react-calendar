@@ -15,7 +15,7 @@ import DateTimeStep from '../components/CreateEvent/DateTimeStep';
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    //width: '100%',
     height: 'calc(100% -70px)'
   },
   button: {

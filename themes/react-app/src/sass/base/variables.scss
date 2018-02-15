@@ -39,6 +39,31 @@ $c_orange_main: #FF6733;
 $c_orange_dark_1: #F03D00;
 $c_orange_dark_2: #C13100;
 
+$c_pink_1: #E859B9;
+$c_pink_2: #E42DA8;
+$c_pink_3: #C80087;
+$c_pink_4: #9A0068;
+
+$theme_color: #E10098;
+//rgba(225, 0, 152, 1)
+
+// Declare the color as RGB; SASS will treat this as hex
+$theme_color: rgb(225, 0, 152);
+
+// Declare opacity levels
+$opacity1000: 1;
+$opacity700: .7;
+$opacity500: .5;
+$opacity200: .2;
+
+// Declare another color variable as a color with an alpha
+$themeColor1000: rgba($theme_color, $opacity1000);
+$themeColor700: rgba($theme_color, $opacity700);
+$themeColor500: rgba($theme_color, $opacity500);
+$themeColor200: rgba($theme_color, $opacity200);
+
+
+
 $menu_min_height: 70px;
 $days_wrapper_height: 40px;
 
