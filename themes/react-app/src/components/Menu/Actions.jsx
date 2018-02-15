@@ -11,9 +11,7 @@ import AddCircleIcon from 'material-ui-icons/AddCircleOutline';
 import SearchIcon from 'material-ui-icons/Search';
 import FilterListIcon from 'material-ui-icons/FilterList';
 import CloseIcon from 'material-ui-icons/Close';
-import TextField from 'material-ui/TextField';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
+import Loader from '../Loader';
 import {CircularProgress} from 'material-ui/Progress';
 import CategoriesList from '../../containers/CategoriesListContainer';
 import LoginForm from '../Login';
@@ -29,6 +27,9 @@ import {searchEvents} from "../../actions/searchEventActions";
 
 const drawerWidth = 240;
 const styles = theme => ({
+  root: {
+    color: theme.palette.primary.main
+  },
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
@@ -125,6 +126,12 @@ const styles = theme => ({
   },
   searchText: {
     color: 'black'
+  },
+  actionIcon: {
+    color: theme.palette.primary.main
+  },
+  closeFilterIcon: {
+    color: theme.palette.secondary.main
   }
 });
 
@@ -223,10 +230,7 @@ class Actions extends Component {
 
     const {data: {validateToken, loading}} = this.props;
     if (loading) {
-      return <div className={classes.loadingWrapper}>
-        <h2 className={classes.loadingText}>applying settings</h2>
-        <CircularProgress className={classes.progress} size={20}/>
-      </div>
+      return <Loader loadingText={"applying settings"} size={20} fontSize={12} />
     }
 
     return (
@@ -234,29 +238,29 @@ class Actions extends Component {
 
         <Link to='/' >
           <Tooltip id="tooltip-all-links" placement="top" title="main calendar">
-            <IconButton aria-label="">
+            <IconButton aria-label="" className={classes.actionIcon}>
               <DateRangeIcon />
             </IconButton>
           </Tooltip>
         </Link>
         <Link to='/search' >
           <Tooltip id="tooltip-all-links" placement="top" title="search area">
-            <IconButton aria-label="Search for events">
+            <IconButton aria-label="Search for events" className={classes.actionIcon}>
               <SearchIcon />
             </IconButton>
           </Tooltip>
         </Link>
         <Link to='/create' >
           <Tooltip id="tooltip-all-links" placement="top" title="create new event">
-            <IconButton aria-label="Create new events">
+            <IconButton aria-label="Create new events" className={classes.actionIcon}>
               <AddCircleIcon />
             </IconButton>
           </Tooltip>
         </Link>
-        <IconButton aria-label="Filter tags for events" onClick={this.toggleDrawer('filterDraw', true)}>
+        <IconButton aria-label="Filter tags for events" className={classes.actionIcon} onClick={this.toggleDrawer('filterDraw', true)}>
           <FilterListIcon />
         </IconButton>
-        <IconButton aria-label="Settings for application" onClick={this.toggleDrawer('settingsDraw', true)}>
+        <IconButton aria-label="Settings for application" className={classes.actionIcon} onClick={this.toggleDrawer('settingsDraw', true)}>
           <SettingIcon />
         </IconButton>
 
@@ -274,7 +278,7 @@ class Actions extends Component {
         >
           <div className={classes.drawerInner}>
             <div className={classes.drawerHeader}>
-              <IconButton onClick={this.toggleDrawer('filterDraw', false)}>
+              <IconButton className={classes.closeFilterIcon} onClick={this.toggleDrawer('filterDraw', false)}>
                 <CloseIcon />
               </IconButton>
             </div>

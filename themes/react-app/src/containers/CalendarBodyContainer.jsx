@@ -5,6 +5,7 @@ import { withApollo } from 'react-apollo'
 import {withStyles} from 'material-ui/styles';
 import {gql, compose} from 'react-apollo';
 
+import Loader from '../components/Loader';
 import {CircularProgress} from 'material-ui/Progress';
 
 
@@ -120,11 +121,14 @@ class CalendarBodyContainer extends Component {
 
     const {events: {events, fetching}} = this.props;
 
+    // if (fetching) {
+    //   return <div className={classes.loadingContainer}>
+    //     <h2 className={classes.loadingText}>Loading Events for Calendar</h2>
+    //     <CircularProgress className={classes.progress}/>
+    //   </div>;
+    // }
     if (fetching) {
-      return <div className={classes.loadingContainer}>
-        <h2 className={classes.loadingText}>Loading Events for Calendar</h2>
-        <CircularProgress className={classes.progress}/>
-      </div>;
+      return <Loader loadingText={"Loading Events for Calendar"} size={40} fontSize={22}/>;
     }
 
     return (<div style={{height: '100%'}}>

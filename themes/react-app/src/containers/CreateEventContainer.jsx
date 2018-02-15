@@ -103,6 +103,7 @@ class CreateEventContainer extends Component {
                       <div>
                         <Button
                           disabled={activeStep === 0}
+                          color="primary"
                           onClick={this.handleBack}
                           className={classes.button}
                         >

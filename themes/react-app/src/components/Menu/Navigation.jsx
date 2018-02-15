@@ -4,7 +4,7 @@ import LeftArrow from 'material-ui-icons/KeyboardArrowLeft';
 import RightArrow from 'material-ui-icons/KeyboardArrowRight';
 import IconButton from 'material-ui/IconButton';
 
-const styles = {
+const styles = theme => ({
   LogosWrapper: {
     'display': 'flex',
     'flex': '1',
@@ -26,11 +26,13 @@ const styles = {
     'width': '48px',
     'height': '48px',
     'padding': '2px',
+    color: theme.palette.secondary.main
   },
   ArrowIcon: {
-    'font-size': '36px'
+    'font-size': '36px',
+    color: theme.palette.secondary.main
   }
-};
+});
 
 class Navigation extends Component {
 

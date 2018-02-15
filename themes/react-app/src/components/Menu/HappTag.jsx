@@ -16,10 +16,16 @@ const styles = theme => ({
     width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
+    color: theme.palette.primary.main
+    //backgroundColor: theme.palette.primary.main,
   },
   nested: {
     paddingLeft: theme.spacing.unit * 4,
   },
+  button: {
+    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main
+  }
 });
 
 class HappTag extends Component {
@@ -38,7 +44,7 @@ class HappTag extends Component {
     const HappTagTitle = listValue.Title;
     const SecondaryTags = listValue.SecondaryTags;
 
-    return <List>
+    return <List className={classes.root} >
       <ListItem button onClick={this.handleClick}>
         <ListItemIcon>
           <FolderIcon />
