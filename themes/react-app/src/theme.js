@@ -9,15 +9,15 @@ const theme = {
     },
     "type": "light",
     "primary": {
-      light: "#7986cb",
-      main: "#3f51b5",
-      dark: "#303f9f",
+      light: "#ff5c8d",
+      main: "#d81b60",
+      dark: "#a00037",
       contrastText: "#fff"
     },
     "secondary": {
-      light: "#ff4081",
-      main: "#f50057",
-      dark: "#c51162",
+      light: "#8558da",
+      main: "#512ca8",
+      dark: "#140078",
       contrastText: "#fff"
     },
     "error": {
