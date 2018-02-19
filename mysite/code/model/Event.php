@@ -321,9 +321,8 @@ class Event extends DataObject implements ScaffoldingProvider
                 'filter' => 'String!',
             ])
             ->setResolver(function ($object, array $args, $context, ResolveInfo $info) {
-                $events = self::get()->filter([
+                $events = self::get()->filterAny([
                     'Title:PartialMatch' => $args['filter'],
-                    'Description:PartialMatch' => $args['filter'],
                     'SearchFields:Fulltext' => $args['filter']
                 ]);
 
