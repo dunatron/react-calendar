@@ -24,7 +24,7 @@ const styles = theme => ({
     textAlign: 'center'
   },
   ArrowButton: {
-    'width': '48px', .
+    'width': '48px',
     'height': '48px',
     'padding': '2px',
     color: theme.palette.secondary.main
