@@ -2,6 +2,7 @@
 
 namespace MyOrg\Model;
 
+use SilverStripe\ORM\Connect\MySQLSchemaManager;
 use SilverStripe\GraphQL\Scaffolding\Interfaces\ScaffoldingProvider;
 use SilverStripe\GraphQL\Scaffolding\Scaffolders\SchemaScaffolder;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -32,7 +33,16 @@ use SilverStripe\Forms\ReadonlyField;
 class Event extends DataObject implements ScaffoldingProvider
 {
 
+    private static $create_table_options = [
+        MySQLSchemaManager::ID => 'ENGINE=MyISAM'
+    ];
 
+    private static $indexes = [
+        'SearchFields' => [
+            'type' => 'fulltext',
+            'columns' => ['Title', 'Description'],
+        ]
+    ];
 
     private static $db = [
         'Title' => 'Varchar(255)',
@@ -312,8 +322,7 @@ class Event extends DataObject implements ScaffoldingProvider
             ])
             ->setResolver(function ($object, array $args, $context, ResolveInfo $info) {
                 $events = self::get()->filter([
-                    'Title:PartialMatch' => $args['filter'],
-                    'Description:PartialMatch' => $args['filter']
+                    'SearchFields:Fulltext' => $args['filter'],
                 ]);
 
                 return $events;
