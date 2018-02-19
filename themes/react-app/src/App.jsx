@@ -27,6 +27,7 @@ import {withApollo} from "react-apollo/index";
 
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {withRouter} from "react-router";
+import Loader from './components/Loader';
 
 /**
  *
@@ -41,42 +42,6 @@ query validateToken {
       Code
     }
 }`;
-
-const EventQuery = gql`
-query readEvents {
-  readEvents {
-    edges {
-      node {
-        ID
-        ...EventOverview
-      }
-    }
-  }
-}
-fragment EventOverview on Event {
-      Title
-      Date
-      Owner {
-        Name
-        Surname
-      }
-      SecondaryTag {
-        Title
-        Description
-      }
-    }
-`;
-
-const EventsBetweenDateQuery = gql`
-  query eventsBetween($startDate: String!, $endDate: String!) {
-  getEventsBetween(StartDate: $startDate, EndDate: $endDate) {
-    ID
-    Title
-    Date
-  }
-}
-`;
-
 
 const theme = createMuiTheme(customTheme);
 
@@ -96,12 +61,12 @@ const styles = {
   }
 };
 
-@connect((store) => {
-  return {
-    header: store.header,
-    user: store.user,
-  }
-})
+// @connect((store) => {
+//   return {
+//     header: store.header,
+//     user: store.user,
+//   }
+// })
 class App extends Component {
 
   constructor(props) {
@@ -122,32 +87,12 @@ class App extends Component {
 
     this.nextMonthClick = this.nextMonthClick.bind(this);
     this.previousMonthClick = this.previousMonthClick.bind(this);
-    this.eventClick = this.eventClick.bind(this);
     // Modal state
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.handleClose = this.handleClose.bind(this);
-  }
-
-  componentWillMount() {
-    // This is the only lifecycle hook called on server rendering.
-    // this.fetchEventsForMonth();
-  }
-
-  componentDidMount() {
-    // this.fetchEventsForMonth();
-  }
-
-  eventClick(id, title) {
-    this.setState({
-      currentEvent: {
-        ID: id,
-        Title: title
-      }
-    });
-    this.openModal();
   }
 
   openModal() {
@@ -211,8 +156,6 @@ class App extends Component {
   };
 
 
-
-
   render() {
 
     const CalendarBody = (props) => {
@@ -221,18 +164,17 @@ class App extends Component {
           currentDate={header.currentDate}
           startDate={header.startOfMonth}
           endDate={header.endOfMonth}
-          eventClick={this.eventClick}
         />
       );
     };
 
     const {classes} = this.props;
 
-    const {data: {validateToken }, header} = this.props;
+    const {data: {validateToken, loading }, header} = this.props;
 
-    // if (loading) {
-    //   return <CircularProgress className={classes.progress}/>;
-    // }
+    if (loading) {
+      return <Loader loadingText={'Loading App'} size={40} fontSize={22} />;
+    }
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -267,14 +209,6 @@ const reduxWrapper = connect(
     header: state.header,
   })
 );
-
-// // export default App;
-// export default compose(
-//   graphql(validateToken),
-//   withApollo,
-//   reduxWrapper,
-//   withStyles(styles)
-// )(App);
 
 export default withRouter(compose(
   reduxWrapper,

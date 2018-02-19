@@ -376,8 +376,3 @@ export default compose(
   graphql(validateToken),
   withStyles(styles)
 )(Actions);
-
-// export default withRouter(compose(
-//   graphql(validateToken),
-//   withStyles(styles)
-// )(Actions));

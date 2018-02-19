@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Modal from 'material-ui/Modal';
 import EventDataCard from '../Events/EventDataSheet';
+import IconButton from 'material-ui/IconButton';
+import CloseIcon from 'material-ui-icons/Close';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -40,6 +42,9 @@ const styles = theme => ({
     'max-height': '550px',
     'padding': '0'
   },
+  closeIcon: {
+    position: "absolute"
+  }
 });
 
 class DisplayEventModal extends React.Component {
@@ -69,6 +74,9 @@ class DisplayEventModal extends React.Component {
           onClose={this.props.closeModal}
         >
           <div style={getModalStyle()} className={classes.paper}>
+            <IconButton onClick={this.props.closeModal} className={classes.closeIcon} color={"primary"}>
+              <CloseIcon />
+            </IconButton>
             <EventDataCard eventID={this.props.eventID} eventTitle={this.props.eventTitle}/>
             <DisplayEventModalWrapped />
           </div>

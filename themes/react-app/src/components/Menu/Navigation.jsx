@@ -21,9 +21,10 @@ const styles = theme => ({
   CurrentMonth: {
     'padding': '0 10px',
     'font-size': '24px',
+    textAlign: 'center'
   },
   ArrowButton: {
-    'width': '48px',
+    'width': '48px', .
     'height': '48px',
     'padding': '2px',
     color: theme.palette.secondary.main

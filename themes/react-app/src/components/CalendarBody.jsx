@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 import {withStyles} from 'material-ui/styles';
 import moment from 'moment';
 import Week from './Body/Week';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 
 /**
@@ -48,10 +50,6 @@ class CalendarBody extends Component {
       currentDate: currentDate,
       events: this.props.events
     };
-
-  }
-
-  componentDidMount() {
 
   }
 
@@ -104,20 +102,22 @@ class CalendarBody extends Component {
     const {classes, currentDate, events} = this.props;
 
     return (
-      <div className="Calendar__Body__Wrapper">
-        <div className="Days__Wrapper">
-          <span className="day_name">Sunday</span>
-          <span className="day_name">Monday</span>
-          <span className="day_name">Tuesday</span>
-          <span className="day_name">Wednesday</span>
-          <span className="day_name">Thursday</span>
-          <span className="day_name">Friday</span>
-          <span className="day_name">Saturday</span>
+      <ReactCSSTransitionGroup transitionName="example" transitionAppear={true} transitionEnterTimeout={2000} transitionLeaveTimeout={2000 }>
+        <div className="Calendar__Body__Wrapper">
+          <div className="Days__Wrapper">
+            <span className="day_name">Sunday</span>
+            <span className="day_name">Monday</span>
+            <span className="day_name">Tuesday</span>
+            <span className="day_name">Wednesday</span>
+            <span className="day_name">Thursday</span>
+            <span className="day_name">Friday</span>
+            <span className="day_name">Saturday</span>
+          </div>
+          <div className="squares__wrapper">
+            {this.renderWeeks()}
+          </div>
         </div>
-        <div className="squares__wrapper">
-          {this.renderWeeks()}
-        </div>
-      </div>
+      </ReactCSSTransitionGroup>
     );
   }
 }

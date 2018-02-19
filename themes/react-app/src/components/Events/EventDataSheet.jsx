@@ -20,7 +20,7 @@ const styles = theme => ({
     'alignSelf': 'stretch',
     'maxWidth': '450px',
     'flex-shrink': '0',
-    'margin': '10px',
+    'margin': '0',
   },
   media: {
     height: 194,
