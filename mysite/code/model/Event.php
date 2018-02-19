@@ -305,9 +305,9 @@ class Event extends DataObject implements ScaffoldingProvider
                 'EndDate'   => 'String!'
             ])
             ->setResolver(function ($object, array $args, $context, ResolveInfo $info) {
-                $events = self::get()->filter([
+                $events = self::get()->filterAny([
                     'Date:GreaterThan' => $args['StartDate'],
-                    'Date:LessThan' => $args['EndDate']
+                    'Date:LessThan' => $args['EndDate'],
                 ]);
 
                 return $events;
@@ -322,7 +322,9 @@ class Event extends DataObject implements ScaffoldingProvider
             ])
             ->setResolver(function ($object, array $args, $context, ResolveInfo $info) {
                 $events = self::get()->filter([
-                    'SearchFields:Fulltext' => $args['filter'],
+                    'Title:PartialMatch' => $args['filter'],
+                    'Description:PartialMatch' => $args['filter'],
+                    'SearchFields:Fulltext' => $args['filter']
                 ]);
 
                 return $events;
