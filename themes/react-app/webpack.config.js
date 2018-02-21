@@ -171,12 +171,12 @@ module.exports = (env = {}) => {
        * ToDo: split webpack into dev and prod config files
        * --config webpack.config.js in package.json
        */
-      new UglifyJsPlugin({
-        cache: './siteCache'
-      }),
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
-      }),
+      // new UglifyJsPlugin({
+      //   cache: './siteCache'
+      // }),
+      // new webpack.DefinePlugin({
+      //   'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
+      // }),
 
 
     ],

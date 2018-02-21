@@ -31,3 +31,4 @@ web.config
 phpcs.xml.dist
 .idea/
 .editorconfig
+themes/react-app/siteCache
