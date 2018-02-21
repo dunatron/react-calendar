@@ -324,7 +324,7 @@ class Event extends DataObject implements ScaffoldingProvider
                 $events = self::get()->filterAny([
                     'Title:PartialMatch' => $args['filter'],
                     'SearchFields:Fulltext' => $args['filter']
-                ]);
+                ])->sort('ABS(UNIX_TIMESTAMP() - UNIX_TIMESTAMP(Date))');
 
                 return $events;
             })
