@@ -61,12 +61,6 @@ const styles = {
   }
 };
 
-// @connect((store) => {
-//   return {
-//     header: store.header,
-//     user: store.user,
-//   }
-// })
 class App extends Component {
 
   constructor(props) {
@@ -173,7 +167,7 @@ class App extends Component {
     const {data: {validateToken, loading }, header} = this.props;
 
     if (loading) {
-      return <Loader loadingText={'Loading App'} size={40} fontSize={22} />;
+      return <Loader loadingText={'Securing App'} size={40} fontSize={22} />;
     }
 
     return (
@@ -192,8 +186,6 @@ class App extends Component {
             <Route exact path='/search' component={SearchContainer}/>
           </Switch>
 
-          {/*<DisplayEventModal eventID={this.state.currentEvent.ID} isOpen={this.state.modalIsOpen}*/}
-                             {/*eventData={this.state.currentEvent}/>*/}
           <DisplayEventModal eventID={this.state.currentEvent.ID} isOpen={this.state.modalIsOpen}
                              eventData={this.state.currentEvent}/>
 
