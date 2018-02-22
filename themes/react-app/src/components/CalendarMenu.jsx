@@ -9,8 +9,14 @@ const styles = theme => ({
   MainMenu: {
     display: 'flex',
     flexWrap: 'wrap',
-    minHeight: `${theme.spec.menuMinHeight}`
-  }
+    minHeight: `${theme.spec.menuMinHeight}px`
+  },
+  [theme.breakpoints.up('md')]: {
+    MainMenu: {
+      flexWrap: 'nowrap',
+      maxHeight: `${theme.spec.menuMaxDesktopHeight}px`
+    },
+  },
 });
 
 class CalendarMenu extends Component {

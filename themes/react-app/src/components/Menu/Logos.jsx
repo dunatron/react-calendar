@@ -5,7 +5,7 @@ import HappLogoAnimation from '../../HappSVGLogo';
 // svg.js
 import 'svg.js'
 
-const styles = {
+const styles = theme => ({
   HappLogo: {
     height: '60px',
     minWidth: '180px'
@@ -15,14 +15,22 @@ const styles = {
     flex: '1',
     minHeight: '70px',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    minWidth: '100%'
   },
   Logo: {
     padding: '10px',
     height: '60px',
     animation: 'App-logo-spin infinite 20s linear',
-  }
-};
+  },
+  [theme.breakpoints.up('md')]: {
+    LogosWrapper: {
+      flexWrap: 'nowrap',
+      minWidth: '0'
+    },
+  },
+});
 
 class Logos extends Component {
 

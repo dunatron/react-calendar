@@ -121,7 +121,7 @@ class Login extends Component {
     const {FirstName, Email, Password} = this.state;
     if (this.state.login) {
       // LOGIN
-      const result = await this.props.loginMutation({
+      const result = this.props.loginMutation({
         variables: {
           Email,
           Password,
@@ -145,7 +145,7 @@ class Login extends Component {
 
     } else {
       // SIGN_UP
-      const result = await this.props.signupMutation({
+      const result = this.props.signupMutation({
         variables: {
           FirstName,
           Email,

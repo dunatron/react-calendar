@@ -1,18 +1,13 @@
 import React, {Component} from 'react';
-import customTheme from './theme';
 import CalendarMenu from './components/CalendarMenu';
-import CalendarBody from './components/CalendarBody';
 
 import {withStyles} from 'material-ui/styles';
 import moment from 'moment';
-import {gql, graphql, compose, buildSchema} from 'react-apollo';
+import {gql, graphql, compose} from 'react-apollo';
 
-import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 import DisplayEventModal from './components/Modals/DisplayEventModal';
 import './sass/App.scss';
 
-// import LoginForm from './containers/JWTLoginForm';
-import * as user from './actions/userActions';
 import CalendarBodyContainer from './containers/CalendarBodyContainer';
 import CreateEventContainer from './containers/CreateEventContainer'
 import SearchContainer from './containers/SearchContainer';
@@ -43,9 +38,7 @@ query validateToken {
     }
 }`;
 
-const theme = createMuiTheme(customTheme);
-
-const styles = {
+const styles = theme => ({
   Calendar: {
     'width': '100%',
     'height': '100%',
@@ -59,7 +52,7 @@ const styles = {
   media: {
     height: 200,
   }
-};
+});
 
 class App extends Component {
 
@@ -90,8 +83,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // const canvasColor = this.theme.palette.canvasColor;
-    // document.body.style.backgroundColor = canvasColor;
+
   }
 
   openModal() {
@@ -126,7 +118,7 @@ class App extends Component {
 
   previousMonthClick = async (e) => {
     e.preventDefault();
-    await this.props.dispatch(prevMonth());
+    this.props.dispatch(prevMonth());
 
     this.fetchEventsForMonth().then(() => {
       //this.forceUpdate()
@@ -136,10 +128,10 @@ class App extends Component {
   fetchEventsForMonth = async () => {
 
     // 1. Place Component into loading mode
-    await this.props.dispatch(startFetchNewEvents());
+    this.props.dispatch(startFetchNewEvents());
 
     // 2. Start Fetching the events
-    await this.props.client.query({
+    this.props.client.query({
       query: ALL_EVENTS_BETWEEN_QUERY,
       variables: {
         startDate: this.props.header.startOfMonth,
@@ -176,7 +168,6 @@ class App extends Component {
     }
 
     return (
-      <MuiThemeProvider theme={theme}>
         <div className={classes.Calendar}>
           <CalendarMenu currentDate={header.currentDate}
                         currentMonth={header.currentMonth}
@@ -195,7 +186,6 @@ class App extends Component {
                              eventData={this.state.currentEvent}/>
 
         </div>
-      </MuiThemeProvider>
     )
   }
 }

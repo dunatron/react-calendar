@@ -83,17 +83,27 @@ class Week extends Component {
         isToday: date.isSame(new Date(), "day"),
         date: date
       };
+
+      const Events = this.state.events;
+
+      const DaysEvents = [];
+
+      for (let event of Events) {
+        if(event.Date === day.date.format('YYYY-MM-DD')){
+          DaysEvents.push(event)
+        }
+      }
+
       //days.push(<span key={day.date.toString()} className={"day" + (day.isToday ? " today" : "") + (day.isCurrentMonth ? "" : " different-month") + (day.date.isSame(this.props.selected) ? " selected" : "")}>{day.number}{this.state.events.toString()}</span>)
       days.push(<DaySquare key={day.date.toString()}
                            className={classes.Day + (day.isToday ? " today" : "") + (day.isCurrentMonth ? "" : " different-month") + (day.date.isSame(this.props.selected) ? " selected" : "")}
                            //onClick={console.log('DAY SQUARE CLICK')}
                            dayNumber={day.number}
-                           events={this.state.events}
+                           events={DaysEvents}
                            eventClick={this.props.eventClick}
       />);
       date = date.clone();
       date.add(1, "d");
-
     }
 
     return (

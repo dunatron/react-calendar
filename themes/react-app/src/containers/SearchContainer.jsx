@@ -38,12 +38,8 @@ const styles = theme => ({
     color: theme.palette.secondary.A700
   },
   searchResultsContainer: {
-    // height: '97%',
-    // height: `calc(100% - 78px)`,
     height: `calc(100% - 148px)`, // - search bar + nav bar
     overflow: 'scroll',
-
-    // height: '97%', // should be 100% - searchBarhiegit
   },
   searchInnerContainer: {
     display: 'flex',
@@ -78,7 +74,7 @@ class SearchContainer extends Component {
   searchEvents = async () => {
     const {searchText} = this.state;
     // 3. perform search query
-    const result = await this.props.client.query({
+    const result = this.props.client.query({
       query: ALL_EVENTS_SEARCH_QUERY,
       variables: {searchText}
     });
@@ -96,10 +92,6 @@ class SearchContainer extends Component {
   render() {
 
     const {classes, searching, searchText, results} = this.props;
-
-    // const SearchResults = () => {
-    //   return <div>Search Results</div>
-    // };
 
     const SearchResults = () => {
       if(results.length >= 1) {

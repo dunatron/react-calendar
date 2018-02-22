@@ -24,7 +24,7 @@ const styles = theme => ({
     overflowY: 'hidden',
     overflowX: 'hidden',
     position: 'relative',
-    margin: '0 15px 0 0',
+    margin: 0,
   },
   eventsWrapper: {
     width: '100%'
@@ -60,6 +60,9 @@ const styles = theme => ({
       height: 'inherit',
       right: '-15px',
       padding: 0,
+    },
+    innerSquare: {
+      margin: '0 15px 0 0',
     },
     eventCard: {
       fontSize: '16px',

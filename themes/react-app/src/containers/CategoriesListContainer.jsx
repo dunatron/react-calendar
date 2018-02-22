@@ -26,7 +26,7 @@
 import React, {Component} from 'react';
 import {gql, compose} from 'react-apollo';
 import {withStyles} from 'material-ui/styles';
-import {CircularProgress} from 'material-ui/Progress';
+import Loader from '../components/Loader';
 import HappTag from '../components/Menu/HappTag';
 
 import {connect } from "react-redux";
@@ -65,34 +65,16 @@ query getCategories {
 class CategoriesList extends Component {
 
   fetchTags = async () => {
-
-    const { header} = this.props;
-
     // 1. Place Component into loading mode
-    await this.props.dispatch(startFetchTags());
-
-
+    this.props.dispatch(startFetchTags());
     // 2. Start Fetching the tags
-    await this.props.client.query({
+    this.props.client.query({
       query: ALL_TAGS_QUERY,
     })
     // 3. tags have been fetched, do something with them
       .then((res) => {
-
-        console.log(res)
-
         this.props.dispatch(fetchTags(res.data.readHappTags));
-
-        // let Tags = [];
-        // // Loop tags edges and push into Tags[array]
-        // res.data.readHappTags.edges.map(edge => {
-        //   Tags.push(edge.node);
-        // });
-        // // 4. Push tags into redux store (tagsReducer allTags)
-        // this.props.dispatch(fetchTags(Tags));
-
       })
-
   };
 
   componentWillMount() {
@@ -106,7 +88,7 @@ class CategoriesList extends Component {
     const {classes, tags:{fetching, allTags, fetched, error}} = this.props;
 
     if (fetching) {
-      return <CircularProgress className={classes.progress}/>;
+      return <Loader loadingText={"fetching tags"} size={20} fontSize={18}/>;
     }
 
     return (
