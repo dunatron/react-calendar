@@ -39,185 +39,65 @@ body {
   }
 }
 
-.Calendar__Body__Wrapper {
-  height: auto;
-  border: none;
-  font-family: GustanLight;
-  display: block;
-  flex-wrap: wrap;
-  @include breakpoint($min865) {
-    display: flex;
-    height: calc(100% - 70px);
-  }
-}
-
-.Days__Wrapper {
-  display: none;
-  @include breakpoint($min865) {
-    display: flex;
-    width: 100%;
-    height: 40px;
-    //background: rgba(255, 255, 255, 0.2);
-    background: $themeColor700;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  }
-
-  .day_name {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
-    letter-spacing: 3px;
-    font-size: 14px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-}
-
-.squares__wrapper {
-  width: 100%;
-  height: calc(100% - #{$days_wrapper_height});
-  padding: 4%;
-  box-sizing: border-box;
-  @include breakpoint($min865) {
-    padding: 0;
-  }
-}
-
 .squares__inner__wrapper {
   width: 100%;
   height: 100%;
 }
 
-.week {
-  height: auto;
+.events_wrapper {
   width: 100%;
-  border: none;
-  min-height: 50px;
   @include breakpoint($min865) {
-    //height: calc(100% / 5);
-    border: none;
-    //box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.2);
-    box-shadow: inset 0 -1px 0 $themeColor700;
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-  @include breakpoint($min865) {
-  }
-  .day {
-    display: block;
-    position: relative;
-    height: auto;
-    @include breakpoint($min865) {
-      display: inline-block;
-      box-sizing: border-box;
-      //box-shadow: -1px 0 0 rgba(255, 255, 255, 0.2);
-      box-shadow: -1px 0 0 $themeColor700;
-      height: 100%;
-      overflow-x: hidden;
-      overflow-y: hidden;
-      width: calc(100% / 7);
-      border: none;
-      padding: 15px 0;
-      //padding: 0;
-      &:last-child {
-        border-right: none;
-      }
-    }
-    &:hover {
-      .day_number {
-        opacity: 0;
-      }
-    }
-
-  }
-  //.day.different-month {
-  //  display: none;
-  //  @include breakpoint($min865) {
-  //    display: inline-block;
-  //  }
-  //}
-  .inner_square {
-    height: inherit;
-    padding: 0;
-    overflow-y: hidden;
+    overflow-y: scroll;
     overflow-x: hidden;
-    position: relative;
-    margin: 0 15px 0 0;
+    position: absolute;
+    margin-top: 0;
+    height: inherit;
+    right: -15px;
+    //padding: 0 30px 20px 0;
+    padding: 0;
+  }
+}
+.event_card {
+  display: block;
+  max-width: 100%;
+  margin: 0 0 12px 0;
+  color: #000;
+  font-size: 22px;
+  text-transform: capitalize;
+  padding: 6px 12px;
+  border-radius: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  //background: rgba(255, 255, 255, 0.1);
+  background: $themeColor200;
+  @include breakpoint($min865) {
+    font-size: 16px;
+    padding: 3px 5px;
+    margin: 0 0 7px 0;
+    border-radius: 0; // because the right side side is hidden by shifting it right
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  &:first-child {
     @include breakpoint($min865) {
+      margin: 15px 0 7px 0;
     }
   }
-  .day_number {
-    line-height: 50px;
-    font-size: 26px;
-    text-align: center;
-    top: 0;
-    left: 0;
-    padding: 2px;
-    //background-color: rgba(255, 255, 255, 0.2);
-    background-color: $themeColor700;
-    color: #FFF;
-    min-width: 26px;
-    transition: opacity 0.5s ease-in-out;
-    z-index:1;
-
+  &:last-child {
     @include breakpoint($min865) {
-      position: absolute;
-      font-size: 13px;
-      line-height: 20px;
-    }
-  }
-  .events_wrapper {
-    width: 100%;
-    @include breakpoint($min865) {
-      overflow-y: scroll;
-      overflow-x: hidden;
-      position: absolute;
-      margin-top: 0;
-      height: inherit;
-      right: -15px;
-      //padding: 0 30px 20px 0;
-      padding: 0;
-    }
-  }
-  .event_card {
-    display: block;
-    max-width: 100%;
-    margin: 0 0 12px 0;
-    color: #000;
-    font-size: 22px;
-    text-transform: capitalize;
-    padding: 6px 12px;
-    border-radius: 18px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    //background: rgba(255, 255, 255, 0.1);
-    background: $themeColor200;
-    @include breakpoint($min865) {
-      font-size: 16px;
-      padding: 3px 5px;
-      margin: 0 0 7px 0;
-      border-radius: 0; // because the right side side is hidden by shifting it right
-    }
-    &:hover {
-      cursor: pointer;
-    }
-    &:first-child {
-      @include breakpoint($min865) {
-        margin: 15px 0 7px 0;
-      }
-    }
-    &:last-child {
-      @include breakpoint($min865) {
-        margin: 0 0 15px 0;
-      }
+      margin: 0 0 15px 0;
     }
   }
 }
+
+
+
+/**
+outside week
+
+ */
 
 .Create_Event_Container {
   height: calc(100% - 70px);
@@ -250,28 +130,6 @@ body {
 .Client__Logo {
   height: 60px;
 }
-
-//.example-enter {
-//  opacity: 0.01;
-//  width: 0px;
-//}
-//
-//.example-enter.example-enter-active {
-//  opacity: 1;
-//  width: 100px;
-//  transition: 700ms;
-//}
-//
-//.example-leave {
-//  opacity: 1;
-//  width: 100px;
-//}
-//
-//.example-leave.example-leave-active {
-//  opacity: 0.01;
-//  width: 0px;
-//  transition: 700ms;
-//}
 
 /**
 * CSSReactTransitionGroup

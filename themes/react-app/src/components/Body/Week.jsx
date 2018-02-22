@@ -2,23 +2,45 @@ import React, {Component} from 'react';
 import {withStyles} from 'material-ui/styles';
 import moment from 'moment';
 import DaySquare from './DaySquare';
+import {fade} from 'material-ui/styles/colorManipulator';
 
+const styles = theme => ({
+  week: {
+    'height': 'auto',
+    'width': '100%',
+    'border': 'none',
+    'min-height': '50px'
+  },
+  Day: {
+    'display': 'block',
+    'position': 'relative',
+    'height': 'auto'
+  },
+  [theme.breakpoints.up('md')]: {
+    week: {
+      'border': 'none',
+      'box-shadow': `inset 0 -1px 0 ${fade(theme.palette.primary.main, 0.8)}`,
+    },
+    Day: {
+      'display': 'inline-block',
+      'box-sizing': 'border-box',
+      'box-shadow': `-1px 0 0 ${fade(theme.palette.primary.main, 0.8)}`,
+      'height': '100%',
+      overflowX: ' hidden',
+      overflowY: 'hidden',
+      'width': 'calc(100% / 7)',
+      'border': 'none',
+      'padding': '15px 0'
+    }
+  },
 
-const styles = {
-  LogosWrapper: {
-    'display': 'flex',
-    'flex': '1',
-    'min-height': '70px',
-    'align-items': 'center',
-    'justify-content': 'center'
+  weekHeader: {
 
   },
-  Logo: {
-    'padding': '10px',
-    'height': '80px',
-    'animation': 'App-logo-spin infinite 20s linear',
+  weekDays: {
+    height: '100%'
   }
-};
+});
 
 class Week extends Component {
 
@@ -63,7 +85,7 @@ class Week extends Component {
       };
       //days.push(<span key={day.date.toString()} className={"day" + (day.isToday ? " today" : "") + (day.isCurrentMonth ? "" : " different-month") + (day.date.isSame(this.props.selected) ? " selected" : "")}>{day.number}{this.state.events.toString()}</span>)
       days.push(<DaySquare key={day.date.toString()}
-                           className={"day" + (day.isToday ? " today" : "") + (day.isCurrentMonth ? "" : " different-month") + (day.date.isSame(this.props.selected) ? " selected" : "")}
+                           className={classes.Day + (day.isToday ? " today" : "") + (day.isCurrentMonth ? "" : " different-month") + (day.date.isSame(this.props.selected) ? " selected" : "")}
                            //onClick={console.log('DAY SQUARE CLICK')}
                            dayNumber={day.number}
                            events={this.state.events}
@@ -75,8 +97,9 @@ class Week extends Component {
     }
 
     return (
-      <div className="week" style={ {height: `calc(100% / ${weeksInMonth})`} } key={days[0].toString()}>
-        {days}
+      <div className={classes.week} style={ {height: `calc(100% / ${weeksInMonth})`} } key={days[0].toString()}>
+        <div className={classes.weekHeader}></div>
+        <div className={classes.weekDays}>{days}</div>
       </div>
     );
   }

@@ -2,6 +2,9 @@
 
 const theme = {
   direction: "ltr",
+  "spec": {
+    dayNameHeight: 40
+  },
   "palette": {
     "common": {
       black: "#000",

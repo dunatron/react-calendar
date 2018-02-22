@@ -4,27 +4,25 @@ import {withStyles} from 'material-ui/styles';
 import moment from 'moment';
 import Week from './Body/Week';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {fade} from 'material-ui/styles/colorManipulator';
 
 
 /**
  * READ THIS
  * https://www.codementor.io/chrisharrington/building-a-calendar-using-react-js--less-css-and-font-awesome-du107z6nt
  */
-
-const styles = {
+const styles = theme => ({
   CalendarBodyWrapper: {
-    'height': '100px',
-    'border': '1px solid purple',
-    'display': 'flex'
+    'height': 'auto',
+    'border': 'none',
+    'font-family': 'GustanLight',
+    'display': 'block',
+    'flex-wrap': 'wrap',
   },
   DaysWrapper: {
-    'display': 'flex',
-    'width': '100%',
-    'height': '40px',
-    'background': 'rgba(255, 255, 255, 0.2)',
-    'box-shadow': 'inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+    'display': 'none',
   },
-  Days: {
+  DayName: {
     'flex': '1',
     'display': 'flex',
     'justify-content': 'center',
@@ -34,8 +32,34 @@ const styles = {
     'font-size': '14px',
     'text-transform': 'uppercase',
     'color': 'rgba(255, 255, 255, 0.9)'
-  }
-};
+  },
+  SquaresWrapper: {
+    'width': '100%',
+    'height': `calc(100% - ${theme.spec.dayNameHeight}px)`,
+    'padding': '4%',
+    'box-sizing': 'border-box'
+  },
+  [theme.breakpoints.up('md')]: {
+    CalendarBodyWrapper: {
+      'display': 'flex',
+      'height': `calc(100% - 70px)`
+    },
+    DaysWrapper: {
+      'display': 'flex',
+      'width': '100%',
+      'height': `${theme.spec.dayNameHeight}px`,
+      //background: rgba(255, 255, 255, 0.2);
+      'background': fade(theme.palette.primary.main, 0.8),
+      // ${theme.palette.primary.main}
+      'box-shadow': `inset 0 1px 0 ${fade(theme.palette.primary.main, 0.8)}`
+    },
+    SquaresWrapper: {
+      'padding': 0,
+    }
+  },
+
+
+});
 
 class CalendarBody extends Component {
 
@@ -103,17 +127,17 @@ class CalendarBody extends Component {
 
     return (
       <ReactCSSTransitionGroup transitionName="example" transitionAppear={true} transitionEnterTimeout={2000} transitionLeaveTimeout={2000 }>
-        <div className="Calendar__Body__Wrapper">
-          <div className="Days__Wrapper">
-            <span className="day_name">Sunday</span>
-            <span className="day_name">Monday</span>
-            <span className="day_name">Tuesday</span>
-            <span className="day_name">Wednesday</span>
-            <span className="day_name">Thursday</span>
-            <span className="day_name">Friday</span>
-            <span className="day_name">Saturday</span>
+        <div className={classes.CalendarBodyWrapper}>
+          <div className={classes.DaysWrapper}>
+            <span className={classes.DayName}>Sunday</span>
+            <span className={classes.DayName}>Monday</span>
+            <span className={classes.DayName}>Tuesday</span>
+            <span className={classes.DayName}>Wednesday</span>
+            <span className={classes.DayName}>Thursday</span>
+            <span className={classes.DayName}>Friday</span>
+            <span className={classes.DayName}>Saturday</span>
           </div>
-          <div className="squares__wrapper">
+          <div className={classes.SquaresWrapper}>
             {this.renderWeeks()}
           </div>
         </div>
