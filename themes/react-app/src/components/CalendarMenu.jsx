@@ -5,13 +5,13 @@ import Navigation from './Menu/Navigation';
 import Actions from './Menu/Actions';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-const styles = {
+const styles = theme => ({
   MainMenu: {
-    'display': 'flex',
-    'flex-wrap': 'wrap',
-    'min-height': '70px'
+    display: 'flex',
+    flexWrap: 'wrap',
+    minHeight: `${theme.spec.menuMinHeight}`
   }
-};
+});
 
 class CalendarMenu extends Component {
 

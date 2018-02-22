@@ -11,16 +11,16 @@ const styles = {
     minWidth: '180px'
   },
   LogosWrapper: {
-    'display': 'flex',
-    'flex': '1',
-    'min-height': '70px',
-    'align-items': 'center',
-    'justify-content': 'center'
+    display: 'flex',
+    flex: '1',
+    minHeight: '70px',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   Logo: {
-    'padding': '10px',
-    'height': '80px',
-    'animation': 'App-logo-spin infinite 20s linear',
+    padding: '10px',
+    height: '60px',
+    animation: 'App-logo-spin infinite 20s linear',
   }
 };
 
@@ -41,7 +41,7 @@ class Logos extends Component {
     return (
       <div className={classes.LogosWrapper}>
         <div id="happSVGLogo" className={classes.HappLogo}></div>
-        <img src={MainLogo} className="Main__Logos Happ__Logo" alt="City Logo"/>
+        <img src={MainLogo} className={classes.Logo} alt="City Logo"/>
       </div>
     );
   }

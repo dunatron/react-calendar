@@ -3,6 +3,7 @@
 const theme = {
   direction: "ltr",
   "spec": {
+    menuMinHeight: 70,
     dayNameHeight: 40
   },
   "palette": {

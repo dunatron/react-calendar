@@ -14,6 +14,9 @@ import Loader from '../components/Loader';
 import EventCard from '../components/Events/EventCard';
 
 const styles = theme => ({
+  searchContainer: {
+    height: 'inherit'
+  },
   root: {
     'height': 'inherit'
   },
@@ -113,7 +116,7 @@ class SearchContainer extends Component {
     };
 
     return (
-      <div className="Search__Container">
+      <div className={classes.searchContainer}>
         <Paper className={classes.root} elevation={4}>
 
           <div className={classes.searchBar}>

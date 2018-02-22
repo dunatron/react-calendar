@@ -89,6 +89,11 @@ class App extends Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
+  componentDidMount() {
+    // const canvasColor = this.theme.palette.canvasColor;
+    // document.body.style.backgroundColor = canvasColor;
+  }
+
   openModal() {
     this.setState({modalIsOpen: true});
   }

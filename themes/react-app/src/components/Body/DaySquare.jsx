@@ -6,33 +6,73 @@ import { fade} from 'material-ui/styles/colorManipulator';
 
 const styles = theme => ({
   dayNumber: {
-    'line-height': '50px',
-    'font-size': '26px',
-    'text-align': 'center',
-    'top': '0',
-    'left': '0',
-    'padding': '2px',
-    //background-color: rgba(255, 255, 255, 0.2);
-    'background-color': fade(theme.palette.primary.main, 0.8),
-    'color': theme.palette.common.white,
-    'min-width': '26px',
-    'transition': 'opacity 0.5s ease-in-out',
-    'z-index': 1
+    lineHeight: '50px',
+    fontSize: '26px',
+    textAlign: 'center',
+    top: '0',
+    left: '0',
+    padding: '2px',
+    backgroundColor: fade(theme.palette.primary.main, 0.8),
+    color: theme.palette.common.white,
+    minWidth: '26px',
+    transition: 'opacity 0.5s ease-in-out',
+    zIndex: 1
   },
   innerSquare: {
-    'height': 'inherit',
-    'padding': '0',
-    'overflow-y': 'hidden',
-    'overflow-x': 'hidden',
-    'position': 'relative',
-    'margin': '0 15px 0 0',
+    height: 'inherit',
+    padding: '0',
+    overflowY: 'hidden',
+    overflowX: 'hidden',
+    position: 'relative',
+    margin: '0 15px 0 0',
+  },
+  eventsWrapper: {
+    width: '100%'
+  },
+  eventCard: {
+    display: 'block',
+    maxWidth: '100%',
+    margin: '0 0 12px 0',
+    color: theme.palette.common.black,
+    fontSize: '22px',
+    textTransform: 'capitalize',
+    padding: '6px 12px',
+    borderRadius: '18px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    background: fade(theme.palette.primary.main, 0.2),
+    '&:hover': {
+      cursor: 'pointer'
+    }
   },
   [theme.breakpoints.up('md')]: {
     dayNumber: {
-      'position': 'absolute',
-      'font-size': '13px',
-      'line-height': '20px',
+      position: 'absolute',
+      fontSize: '13px',
+      lineHeight: '20px',
     },
+    eventsWrapper: {
+      overflowY: 'scroll',
+      overflowX: 'hidden',
+      position: 'absolute',
+      marginTop: 0,
+      height: 'inherit',
+      right: '-15px',
+      padding: 0,
+    },
+    eventCard: {
+      fontSize: '16px',
+      padding: '3px 5px',
+      margin: '0 0 7px 0',
+      borderRadius: 0, // because the right side side is hidden by shifting it right
+      '&:first-child': {
+        margin: '15px 0 7px 0'
+      },
+      '&:last-child': {
+        margin: '0 0 15px 0'
+      }
+    }
   },
 });
 
@@ -70,13 +110,13 @@ class DaySquare extends Component {
       }
       const listItems = newEvents.map((d) =>
           <div
-            className="event_card" key={d.ID}
+            className={classes.eventCard} key={d.ID}
             onClick={() => this.props.eventClick(d.ID, d.Title)}
           >
             {d.Title}
           </div>);
       return (
-        <div className="events_wrapper">
+        <div className={classes.eventsWrapper}>
           {listItems}
         </div>
       );
@@ -85,14 +125,14 @@ class DaySquare extends Component {
     // Filter has not been set, return all events
     const listItems = events.map((d) =>
         <div
-          className="event_card" key={d.ID}
+          className={classes.eventCard} key={d.ID}
           onClick={() => this.props.eventClick(d.ID, d.Title)}
         >
           {d.Title}
         </div>);
 
     return (
-      <div className="events_wrapper">
+      <div className={classes.eventsWrapper}>
         {listItems}
       </div>
     );

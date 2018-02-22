@@ -34,6 +34,16 @@ const styles = theme => ({
   paper: {
     'background-color': 'transparent'
   },
+  createEventContainer: {
+
+    overflow: 'scroll'
+  },
+  [theme.breakpoints.up('md')]: {
+    createEventContainer: {
+      height: `calc(100% - ${theme.spec.menuMinHeight}px)`,
+    }
+  },
+
 });
 
 function getSteps() {
@@ -88,7 +98,7 @@ class CreateEventContainer extends Component {
     const { activeStep } = this.state;
 
     return (
-      <div className="Create_Event_Container">
+      <div className={classes.createEventContainer}>
         <div className={`${classes.root} ${classes.paper}`}>
           <Stepper
             className={`${classes.root} ${classes.paper}`}
