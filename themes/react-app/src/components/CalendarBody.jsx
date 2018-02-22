@@ -101,16 +101,19 @@ class CalendarBody extends Component {
 
       for (let event of this.state.events) {
         let eventDate = moment(event.Date).format();
-        ;
         if (moment(eventDate).isSameOrBefore(endOfWeek) && moment(eventDate).isSameOrAfter(startWeek)) {
           weeksEvents.push(event);
         }
       }
 
-      weeks.push(<Week key={date.toString()} date={date.clone()} month={this.state.month} select={this.select}
-                       selected={this.props.selected}
-                       events={weeksEvents}
-                       eventClick={this.props.eventClick}
+      weeks.push(<Week
+        WeekNumber={count + 1}
+        startWeek={startWeek}
+        endWeek={endOfWeek}
+        key={date.toString()} date={date.clone()} month={this.state.month} select={this.select}
+        selected={this.props.selected}
+        events={weeksEvents}
+        eventClick={this.props.eventClick}
       />);
 
       date.add(1, "w");
