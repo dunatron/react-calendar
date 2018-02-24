@@ -24,15 +24,21 @@ class AppSettings extends DataObject implements ScaffoldingProvider
     ];
 
     private static $has_one = [
-        'ClientImage' => Image::class,
+        'ClientLogoImage' => Image::class,
+        'HappLogoImage' => Image::class,
     ];
 
     private static $has_many = [];
 
 
-    public function getClientThumbnail()
+    public function getClientLogo()
     {
-        return $this->ClientImage()->exists() ? $this->ClientImage()->Fill(300, 300)->AbsoluteURL : null;
+        return $this->ClientLogoImage()->exists() ? $this->ClientLogoImage()->ScaleHeight(180)->AbsoluteURL : null;
+    }
+
+    public function getHappLogo()
+    {
+        return $this->HappLogoImage()->exists() ? $this->HappLogoImage()->ScaleHeight(180)->AbsoluteURL : null;
     }
 
     public function canView($member = null)
@@ -44,8 +50,11 @@ class AppSettings extends DataObject implements ScaffoldingProvider
     {
         parent::onAfterWrite();
 
-        if ($this->ClientImage()->exists()) {
-            $this->ClientImage()->copyVersionToStage('Stage', 'Live');
+        if ($this->ClientLogoImage()->exists()) {
+            $this->ClientLogoImage()->copyVersionToStage('Stage', 'Live');
+        }
+        if ($this->HappLogoImage()->exists()) {
+            $this->HappLogoImage()->copyVersionToStage('Stage', 'Live');
         }
     }
 

@@ -42,7 +42,7 @@ const styles = theme => ({
   [theme.breakpoints.up('md')]: {
     CalendarBodyWrapper: {
       'display': 'flex',
-      'height': `calc(100% - 70px)`
+      'height': `calc(100% - ${theme.spec.menuDesktopHeight}px)`
     },
     DaysWrapper: {
       'display': 'flex',

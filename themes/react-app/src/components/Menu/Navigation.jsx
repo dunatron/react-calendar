@@ -10,7 +10,7 @@ const styles = theme => ({
     'flex': '1',
     'align-items': 'center',
     'justify-content': 'center',
-    'min-height': '70px'
+    minHeight: `${theme.spec.menuDesktopHeight}px`
   },
   Arrow: {
     'height': '30px'

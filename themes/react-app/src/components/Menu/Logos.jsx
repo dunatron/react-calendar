@@ -1,31 +1,34 @@
 import React, {Component} from 'react';
 import {withStyles} from 'material-ui/styles';
-import MainLogo from '../../img/logo.svg';
 
 const styles = theme => ({
-  HappLogo: {
-    height: '60px',
-    minWidth: '180px'
-  },
   LogosWrapper: {
     display: 'flex',
     flex: '1',
-    minHeight: '70px',
+    minHeight: `${theme.spec.menuDesktopHeight}px`,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     flexWrap: 'wrap',
     minWidth: '100%'
   },
   Logo: {
     padding: '10px',
-    height: '60px',
-    animation: 'App-logo-spin infinite 20s linear',
+    height: '50px',
+  },
+  [theme.breakpoints.up('sm')]: {
+    LogosWrapper: {
+      justifyContent: 'center',
+    },
   },
   [theme.breakpoints.up('md')]: {
     LogosWrapper: {
       flexWrap: 'nowrap',
-      minWidth: '0'
+      minWidth: '0',
+      justifyContent: 'space-evenly',
     },
+    Logo: {
+      padding: '5px',
+    }
   },
 });
 
@@ -41,11 +44,12 @@ class Logos extends Component {
 
   render() {
 
-    const {classes} = this.props;
+    const {classes, happLogo, clientLogo} = this.props;
 
     return (
       <div className={classes.LogosWrapper}>
-        <img src={MainLogo} className={classes.Logo} alt="City Logo"/>
+        <img src={happLogo} className={classes.Logo} alt="Happ Logo"/>
+        <img src={clientLogo} className={classes.Logo} alt="City Logo"/>
       </div>
     );
   }

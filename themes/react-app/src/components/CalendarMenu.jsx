@@ -9,12 +9,11 @@ const styles = theme => ({
   MainMenu: {
     display: 'flex',
     flexWrap: 'wrap',
-    minHeight: `${theme.spec.menuMinHeight}px`
   },
   [theme.breakpoints.up('md')]: {
     MainMenu: {
       flexWrap: 'nowrap',
-      maxHeight: `${theme.spec.menuMaxDesktopHeight}px`
+      maxHeight: `${theme.spec.menuDesktopHeight}px`
     },
   },
 });
@@ -23,7 +22,7 @@ class CalendarMenu extends Component {
 
   render() {
 
-    const {classes} = this.props;
+    const {classes, clientLogo, happLogo} = this.props;
 
     return (
       <ReactCSSTransitionGroup
@@ -33,7 +32,7 @@ class CalendarMenu extends Component {
         transitionEnterTimeout={500}
         transitionLeaveTimeout={300}>
         <div className={classes.MainMenu}>
-          <Logos/>
+          <Logos clientLogo={clientLogo} happLogo={happLogo}/>
           <Navigation
             currentMonth={this.props.currentMonth}
             currentYear={this.props.currentYear}

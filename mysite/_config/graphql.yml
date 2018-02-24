@@ -15,7 +15,7 @@ SilverStripe\GraphQL\Controller:
     scaffolding:
       types:
         MyOrg\Model\AppSettings:
-          fields: [PCMain, PCLight, PCDark, SCMain, SCLight, SCDark, PCContrast, SCContrast, ClientThumbnail]
+          fields: [PCMain, PCLight, PCDark, SCMain, SCLight, SCDark, PCContrast, SCContrast, HappLogo, ClientLogo]
           operations:
             read: true
         MyOrg\Security\AppUser:

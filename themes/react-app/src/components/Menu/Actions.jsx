@@ -12,7 +12,6 @@ import SearchIcon from 'material-ui-icons/Search';
 import FilterListIcon from 'material-ui-icons/FilterList';
 import CloseIcon from 'material-ui-icons/Close';
 import Loader from '../Loader';
-import {CircularProgress} from 'material-ui/Progress';
 import CategoriesList from '../../containers/CategoriesListContainer';
 import LoginForm from '../Login';
 import {Link} from 'react-router-dom';
@@ -20,8 +19,6 @@ import {Link} from 'react-router-dom';
 import { Drawer, MenuItem} from 'material-ui'
 import {compose, gql, graphql} from "react-apollo/index";
 import store from '../../state/store';
-import {withRouter} from "react-router";
-import {connect} from "react-redux";
 import {searchEvents} from "../../actions/searchEventActions";
 
 
@@ -47,14 +44,14 @@ const styles = theme => ({
     'flex': '1',
     'align-items': 'center',
     'justify-content': 'center',
-    'min-height': '70px'
+    minHeight: `${theme.spec.menuDesktopHeight}px`
   },
   loadingWrapper: {
     'display': 'flex',
     'flex': '1',
     'align-items': 'center',
     'justify-content': 'center',
-    'min-height': '70px',
+    minHeight: `${theme.spec.menuDesktopHeight}px`,
     'flex-direction': 'column-reverse',
   },
   Button: {

@@ -48,6 +48,8 @@ const APP_SETTINGS_QUERY = gql`
     SCDark
     PCContrast
     SCContrast
+    ClientLogo
+    HappLogo
   }
 }
 `;
@@ -183,12 +185,15 @@ class App extends Component {
 
     // Get app settings from query and apply to MUITheme
     const AppSettings = getAppSettings[0];
+    const {HappLogo, ClientLogo} = AppSettings;
     const dynamicTheme = DynamicTheme(AppSettings);
 
     return (
       <MuiThemeProvider theme={dynamicTheme}>
         <div className={classes.Calendar}>
           <CalendarMenu currentDate={header.currentDate}
+                        happLogo={HappLogo}
+                        clientLogo={ClientLogo}
                         currentMonth={header.currentMonth}
                         currentYear={header.currentYear}
                         nextMonthClick={this.nextMonthClick}

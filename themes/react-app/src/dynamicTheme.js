@@ -43,8 +43,7 @@ const createDynamicMuiTheme = (settings) => {
   return createMuiTheme({
     direction: "ltr",
     "spec": {
-      menuMinHeight: 70,
-      menuMaxDesktopHeight: 70,
+      menuDesktopHeight: 60,
       dayNameHeight: 40
     },
     "palette": {
