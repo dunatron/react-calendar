@@ -74,11 +74,12 @@ class SearchContainer extends Component {
   searchEvents = async () => {
     const {searchText} = this.state;
     // 3. perform search query
-    const result = this.props.client.query({
+    const result = await this.props.client.query({
       query: ALL_EVENTS_SEARCH_QUERY,
       variables: {searchText}
     });
     const events = result.data.searchAllEvents.edges;
+
     // 4. put results into redux state and remove loading
     this.props.dispatch(searchEventsFulfill(events))
   };

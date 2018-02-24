@@ -16,7 +16,7 @@ const styles = theme => ({
     width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    color: theme.palette.primary.main
+    color: theme.palette.secondary.main
     //backgroundColor: theme.palette.primary.main,
   },
   MuiListItemIcon: {
@@ -28,16 +28,28 @@ const styles = theme => ({
   button: {
     color: theme.palette.primary.main,
     backgroundColor: theme.palette.primary.main
+  },
+  checkedNumber: {
+    color: theme.palette.primary.main
   }
 });
 
 class HappTag extends Component {
 
 
-  state = { open: false };
+  state = {
+    open: false,
+    numberOfTagsChecked: 0
+  };
 
   handleClick = () => {
     this.setState({ open: !this.state.open });
+  };
+
+  changeNumberChecked = (num) => {
+    this.setState({
+      numberOfTagsChecked: this.state.numberOfTagsChecked + num
+    })
   };
 
   render() {
@@ -53,10 +65,11 @@ class HappTag extends Component {
           <FolderIcon />
         </ListItemIcon>
         <ListItemText inset primary={HappTagTitle} />
+        {this.state.numberOfTagsChecked !== 0 && <span className={classes.checkedNumber}>{this.state.numberOfTagsChecked}</span>}
         {this.state.open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse component="li" in={this.state.open} timeout="auto" unmountOnExit={false}>
-        <SecondaryCategories categories={SecondaryTags} />
+        <SecondaryCategories categories={SecondaryTags} updateCheckNumber={(num)=> this.changeNumberChecked(num)} />
       </Collapse>
     </List>
 

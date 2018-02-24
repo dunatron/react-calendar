@@ -1,20 +1,14 @@
 import React, {Component} from 'react';
 import CalendarBody from '../components/CalendarBody';
 import { withApollo } from 'react-apollo'
-
 import {withStyles} from 'material-ui/styles';
 import {gql, compose} from 'react-apollo';
-
 import Loader from '../components/Loader';
-import {CircularProgress} from 'material-ui/Progress';
-
-
 // Connect Redux
 import {connect } from "react-redux";
 import {startFetchNewEvents, getNewEvents} from "../actions/eventsActions";
 import {getSingleEvent, getSingleEventFulfilled, closeSingleEventModal} from "../actions/currentEventActions";
 import DisplayEventModal from '../components/Modals/DisplayEventModal';
-
 
 const styles = {
   loadingContainer: {
@@ -88,14 +82,6 @@ class CalendarBodyContainer extends Component {
   };
 
   eventClick(id, title) {
-    // this.setState({
-    //   currentEvent: {
-    //     ID: id,
-    //     Title: title
-    //   }
-    // });
-    // this.openModal();
-    // Put fetching single event into loading mode
     this.props.dispatch(getSingleEvent());
     this.props.dispatch(getSingleEventFulfilled(id, title));
     console.log(id, title)
@@ -117,26 +103,14 @@ class CalendarBodyContainer extends Component {
 
   render() {
 
-    const {classes} = this.props;
+    const {classes, events: {events, fetching}} = this.props;
 
-    const {events: {events, fetching}} = this.props;
-
-    // if (fetching) {
-    //   return <div className={classes.loadingContainer}>
-    //     <h2 className={classes.loadingText}>Loading Events for Calendar</h2>
-    //     <CircularProgress className={classes.progress}/>
-    //   </div>;
-    // }
     if (fetching) {
       return <Loader loadingText={"Loading Events for Calendar"} size={40} fontSize={22}/>;
     }
 
     return (<div style={{height: '100%'}}>
       <CalendarBody currentDate={this.props.currentDate} events={events} eventClick={this.eventClick}/>
-        {/*{this.props.currentEvent.eventData.eventID !== 'undefined' &&  <DisplayEventModal*/}
-          {/*eventID={this.props.currentEvent.eventData.eventID}*/}
-          {/*isOpen={this.props.currentEvent.displayModal}*/}
-          {/*closeModal={this.closeModal} />}*/}
         <DisplayEventModal
           eventID={this.props.currentEvent.eventData.eventID}
           eventTitle={this.props.currentEvent.eventData.eventTitle}
