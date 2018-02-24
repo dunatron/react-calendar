@@ -22,7 +22,6 @@ SilverStripe\Security\Member:
 SilverStripe\SiteConfig\SiteConfig:
   extensions:
     - MyOrg\Extension\EventFindaExtension
-    - MyOrg\Extension\HappSiteConfig
 SilverStripe\Assets\Image:
   extensions:
     - MyOrg\Extension\EventImage

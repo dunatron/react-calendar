@@ -129,7 +129,12 @@ class CalendarBody extends Component {
     const {classes, currentDate, events} = this.props;
 
     return (
-      <ReactCSSTransitionGroup transitionName="example" transitionAppear={true} transitionEnterTimeout={2000} transitionLeaveTimeout={2000 }>
+      <ReactCSSTransitionGroup
+        transitionName="example"
+        transitionAppear={true}
+        transitionAppearTimeout={500}
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500 }>
         <div className={classes.CalendarBodyWrapper}>
           <div className={classes.DaysWrapper}>
             <span className={classes.DayName}>Sunday</span>

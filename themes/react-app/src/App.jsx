@@ -13,7 +13,7 @@ import CreateEventContainer from './containers/CreateEventContainer'
 import SearchContainer from './containers/SearchContainer';
 
 // Connect Redux
-import {connect } from "react-redux";
+import {connect} from "react-redux";
 import {nextMonth, prevMonth} from './actions/headerActions';
 
 import {ALL_EVENTS_BETWEEN_QUERY} from './containers/CalendarBodyContainer';
@@ -24,10 +24,9 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {withRouter} from "react-router";
 import Loader from './components/Loader';
 
-/**
- *
- * https://material-ui-next.com/demos/buttons/
- */
+import DynamicTheme from "./dynamicTheme";
+import {MuiThemeProvider} from 'material-ui/styles';
+
 
 const validateToken = gql`
 query validateToken {
@@ -38,7 +37,22 @@ query validateToken {
     }
 }`;
 
-const styles = theme => ({
+const APP_SETTINGS_QUERY = gql`  
+  query getAppSettings {
+	getAppSettings {
+    PCMain
+    PCLight
+    PCDark
+    SCMain
+    SCLight
+    SCDark
+    PCContrast
+    SCContrast
+  }
+}
+`;
+
+const styles = {
   Calendar: {
     'width': '100%',
     'height': '100%',
@@ -52,7 +66,7 @@ const styles = theme => ({
   media: {
     height: 200,
   }
-});
+};
 
 class App extends Component {
 
@@ -161,13 +175,18 @@ class App extends Component {
 
     const {classes} = this.props;
 
-    const {data: {validateToken, loading }, header} = this.props;
+    const {data: {validateToken, loading, getAppSettings}, header} = this.props;
 
     if (loading) {
-      return <Loader loadingText={'Securing App'} size={40} fontSize={22} />;
+      return <Loader loadingText={'Securing App'} size={40} fontSize={22}/>;
     }
 
+    // Get app settings from query and apply to MUITheme
+    const AppSettings = getAppSettings[0];
+    const dynamicTheme = DynamicTheme(AppSettings);
+
     return (
+      <MuiThemeProvider theme={dynamicTheme}>
         <div className={classes.Calendar}>
           <CalendarMenu currentDate={header.currentDate}
                         currentMonth={header.currentMonth}
@@ -186,6 +205,7 @@ class App extends Component {
                              eventData={this.state.currentEvent}/>
 
         </div>
+      </MuiThemeProvider>
     )
   }
 }
@@ -200,5 +220,6 @@ const reduxWrapper = connect(
 export default withRouter(compose(
   reduxWrapper,
   graphql(validateToken),
+  graphql(APP_SETTINGS_QUERY),
   withStyles(styles)
 )(App));

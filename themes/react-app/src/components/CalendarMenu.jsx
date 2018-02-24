@@ -29,6 +29,7 @@ class CalendarMenu extends Component {
       <ReactCSSTransitionGroup
         transitionName="example"
         transitionAppear={true}
+        transitionAppearTimeout={300}
         transitionEnterTimeout={500}
         transitionLeaveTimeout={300}>
         <div className={classes.MainMenu}>

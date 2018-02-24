@@ -11,9 +11,13 @@ SilverStripe\GraphQL\Controller:
     Allow-Methods:  'GET, POST, OPTIONS'
     Max-Age: 86400
   schema:
-    scaffolding_providers: [MyOrg\Model\Event, MyOrg\Security\AppUser]
+    scaffolding_providers: [MyOrg\Model\Event, MyOrg\Security\AppUser, MyOrg\Model\AppSettings]
     scaffolding:
       types:
+        MyOrg\Model\AppSettings:
+          fields: [PCMain, PCLight, PCDark, SCMain, SCLight, SCDark, PCContrast, SCContrast, ClientThumbnail]
+          operations:
+            read: true
         MyOrg\Security\AppUser:
           fields: [ID, Name, FirstName, Surname, Email, Password]
           operations:
@@ -30,11 +34,6 @@ SilverStripe\GraphQL\Controller:
             Tickets: true
             EventFindaImages: true
             EventImages: true
-        MyOrg\Model\Category:
-          fields: [ID, Name, BgColor]
-          operations:
-            create: true
-            read: true
         MyOrg\Model\HappTag:
           fields: [ID, Title, Description]
           operations:

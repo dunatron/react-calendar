@@ -5,6 +5,7 @@ html {
   box-sizing: border-box;
   @include breakpoint($min865) {
     height: 100%;
+    overflow: hidden;
   }
 }
 

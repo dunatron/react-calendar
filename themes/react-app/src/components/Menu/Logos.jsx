@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import {withStyles} from 'material-ui/styles';
 import MainLogo from '../../img/logo.svg';
-import HappLogoAnimation from '../../HappSVGLogo';
-// svg.js
-import 'svg.js'
 
 const styles = theme => ({
   HappLogo: {
@@ -35,7 +32,7 @@ const styles = theme => ({
 class Logos extends Component {
 
   componentDidMount() {
-    HappLogoAnimation();
+
   }
 
   componentWillMount() {
@@ -48,7 +45,6 @@ class Logos extends Component {
 
     return (
       <div className={classes.LogosWrapper}>
-        <div id="happSVGLogo" className={classes.HappLogo}></div>
         <img src={MainLogo} className={classes.Logo} alt="City Logo"/>
       </div>
     );
