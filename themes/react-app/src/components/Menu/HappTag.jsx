@@ -19,6 +19,9 @@ const styles = theme => ({
     color: theme.palette.primary.main
     //backgroundColor: theme.palette.primary.main,
   },
+  MuiListItemIcon: {
+    color: theme.palette.secondary.main
+  },
   nested: {
     paddingLeft: theme.spacing.unit * 4,
   },
@@ -46,7 +49,7 @@ class HappTag extends Component {
 
     return <List className={classes.root} >
       <ListItem button onClick={this.handleClick}>
-        <ListItemIcon>
+        <ListItemIcon className={classes.MuiListItemIcon}>
           <FolderIcon />
         </ListItemIcon>
         <ListItemText inset primary={HappTagTitle} />
