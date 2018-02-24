@@ -103,14 +103,30 @@ class CalendarBodyContainer extends Component {
 
   render() {
 
-    const {classes, events: {events, fetching}} = this.props;
+    const {classes, events: {events, fetching}, filter} = this.props;
 
     if (fetching) {
       return <Loader loadingText={"Loading Events for Calendar"} size={40} fontSize={22}/>;
     }
 
+    let eventsArr = null;
+
+    if (filter.length >= 1) {
+      const newEvents = [];
+      for (let event of events) {
+        if (event.SecondaryTag) {
+          if (filter.includes(event.SecondaryTag.Title)) {
+            newEvents.push(event)
+          }
+        }
+      }
+      eventsArr = newEvents;
+    } else {
+      eventsArr = events
+    }
+
     return (<div style={{height: '100%'}}>
-      <CalendarBody currentDate={this.props.currentDate} events={events} eventClick={this.eventClick}/>
+      <CalendarBody currentDate={this.props.currentDate} events={eventsArr} eventClick={this.eventClick}/>
         <DisplayEventModal
           eventID={this.props.currentEvent.eventData.eventID}
           eventTitle={this.props.currentEvent.eventData.eventTitle}
@@ -139,7 +155,8 @@ const reduxWrapper = connect(
     token: state.token,
     header: state.header,
     events: state.event,
-    currentEvent: state.currentEvent
+    currentEvent: state.currentEvent,
+    filter: state.tags.filterTags
   })
 );
 

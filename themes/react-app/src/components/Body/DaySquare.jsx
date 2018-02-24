@@ -1,10 +1,16 @@
 import React, {Component} from 'react';
 import {withStyles} from 'material-ui/styles';
-import {connect} from "react-redux";
+import Button from 'material-ui/Button';
 import {compose, withApollo} from "react-apollo/index";
 import { fade} from 'material-ui/styles/colorManipulator';
 
 const styles = theme => ({
+  label: {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    display: 'block',
+    textOverflow: 'ellipsis',
+  },
   dayNumber: {
     lineHeight: '50px',
     fontSize: '26px',
@@ -29,8 +35,9 @@ const styles = theme => ({
   eventsWrapper: {
     width: '100%'
   },
-  eventCard: {
+  eventCardBtn: {
     display: 'block',
+    fontFamily: 'GustanLight',
     maxWidth: '100%',
     margin: '0 0 12px 0',
     color: theme.palette.common.black,
@@ -46,7 +53,16 @@ const styles = theme => ({
       cursor: 'pointer'
     }
   },
+  eventBtnText: {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    display: 'block',
+    textOverflow: 'ellipsis',
+  },
   [theme.breakpoints.up('md')]: {
+    label: {
+      width: `calc(100% - 15px)`,
+    },
     dayNumber: {
       position: 'absolute',
       fontSize: '13px',
@@ -64,75 +80,39 @@ const styles = theme => ({
     innerSquare: {
       margin: '0 15px 0 0',
     },
-    eventCard: {
+    eventCardBtn: {
+      width: '100%',
       fontSize: '16px',
       padding: '3px 5px',
-      margin: '0 0 7px 0',
+      margin: '0 0 3px 0',
+      minHeight: '32px',
       borderRadius: 0, // because the right side side is hidden by shifting it right
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
       '&:first-child': {
-        margin: '15px 0 7px 0'
+        margin: '15px 0 3px 0'
       },
       '&:last-child': {
         margin: '0 0 15px 0'
-      }
+      },
     }
   },
 });
 
 class DaySquare extends Component {
 
-  constructor(props) {
-    super(props)
-
-    const {currentDate} = props;
-
-    this.state = {
-      events: [props.events]
-    };
-
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      events: [nextProps.events]
-    })
-  }
-
   renderEvents() {
-    const {events, classes, dayNumber, filter} = this.props;
+    const {events, classes} = this.props;
 
-    // Filter has been set, filter the events
-    if (filter.length >= 1) {
-      const newEvents = [];
-      for (let event of events) {
-        if (event.SecondaryTag) {
-          if (filter.includes(event.SecondaryTag.Title)) {
-            newEvents.push(event)
-          }
-        }
-      }
-      const listItems = newEvents.map((d) =>
-          <div
-            className={classes.eventCard} key={d.ID}
-            onClick={() => this.props.eventClick(d.ID, d.Title)}
-          >
-            {d.Title}
-          </div>);
-      return (
-        <div className={classes.eventsWrapper}>
-          {listItems}
-        </div>
-      );
-    }
-
-    // Filter has not been set, return all events
     const listItems = events.map((d) =>
-        <div
-          className={classes.eventCard} key={d.ID}
-          onClick={() => this.props.eventClick(d.ID, d.Title)}
-        >
-          {d.Title}
-        </div>);
+      <Button color="secondary"
+              classes={{
+                root: classes.eventCardBtn, // className, e.g. `OverridesClasses-root-X`
+                label: classes.label, // className, e.g. `OverridesClasses-label-X`
+              }}
+              onClick={() => this.props.eventClick(d.ID, d.Title)}>
+        {d.Title}
+      </Button>);
 
     return (
       <div className={classes.eventsWrapper}>
@@ -156,14 +136,7 @@ class DaySquare extends Component {
   }
 }
 
-const reduxWrapper = connect(
-  state => ({
-    filter: state.tags.filterTags
-  })
-);
-
 export default compose(
   withStyles(styles),
   withApollo,
-  reduxWrapper,
 )(DaySquare);
