@@ -47,7 +47,8 @@ const styles = theme => ({
   },
   eventToolTip: {
     left: '-5px !important',
-    maxWidth: `calc(100% - 25px)`
+    maxWidth: `calc(100% - 25px)`,
+    pointerEvents: 'none'
   },
   eventCardBtn: {
     display: 'block',
