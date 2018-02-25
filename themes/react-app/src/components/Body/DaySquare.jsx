@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withStyles} from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import {compose, withApollo} from "react-apollo/index";
-import { fade} from 'material-ui/styles/colorManipulator';
+import {fade} from 'material-ui/styles/colorManipulator';
 import Tooltip from 'material-ui/Tooltip';
 
 const styles = theme => ({
@@ -130,20 +130,6 @@ class DaySquare extends Component {
   renderEvents() {
     const {events, classes} = this.props;
 
-    // const listItems = events.map((d) =>
-    //   <Tooltip id={`#eID${d.ID}`} title={d.Title} placement="top" key={d.ID} enterDelay={0} leaveDelay={0}>
-    //   <Button
-    //     key={d.ID}
-    //     color="secondary"
-    //     classes={{
-    //       root: classes.eventCardBtn, // className, e.g. `OverridesClasses-root-X`
-    //       label: classes.label, // className, e.g. `OverridesClasses-label-X`
-    //     }}
-    //     onClick={() => this.props.eventClick(d.ID, d.Title)}>
-    //     {d.Title}
-    //   </Button>
-    //   </Tooltip>);
-
     const listItems = events.map((d) =>
       <Tooltip id="tooltip-top-start" key={d.ID} title={d.Title} classes={{
         popper: classes.eventToolTip
@@ -156,10 +142,6 @@ class DaySquare extends Component {
             label: classes.label, // className, e.g. `OverridesClasses-label-X`
           }}>{d.Title}</Button>
       </Tooltip>);
-
-
-
-
 
     return (
       <div className={classes.eventsWrapper}>

@@ -82,10 +82,10 @@ class CalendarBodyContainer extends Component {
 
   };
 
-  eventClick(id, title) {
-    this.openEventModal();
+  eventClick = async (id, title) => {
+    await this.openEventModal();
     this.props.dispatch(getSingleEventFulfilled(id, title));
-  }
+  };
 
   componentWillMount() {
     this.fetchEventsForMonth().then(() => {
