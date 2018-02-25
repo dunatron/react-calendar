@@ -83,6 +83,10 @@ class CalendarBody extends Component {
     })
   }
 
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.currentDate !== this.props.currentDate);
+  }
+
   renderWeeks() {
     let weeks = [],
       done = false,

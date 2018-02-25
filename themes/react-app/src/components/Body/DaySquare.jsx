@@ -135,7 +135,7 @@ class DaySquare extends Component {
         popper: classes.eventToolTip
       }}>
         <Button
-          color="secondary"
+          color="primary"
           onClick={() => this.props.eventClick(d.ID, d.Title)}
           classes={{
             root: classes.eventCardBtn, // className, e.g. `OverridesClasses-root-X`

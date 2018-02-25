@@ -28,14 +28,14 @@ import DynamicTheme from "./dynamicTheme";
 import {MuiThemeProvider} from 'material-ui/styles';
 
 
-const validateToken = gql`
-query validateToken {
-    validateToken {
-      Valid
-      Message
-      Code
-    }
-}`;
+// const validateToken = gql`
+// query validateToken {
+//     validateToken {
+//       Valid
+//       Message
+//       Code
+//     }
+// }`;
 
 const APP_SETTINGS_QUERY = gql`  
   query getAppSettings {
@@ -177,7 +177,7 @@ class App extends Component {
 
     const {classes} = this.props;
 
-    const {data: {validateToken, loading, getAppSettings}, header} = this.props;
+    const {data: { loading, getAppSettings}, header} = this.props;
 
     if (loading) {
       return <Loader loadingText={'Securing App'} size={40} fontSize={22}/>;
@@ -219,7 +219,7 @@ const reduxWrapper = connect(
 
 export default withRouter(compose(
   reduxWrapper,
-  graphql(validateToken),
+  // graphql(validateToken),
   graphql(APP_SETTINGS_QUERY),
   withStyles(styles)
 )(App));

@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import CalendarBody from '../components/CalendarBody';
-import { withApollo } from 'react-apollo'
+import {withApollo} from 'react-apollo'
 import {withStyles} from 'material-ui/styles';
 import {gql, compose} from 'react-apollo';
 import Loader from '../components/Loader';
 // Connect Redux
-import {connect } from "react-redux";
+import {connect} from "react-redux";
 import {startFetchNewEvents, getNewEvents} from "../actions/eventsActions";
-import { getSingleEventFulfilled} from "../actions/currentEventActions";
+import {getSingleEventFulfilled} from "../actions/currentEventActions";
 import EventModal from '../components/Modals/EventModal';
 
 const styles = {
@@ -55,17 +55,13 @@ class CalendarBodyContainer extends Component {
     this.state = {
       eventModalIsOpen: false,
     };
-
     this.eventClick = this.eventClick.bind(this);
   }
 
   fetchEventsForMonth = async () => {
-
-    const { header} = this.props;
-
+    const {header} = this.props;
     // 1. Place Component into loading mode
     await this.props.dispatch(startFetchNewEvents());
-
     // 2. Start Fetching the events
     await this.props.client.query({
       query: ALL_EVENTS_BETWEEN_QUERY,
@@ -77,20 +73,16 @@ class CalendarBodyContainer extends Component {
       .then((res) => {
         // 3. Events have been updated and loading mode will be false
         this.props.dispatch(getNewEvents(res.data.getEventsBetween));
-        return res.data.getEventsBetween
       })
-
   };
 
   eventClick = async (id, title) => {
-    await this.openEventModal();
+    this.openEventModal();
     this.props.dispatch(getSingleEventFulfilled(id, title));
   };
 
   componentWillMount() {
-    this.fetchEventsForMonth().then(() => {
-      console.log('FINISHED fetch Events for month inside componentWillMount');
-    });
+    this.fetchEventsForMonth().then(() => {});
   }
 
   closeEventModal = () => {
@@ -113,6 +105,7 @@ class CalendarBodyContainer extends Component {
       return <Loader loadingText={"Loading Events for Calendar"} size={40} fontSize={22}/>;
     }
 
+    // ToDo: this can be done better and will help with performance
     let eventsArr = null;
 
     if (filter.length >= 1) {
@@ -130,15 +123,15 @@ class CalendarBodyContainer extends Component {
     }
 
     return (<div style={{height: '100%'}}>
-      <CalendarBody
-        currentDate={this.props.currentDate}
-        events={eventsArr}
-        eventClick={this.eventClick}/>
-          <EventModal
-            closeModal={() => this.closeEventModal()}
-            isOpen={this.state.eventModalIsOpen}
-            eventID={this.props.currentEvent.eventData.eventID}
-            eventTitle={this.props.currentEvent.eventData.eventTitle} />
+        <CalendarBody
+          currentDate={this.props.currentDate}
+          events={eventsArr}
+          eventClick={this.eventClick}/>
+        <EventModal
+          closeModal={() => this.closeEventModal()}
+          isOpen={this.state.eventModalIsOpen}
+          eventID={this.props.currentEvent.eventData.eventID}
+          eventTitle={this.props.currentEvent.eventData.eventTitle}/>
       </div>
     )
   }
