@@ -34,7 +34,7 @@ const styles = theme => ({
       overflowY: 'hidden',
       'width': 'calc(100% / 7)',
       'border': 'none',
-      'padding': '15px 0'
+      //'padding': '15px 0'
     },
     weekHeader: {
       display: 'none !important'

@@ -3,6 +3,7 @@ import {withStyles} from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import {compose, withApollo} from "react-apollo/index";
 import { fade} from 'material-ui/styles/colorManipulator';
+import Tooltip from 'material-ui/Tooltip';
 
 const styles = theme => ({
   label: {
@@ -24,16 +25,29 @@ const styles = theme => ({
     transition: 'opacity 0.5s ease-in-out',
     zIndex: 1
   },
+  // innerSquare: {
+  //   height: 'inherit',
+  //   padding: '0',
+  //   overflowY: 'hidden',
+  //   overflowX: 'hidden',
+  //   position: 'relative',
+  //   margin: 0,
+  // },
   innerSquare: {
     height: 'inherit',
-    padding: '0',
     overflowY: 'hidden',
     overflowX: 'hidden',
     position: 'relative',
     margin: 0,
+    boxSizing: 'border-box',
+    padding: '10px'
   },
   eventsWrapper: {
     width: '100%'
+  },
+  eventToolTip: {
+    left: '-5px !important',
+    maxWidth: `calc(100% - 25px)`
   },
   eventCardBtn: {
     display: 'block',
@@ -68,17 +82,28 @@ const styles = theme => ({
       fontSize: '13px',
       lineHeight: '20px',
     },
+    // eventsWrapper: {
+    //   overflowY: 'scroll',
+    //   overflowX: 'hidden',
+    //   position: 'absolute',
+    //   marginTop: 0,
+    //   height: 'inherit',
+    //   right: '-15px',
+    //   padding: 0,
+    // },
+    // innerSquare: {
+    //   margin: '0 15px 0 0',
+    // },
     eventsWrapper: {
       overflowY: 'scroll',
       overflowX: 'hidden',
-      position: 'absolute',
+      position: 'relative',
       marginTop: 0,
       height: 'inherit',
-      right: '-15px',
-      padding: 0,
+      padding: '0 25px 0 0'
     },
     innerSquare: {
-      margin: '0 15px 0 0',
+      margin: '0',
     },
     eventCardBtn: {
       width: '100%',
@@ -104,15 +129,36 @@ class DaySquare extends Component {
   renderEvents() {
     const {events, classes} = this.props;
 
+    // const listItems = events.map((d) =>
+    //   <Tooltip id={`#eID${d.ID}`} title={d.Title} placement="top" key={d.ID} enterDelay={0} leaveDelay={0}>
+    //   <Button
+    //     key={d.ID}
+    //     color="secondary"
+    //     classes={{
+    //       root: classes.eventCardBtn, // className, e.g. `OverridesClasses-root-X`
+    //       label: classes.label, // className, e.g. `OverridesClasses-label-X`
+    //     }}
+    //     onClick={() => this.props.eventClick(d.ID, d.Title)}>
+    //     {d.Title}
+    //   </Button>
+    //   </Tooltip>);
+
     const listItems = events.map((d) =>
-      <Button color="secondary"
-              classes={{
-                root: classes.eventCardBtn, // className, e.g. `OverridesClasses-root-X`
-                label: classes.label, // className, e.g. `OverridesClasses-label-X`
-              }}
-              onClick={() => this.props.eventClick(d.ID, d.Title)}>
-        {d.Title}
-      </Button>);
+      <Tooltip id="tooltip-top-start" key={d.ID} title={d.Title} classes={{
+        popper: classes.eventToolTip
+      }}>
+        <Button
+          color="secondary"
+          onClick={() => this.props.eventClick(d.ID, d.Title)}
+          classes={{
+            root: classes.eventCardBtn, // className, e.g. `OverridesClasses-root-X`
+            label: classes.label, // className, e.g. `OverridesClasses-label-X`
+          }}>{d.Title}</Button>
+      </Tooltip>);
+
+
+
+
 
     return (
       <div className={classes.eventsWrapper}>
