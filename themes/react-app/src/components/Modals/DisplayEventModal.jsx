@@ -23,10 +23,10 @@ function getModalStyle() {
   const marginTopBot = 20;
 
   return {
-    'margin-bottom': `${marginTopBot}px`,
-    'margin-top': `${marginTopBot}px`,
-    'margin-left': `${marginSides}`,
-    'margin-right': `${marginSides}`,
+    marginBottom: `${marginTopBot}px`,
+    marginTop: `${marginTopBot}px`,
+    marginLeft: `${marginSides}`,
+    marginRight: `${marginSides}`,
   };
 }
 
@@ -70,7 +70,7 @@ class DisplayEventModal extends React.Component {
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
-          open={this.props.isOpen}
+          open={this.props.open}
           onClose={this.props.closeModal}
         >
           <div style={getModalStyle()} className={classes.paper}>
@@ -78,7 +78,7 @@ class DisplayEventModal extends React.Component {
               <CloseIcon />
             </IconButton>
             <EventDataCard eventID={this.props.eventID} eventTitle={this.props.eventTitle}/>
-            <DisplayEventModalWrapped />
+            {/*<DisplayEventModalWrapped />*/}
           </div>
         </Modal>
       </div>
@@ -91,7 +91,9 @@ DisplayEventModal.propTypes = {
 };
 
 // We need an intermediary variable for handling the recursive nesting.
-const DisplayEventModalWrapped = withStyles(styles)(DisplayEventModal);
+// const DisplayEventModalWrapped = withStyles(styles)(DisplayEventModal);
+//
+// export default DisplayEventModalWrapped;
 
-export default DisplayEventModalWrapped;
+export default withStyles(styles)(DisplayEventModal)
 

@@ -2,18 +2,10 @@ import React, {Component} from 'react';
 import {gql, graphql, compose} from 'react-apollo';
 import {withStyles} from 'material-ui/styles';
 import red from 'material-ui/colors/red';
-import {CircularProgress} from 'material-ui/Progress';
 import Loader from '../Loader';
 
 import EventCard from './EventCard';
 
-const customStyles = {
-  content : {
-    'width': 'max-content',
-    'margin': 'auto',
-    'overflow-x': 'hidden'
-  }
-};
 
 const styles = theme => ({
   card: {
@@ -113,10 +105,6 @@ class EventDataSheet extends Component {
     }
 
     const EventData = getSingleEvent[0];
-
-    console.group('Event Data Card');
-    console.log(getSingleEvent[0]);
-    console.groupEnd();
 
     return (
       <EventCard eventObject={EventData} />

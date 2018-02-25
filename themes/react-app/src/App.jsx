@@ -191,24 +191,19 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={dynamicTheme}>
         <div className={classes.Calendar}>
-          <CalendarMenu currentDate={header.currentDate}
-                        happLogo={HappLogo}
-                        clientLogo={ClientLogo}
-                        currentMonth={header.currentMonth}
-                        currentYear={header.currentYear}
-                        nextMonthClick={this.nextMonthClick}
-                        previousMonthClick={this.previousMonthClick}
-          />
-
+          <CalendarMenu
+            currentDate={header.currentDate}
+            happLogo={HappLogo}
+            clientLogo={ClientLogo}
+            currentMonth={header.currentMonth}
+            currentYear={header.currentYear}
+            nextMonthClick={this.nextMonthClick}
+            previousMonthClick={this.previousMonthClick}/>
           <Switch>
             <Route exact path='/' component={CalendarBody}/>
             <Route exact path='/create' component={CreateEventContainer}/>
             <Route exact path='/search' component={SearchContainer}/>
           </Switch>
-
-          <DisplayEventModal eventID={this.state.currentEvent.ID} isOpen={this.state.modalIsOpen}
-                             eventData={this.state.currentEvent}/>
-
         </div>
       </MuiThemeProvider>
     )

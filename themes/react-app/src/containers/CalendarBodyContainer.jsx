@@ -7,8 +7,8 @@ import Loader from '../components/Loader';
 // Connect Redux
 import {connect } from "react-redux";
 import {startFetchNewEvents, getNewEvents} from "../actions/eventsActions";
-import {getSingleEvent, getSingleEventFulfilled, closeSingleEventModal} from "../actions/currentEventActions";
-import DisplayEventModal from '../components/Modals/DisplayEventModal';
+import { getSingleEventFulfilled} from "../actions/currentEventActions";
+import EventModal from '../components/Modals/EventModal';
 
 const styles = {
   loadingContainer: {
@@ -52,9 +52,11 @@ class CalendarBodyContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.eventClick = this.eventClick.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.state = {
+      eventModalIsOpen: false,
+    };
 
+    this.eventClick = this.eventClick.bind(this);
   }
 
   fetchEventsForMonth = async () => {
@@ -63,7 +65,6 @@ class CalendarBodyContainer extends Component {
 
     // 1. Place Component into loading mode
     await this.props.dispatch(startFetchNewEvents());
-
 
     // 2. Start Fetching the events
     await this.props.client.query({
@@ -82,13 +83,8 @@ class CalendarBodyContainer extends Component {
   };
 
   eventClick(id, title) {
-    this.props.dispatch(getSingleEvent());
+    this.openEventModal();
     this.props.dispatch(getSingleEventFulfilled(id, title));
-    console.log(id, title)
-  }
-
-  closeModal() {
-    this.props.dispatch(closeSingleEventModal())
   }
 
   componentWillMount() {
@@ -97,9 +93,17 @@ class CalendarBodyContainer extends Component {
     });
   }
 
-  componentDidMount() {
+  closeEventModal = () => {
+    this.setState({
+      eventModalIsOpen: false
+    })
+  };
 
-  }
+  openEventModal = () => {
+    this.setState({
+      eventModalIsOpen: true
+    })
+  };
 
   render() {
 
@@ -126,12 +130,15 @@ class CalendarBodyContainer extends Component {
     }
 
     return (<div style={{height: '100%'}}>
-      <CalendarBody currentDate={this.props.currentDate} events={eventsArr} eventClick={this.eventClick}/>
-        <DisplayEventModal
-          eventID={this.props.currentEvent.eventData.eventID}
-          eventTitle={this.props.currentEvent.eventData.eventTitle}
-          isOpen={this.props.currentEvent.displayModal}
-          closeModal={this.closeModal} />
+      <CalendarBody
+        currentDate={this.props.currentDate}
+        events={eventsArr}
+        eventClick={this.eventClick}/>
+          <EventModal
+            closeModal={() => this.closeEventModal()}
+            isOpen={this.state.eventModalIsOpen}
+            eventID={this.props.currentEvent.eventData.eventID}
+            eventTitle={this.props.currentEvent.eventData.eventTitle} />
       </div>
     )
   }
@@ -152,7 +159,6 @@ export const ALL_EVENTS_BETWEEN_QUERY = gql`
 
 const reduxWrapper = connect(
   state => ({
-    token: state.token,
     header: state.header,
     events: state.event,
     currentEvent: state.currentEvent,
