@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import CalendarBody from '../components/CalendarBody';
 import {withApollo} from 'react-apollo'
-import {withStyles} from 'material-ui/styles';
 import {gql, compose} from 'react-apollo';
 import Loader from '../components/Loader';
 // Connect Redux
@@ -10,43 +9,7 @@ import {startFetchNewEvents, getNewEvents} from "../actions/eventsActions";
 import {getSingleEventFulfilled} from "../actions/currentEventActions";
 import EventModal from '../components/Modals/EventModal';
 
-const styles = {
-  loadingContainer: {
-    display: 'flex',
-    'align-items': 'center',
-    'flex-direction': 'column',
-    'height': '50%',
-    'text-align': 'center',
-    'margin': '40px',
-    'padding': '10px',
-  },
-  loadingText: {
-    'font-size': '18px'
-  },
-  progress: {
-    margin: '40px'
-  },
-  Calendar: {
-    'width': '100%',
-    'height': '100%',
-  },
-  card: {
-    'minWidth': 'min-content',
-    'maxWidth': '300px',
-    'flex-shrink': '0',
-    'margin': '10px',
-  },
-  media: {
-    height: 200,
-  }
-};
 
-@connect((store) => {
-  return {
-    header: store.header,
-    events: store.event
-  }
-})
 class CalendarBodyContainer extends Component {
 
   constructor(props) {
@@ -98,8 +61,8 @@ class CalendarBodyContainer extends Component {
   };
 
   render() {
-
-    const {classes, events: {events, fetching}, filter} = this.props;
+    console.log('CalendarBodyContainer Render');
+    const {events: {events, fetching}, filter} = this.props;
 
     if (fetching) {
       return <Loader loadingText={"Loading Events for Calendar"} size={40} fontSize={22}/>;
@@ -162,5 +125,4 @@ const reduxWrapper = connect(
 export default compose(
   withApollo,
   reduxWrapper,
-  withStyles(styles)
 )(CalendarBodyContainer);

@@ -4,55 +4,15 @@ import CalendarMenu from './components/CalendarMenu';
 import {withStyles} from 'material-ui/styles';
 import moment from 'moment';
 import {gql, graphql, compose} from 'react-apollo';
-
-import DisplayEventModal from './components/Modals/DisplayEventModal';
 import './sass/App.scss';
-
 import CalendarBodyContainer from './containers/CalendarBodyContainer';
 import CreateEventContainer from './containers/CreateEventContainer'
 import SearchContainer from './containers/SearchContainer';
-
 // Connect Redux
 import {connect} from "react-redux";
 import {nextMonth, prevMonth} from './actions/headerActions';
-
-import {ALL_EVENTS_BETWEEN_QUERY} from './containers/CalendarBodyContainer';
-import {getNewEvents, startFetchNewEvents} from "./actions/eventsActions";
-import {withApollo} from "react-apollo/index";
-
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {withRouter} from "react-router";
-import Loader from './components/Loader';
-
-import DynamicTheme from "./dynamicTheme";
-import {MuiThemeProvider} from 'material-ui/styles';
-
-
-// const validateToken = gql`
-// query validateToken {
-//     validateToken {
-//       Valid
-//       Message
-//       Code
-//     }
-// }`;
-
-const APP_SETTINGS_QUERY = gql`  
-  query getAppSettings {
-	getAppSettings {
-    PCMain
-    PCLight
-    PCDark
-    SCMain
-    SCLight
-    SCDark
-    PCContrast
-    SCContrast
-    ClientLogo
-    HappLogo
-  }
-}
-`;
 
 const styles = {
   Calendar: {
@@ -129,41 +89,16 @@ class App extends Component {
   nextMonthClick = (e) => {
     e.preventDefault();
     this.props.dispatch(nextMonth());
-    this.fetchEventsForMonth();
   };
 
   previousMonthClick = async (e) => {
     e.preventDefault();
     this.props.dispatch(prevMonth());
-
-    this.fetchEventsForMonth().then(() => {
-      //this.forceUpdate()
-    });
   };
-
-  fetchEventsForMonth = async () => {
-
-    // 1. Place Component into loading mode
-    this.props.dispatch(startFetchNewEvents());
-
-    // 2. Start Fetching the events
-    this.props.client.query({
-      query: ALL_EVENTS_BETWEEN_QUERY,
-      variables: {
-        startDate: this.props.header.startOfMonth,
-        endDate: this.props.header.endOfMonth
-      }
-    })
-      .then((res) => {
-        // 3. Events have been updated and loading mode will be false
-        this.props.dispatch(getNewEvents(res.data.getEventsBetween));
-        return res.data.getEventsBetween
-      })
-
-  };
-
 
   render() {
+
+    console.log('App Render');
 
     const CalendarBody = (props) => {
       return (
@@ -177,24 +112,14 @@ class App extends Component {
 
     const {classes} = this.props;
 
-    const {data: { loading, getAppSettings}, header} = this.props;
-
-    if (loading) {
-      return <Loader loadingText={'Securing App'} size={40} fontSize={22}/>;
-    }
-
-    // Get app settings from query and apply to MUITheme
-    const AppSettings = getAppSettings[0];
-    const {HappLogo, ClientLogo} = AppSettings;
-    const dynamicTheme = DynamicTheme(AppSettings);
+    const { header, happLogo, clientLogo} = this.props;
 
     return (
-      <MuiThemeProvider theme={dynamicTheme}>
         <div className={classes.Calendar}>
           <CalendarMenu
             currentDate={header.currentDate}
-            happLogo={HappLogo}
-            clientLogo={ClientLogo}
+            happLogo={happLogo}
+            clientLogo={clientLogo}
             currentMonth={header.currentMonth}
             currentYear={header.currentYear}
             nextMonthClick={this.nextMonthClick}
@@ -205,21 +130,17 @@ class App extends Component {
             <Route exact path='/search' component={SearchContainer}/>
           </Switch>
         </div>
-      </MuiThemeProvider>
     )
   }
 }
 
 const reduxWrapper = connect(
   state => ({
-    token: state.token,
     header: state.header,
   })
 );
 
 export default withRouter(compose(
   reduxWrapper,
-  // graphql(validateToken),
-  graphql(APP_SETTINGS_QUERY),
   withStyles(styles)
 )(App));

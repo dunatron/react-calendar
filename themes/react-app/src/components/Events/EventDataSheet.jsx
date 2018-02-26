@@ -1,62 +1,12 @@
 import React, {Component} from 'react';
 import {gql, graphql, compose} from 'react-apollo';
-import {withStyles} from 'material-ui/styles';
-import red from 'material-ui/colors/red';
 import Loader from '../Loader';
-
 import EventCard from './EventCard';
-
-
-const styles = theme => ({
-  card: {
-    'alignSelf': 'stretch',
-    'maxWidth': '450px',
-    'flex-shrink': '0',
-    'margin': '0',
-  },
-  media: {
-    height: 194,
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
-  flexGrow: {
-    flex: '1 1 auto',
-  },
-  closeButton: {
-    'left': '30px',
-    'float': 'right',
-    'top': '-30px'
-  },
-  list: {
-    width: 250,
-  },
-  listFull: {
-    width: 'auto',
-  },
-  timeHolder: {
-    'display': 'flex',
-    'align-items': 'center'
-  },
-  MyModal: {
-    'width': 'max-content'
-  },
-});
 
 class EventDataSheet extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       expanded: false,
       bottomDraw: false,
@@ -64,7 +14,6 @@ class EventDataSheet extends Component {
       clipboardValue: '',
       copied: false
     };
-
   }
 
   toggleDrawer = (side, open) => () => {
@@ -98,7 +47,7 @@ class EventDataSheet extends Component {
 
   render() {
 
-    const {classes, data: {loading, getSingleEvent}, eventTitle} = this.props;
+    const {data: {loading, getSingleEvent}, eventTitle} = this.props;
 
     if (loading) {
       return <Loader loadingText={eventTitle} size={40} fontSize={22} />;
@@ -158,6 +107,5 @@ query getEventByIDQuery($eventID: ID!) {
 `;
 
 export default compose(
-  withStyles(styles),
   graphql(SingleEventQuery)
 )(EventDataSheet);

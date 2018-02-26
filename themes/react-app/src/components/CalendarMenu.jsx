@@ -24,6 +24,8 @@ class CalendarMenu extends Component {
 
     const {classes, clientLogo, happLogo} = this.props;
 
+    console.log('CalendarMenu render', this.props);
+
     return (
       <ReactCSSTransitionGroup
         transitionName="example"
@@ -32,7 +34,7 @@ class CalendarMenu extends Component {
         transitionEnterTimeout={500}
         transitionLeaveTimeout={300}>
         <div className={classes.MainMenu}>
-          <Logos clientLogo={clientLogo} happLogo={happLogo}/>
+          <Logos clientLogo={clientLogo} happLogo={happLogo} />
           <Navigation
             currentMonth={this.props.currentMonth}
             currentYear={this.props.currentYear}

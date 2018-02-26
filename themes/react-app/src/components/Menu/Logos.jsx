@@ -6,6 +6,7 @@ const styles = theme => ({
     display: 'flex',
     flex: '1',
     minHeight: `${theme.spec.menuDesktopHeight}px`,
+    maxHeight: `${theme.spec.menuDesktopHeight}px`,
     alignItems: 'center',
     justifyContent: 'space-evenly',
     flexWrap: 'wrap',
@@ -42,12 +43,17 @@ class Logos extends Component {
 
   }
 
+  shouldComponentUpdate(nextProps) {
+    // return (nextProps.happLogo !== this.props.happLogo) || (nextProps.happLogo !== this.props.clientLogo);
+    return false
+  }
+
   render() {
 
+    console.log('Render Logos');
     const {classes, happLogo, clientLogo} = this.props;
-
     return (
-      <div className={classes.LogosWrapper}>
+      <div className={classes.LogosWrapper} >
         <img src={happLogo} className={classes.Logo} alt="Happ Logo"/>
         <img src={clientLogo} className={classes.Logo} alt="City Logo"/>
       </div>

@@ -12,7 +12,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloLink, concat } from 'apollo-link';
 import { connect } from 'react-redux';
-import App from './App';
+import AppSettings from './AppSettings';
 import {BrowserRouter} from 'react-router-dom'
 
 
@@ -45,7 +45,7 @@ const client = createClient(localStorage.getItem('jwt'));
 const ApolloApp = ({ token }) => (
   <BrowserRouter>
     <ApolloProvider client={client} >
-      <App />
+      <AppSettings />
     </ApolloProvider>
   </BrowserRouter>
 );

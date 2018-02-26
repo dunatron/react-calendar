@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import Modal from 'material-ui/Modal';
 import IconButton from 'material-ui/IconButton';
+import Button from 'material-ui/Button';
 import CloseIcon from 'material-ui-icons/Close';
 import EventDataCard from '../Events/EventDataSheet'
 
@@ -34,7 +35,12 @@ const styles = theme => ({
   },
   closeIcon: {
     position: "absolute",
-    zIndex: 100
+    zIndex: 100,
+    top: 0,
+    padding: 0,
+    minHeight: '22px',
+    minWidth: '22px',
+    borderRadius: 0,
   }
 });
 
@@ -58,9 +64,12 @@ class EventModal extends React.Component {
           open={this.props.isOpen}
           onClose={this.props.closeModal}>
           <div style={getModalStyle()} className={classes.paper}>
-            <IconButton onClick={this.props.closeModal} className={classes.closeIcon} color={"primary"}>
+            {/*<IconButton  color={"primary"} variant="raised">*/}
+              {/*<CloseIcon/>*/}
+            {/*</IconButton>*/}
+            <Button onClick={this.props.closeModal} className={classes.closeIcon} variant="raised" color="primary">
               <CloseIcon/>
-            </IconButton>
+            </Button>
             {eventID && <EventDataCard eventID={this.props.eventID} eventTitle={this.props.eventTitle}/>}
           </div>
         </Modal>

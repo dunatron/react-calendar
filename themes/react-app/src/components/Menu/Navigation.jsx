@@ -39,6 +39,7 @@ class Navigation extends Component {
 
   render() {
 
+    console.log('Navigation Render');
     const {classes} = this.props;
 
     return (
@@ -50,7 +51,6 @@ class Navigation extends Component {
 
           <LeftArrow className={classes.ArrowIcon} />
         </IconButton>
-        {/*<h1 className={classes.CurrentMonth}>{this.props.currentMonth + this.props.currentYear}</h1>*/}
         <h1 className={classes.CurrentMonth}>{this.props.currentMonth} {this.props.currentYear}</h1>
         <IconButton
           className={classes.ArrowButton}
