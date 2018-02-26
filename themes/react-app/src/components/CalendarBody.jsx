@@ -83,15 +83,10 @@ class CalendarBody extends Component {
     })
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   // return (nextProps.currentDate !== this.props.currentDate);
-  //
-  //   // if (nextProps.currentDate !== this.props.currentDate) {
-  //   //   return true;
-  //   // } else {
-  //   //   return false
-  //   // }
-  // }
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.currentDate !== this.props.currentDate
+      || nextProps.events !== this.props.events);
+  }
 
   renderWeeks() {
     let weeks = [],
