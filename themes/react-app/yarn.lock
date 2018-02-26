@@ -7225,6 +7225,12 @@ react-transition-group@^2.2.1:
     prop-types "^15.5.8"
     warning "^3.0.0"
 
+react-virtual-list@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/react-virtual-list/-/react-virtual-list-2.2.4.tgz#bbeb4938436f80ddbff4f8724f43de2117085691"
+  dependencies:
+    prop-types "^15.5.10"
+
 react@^16.0.0:
   version "16.0.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.0.0.tgz#ce7df8f1941b036f02b2cca9dbd0cb1f0e855e2d"
@@ -8304,10 +8310,6 @@ supports-color@^4.0.0, supports-color@^4.2.1, supports-color@^4.4.0:
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-4.5.0.tgz#be7a0de484dec5c5cddf8b3d59125044912f635b"
   dependencies:
     has-flag "^2.0.0"
-
-svg.js@^2.6.4:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/svg.js/-/svg.js-2.6.4.tgz#034085b13391c6fcca1a0185a34dbea6c3e78dc3"
 
 svgo@^0.7.0:
   version "0.7.2"

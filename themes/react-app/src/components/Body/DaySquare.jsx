@@ -4,6 +4,7 @@ import Button from 'material-ui/Button';
 import {compose, withApollo} from "react-apollo/index";
 import {fade} from 'material-ui/styles/colorManipulator';
 import Tooltip from 'material-ui/Tooltip';
+import VirtualList from 'react-virtual-list';
 
 const styles = theme => ({
   label: {
@@ -150,15 +151,46 @@ class DaySquare extends Component {
     );
   }
 
+  /*
+   <li key={`item_${item.id}`} style={{height: itemHeight}}>
+            {item.Title}
+          </li>
+          */
+
   render() {
 
-    const {classes} = this.props;
+    const {classes, events} = this.props;
+
+    const MyList = ({virtual, itemHeight,}) => (
+      <ul className={classes.eventsWrapper}>
+        {virtual.items.map(item => (
+          <Tooltip id="tooltip-top-start" key={item.ID} title={item.Title} classes={{
+            popper: classes.eventToolTip
+          }}>
+            <Button
+              color="primary"
+              style={{height: itemHeight}}
+              onClick={() => this.props.eventClick(item.ID, item.Title)}
+              classes={{
+                root: classes.eventCardBtn, // className, e.g. `OverridesClasses-root-X`
+                label: classes.label, // className, e.g. `OverridesClasses-label-X`
+              }}>{item.Title}</Button>
+          </Tooltip>
+        ))}
+      </ul>
+    );
+
+    const MyVirtualList = VirtualList()(MyList);
 
     return (
       <div className={this.props.className}>
         <span className={classes.dayNumber}>{this.props.dayNumber}</span>
         <div className={classes.innerSquare}>
-          {this.renderEvents()}
+          {/*{this.renderEvents()}*/}
+          <MyVirtualList
+            items={events}
+            itemHeight={32}
+          />
         </div>
       </div>
     );

@@ -110,11 +110,11 @@ class Week extends Component {
 
     return (
       <div className={classes.week} style={ {height: `calc(100% / ${weeksInMonth})`} } key={days[0].toString()}>
-        {/*<div className={classes.weekHeader}>*/}
-          {/*<Button variant="raised" color="secondary" className={classes.button} onClick={() => this._toggleWeek(`WeeksDays-${WeekNumber}`)}>*/}
-            {/*Expand Week {WeekNumber}*/}
-          {/*</Button>*/}
-        {/*</div>*/}
+        <div className={classes.weekHeader}>
+          <Button variant="raised" color="secondary" className={classes.button} onClick={() => this._toggleWeek(`WeeksDays-${WeekNumber}`)}>
+            Expand Week {WeekNumber}
+          </Button>
+        </div>
         <div className={classes.weekDays} ref={`WeeksDays-${WeekNumber}`} id={`WeeksDays-${WeekNumber}`}>{days}</div>
       </div>
     );
