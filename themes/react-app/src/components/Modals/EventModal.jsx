@@ -50,7 +50,7 @@ class EventModal extends React.Component {
 
   render() {
     const {classes, currentEvent} = this.props;
-
+    console.log('Render EventModal');
     return (
       <div>
         <Modal
@@ -88,7 +88,7 @@ EventModal.propTypes = {
 
 const reduxWrapper = connect(
   state => ({
-    currentEvent: state.currentEvent,
+    currentEvent: state.currentEvent.eventData,
   })
 );
 
