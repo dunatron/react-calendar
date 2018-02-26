@@ -92,9 +92,7 @@ class CalendarBodyContainer extends Component {
           eventClick={this.eventClick}/>
         <EventModal
           closeModal={() => this.closeEventModal()}
-          isOpen={this.state.eventModalIsOpen}
-          eventID={this.props.currentEvent.eventData.eventID}
-          eventTitle={this.props.currentEvent.eventData.eventTitle}/>
+          isOpen={this.state.eventModalIsOpen}/>
       </div>
     )
   }
@@ -117,7 +115,6 @@ const reduxWrapper = connect(
   state => ({
     header: state.header,
     events: state.event,
-    currentEvent: state.currentEvent,
     filter: state.tags.filterTags
   })
 );

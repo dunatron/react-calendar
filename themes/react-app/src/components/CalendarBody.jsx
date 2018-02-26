@@ -83,15 +83,15 @@ class CalendarBody extends Component {
     })
   }
 
-  shouldComponentUpdate(nextProps) {
-    // return (nextProps.currentDate !== this.props.currentDate);
-
-    if (nextProps.currentDate !== this.props.currentDate) {
-      return true;
-    } else {
-      return false
-    }
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   // return (nextProps.currentDate !== this.props.currentDate);
+  //
+  //   // if (nextProps.currentDate !== this.props.currentDate) {
+  //   //   return true;
+  //   // } else {
+  //   //   return false
+  //   // }
+  // }
 
   renderWeeks() {
     let weeks = [],
@@ -137,6 +137,7 @@ class CalendarBody extends Component {
   render() {
 
     const {classes, currentDate, events} = this.props;
+    console.log('Render CalendarBody');
 
     return (
       <ReactCSSTransitionGroup

@@ -6,6 +6,8 @@ import IconButton from 'material-ui/IconButton';
 import Button from 'material-ui/Button';
 import CloseIcon from 'material-ui-icons/Close';
 import EventDataCard from '../Events/EventDataSheet'
+import {connect} from "react-redux";
+import {compose, withApollo} from "react-apollo/index";
 
 function getModalStyle() {
   const marginSides = 'auto';
@@ -47,7 +49,7 @@ const styles = theme => ({
 class EventModal extends React.Component {
 
   render() {
-    const {classes, eventID} = this.props;
+    const {classes, currentEvent} = this.props;
 
     return (
       <div>
@@ -70,7 +72,7 @@ class EventModal extends React.Component {
             <Button onClick={this.props.closeModal} className={classes.closeIcon} variant="raised" color="primary">
               <CloseIcon/>
             </Button>
-            {eventID && <EventDataCard eventID={this.props.eventID} eventTitle={this.props.eventTitle}/>}
+            {currentEvent.eventID && <EventDataCard eventID={currentEvent.eventID} eventTitle={currentEvent.eventTitle}/>}
           </div>
         </Modal>
       </div>
@@ -84,5 +86,17 @@ EventModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(EventModal);
+const reduxWrapper = connect(
+  state => ({
+    currentEvent: state.currentEvent,
+  })
+);
+
+export default compose(
+  withApollo,
+  withStyles(styles),
+  reduxWrapper,
+)(EventModal);
+
+// export default withStyles(styles)(EventModal);
 

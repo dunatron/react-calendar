@@ -85,6 +85,7 @@ class CategoriesList extends Component {
 
   render() {
 
+    console.log('Render CategoriesListContainer');
     const {classes, tags:{fetching, allTags, fetched, error}} = this.props;
 
     if (fetching) {
