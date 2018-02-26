@@ -55,26 +55,6 @@ const styles = theme => ({
 
 class Week extends Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      // events: []
-      events: this.props.events
-    };
-
-  }
-
-  componentDidMount() {
-
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      events: nextProps.events
-    })
-  }
-
   _toggleWeek = (ref) => {
 
     // ToDo : use refs and add and remove classes instead of changing element style
@@ -93,9 +73,7 @@ class Week extends Component {
 
   render() {
 
-    const {classes} = this.props;
-
-    const WeekNumber = this.props.WeekNumber;
+    const {classes, events, WeekNumber} = this.props;
 
     let daysInMonth = moment().daysInMonth();
     let weeksInMonth = Math.ceil(((daysInMonth + 5) / 7));
@@ -110,20 +88,14 @@ class Week extends Component {
         number: date.date(),
         isCurrentMonth: date.month() === month.month(),
         isToday: date.isSame(new Date(), "day"),
-        date: date
+        date: date,
+        dateCompare: date.format('YYYY-MM-DD')
       };
 
-      const Events = this.state.events;
+      let DaysEvents = events.filter(function (el) {
+        return day.dateCompare.includes(el.Date)
+      });
 
-      const DaysEvents = [];
-
-      for (let event of Events) {
-        if(event.Date === day.date.format('YYYY-MM-DD')){
-          DaysEvents.push(event)
-        }
-      }
-
-      //days.push(<span key={day.date.toString()} className={"day" + (day.isToday ? " today" : "") + (day.isCurrentMonth ? "" : " different-month") + (day.date.isSame(this.props.selected) ? " selected" : "")}>{day.number}{this.state.events.toString()}</span>)
       days.push(<DaySquare
         key={day.date.toString()}
         className={classes.Day + (day.isToday ? " today" : "") + (day.isCurrentMonth ? "" : " different-month") + (day.date.isSame(this.props.selected) ? " selected" : "")}
@@ -138,11 +110,11 @@ class Week extends Component {
 
     return (
       <div className={classes.week} style={ {height: `calc(100% / ${weeksInMonth})`} } key={days[0].toString()}>
-        <div className={classes.weekHeader}>
-          <Button variant="raised" color="secondary" className={classes.button} onClick={() => this._toggleWeek(`WeeksDays-${WeekNumber}`)}>
-            Expand Week {WeekNumber}
-          </Button>
-        </div>
+        {/*<div className={classes.weekHeader}>*/}
+          {/*<Button variant="raised" color="secondary" className={classes.button} onClick={() => this._toggleWeek(`WeeksDays-${WeekNumber}`)}>*/}
+            {/*Expand Week {WeekNumber}*/}
+          {/*</Button>*/}
+        {/*</div>*/}
         <div className={classes.weekDays} ref={`WeeksDays-${WeekNumber}`} id={`WeeksDays-${WeekNumber}`}>{days}</div>
       </div>
     );
