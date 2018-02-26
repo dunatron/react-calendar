@@ -11,8 +11,9 @@ import SearchContainer from './containers/SearchContainer';
 // Connect Redux
 import {connect} from "react-redux";
 import {nextMonth, prevMonth} from './actions/headerActions';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import {withRouter} from "react-router";
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+// import {withRouter} from "react-router";
+// import {BrowserRouter} from 'react-router-dom'
 
 const styles = {
   Calendar: {
@@ -115,6 +116,7 @@ class App extends Component {
     const { header, happLogo, clientLogo} = this.props;
 
     return (
+      <BrowserRouter>
         <div className={classes.Calendar}>
           <CalendarMenu
             currentDate={header.currentDate}
@@ -130,6 +132,7 @@ class App extends Component {
             <Route exact path='/search' component={SearchContainer}/>
           </Switch>
         </div>
+      </BrowserRouter>
     )
   }
 }
@@ -140,7 +143,7 @@ const reduxWrapper = connect(
   })
 );
 
-export default withRouter(compose(
+export default compose(
   reduxWrapper,
   withStyles(styles)
-)(App));
+)(App);

@@ -60,6 +60,6 @@ class AppSettings extends Component {
 }
 
 
-export default withRouter(compose(
+export default compose(
   graphql(APP_SETTINGS_QUERY),
-)(AppSettings));
+)(AppSettings);

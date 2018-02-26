@@ -22,6 +22,9 @@ export default function reducer(state = initialState, action) {
     case "CLOSE_MODAL": {
       return {...state, displayModal: false}
     }
+    case "OPEN_MODAL": {
+      return {...state, displayModal: true}
+    }
   }
   return state;
 }

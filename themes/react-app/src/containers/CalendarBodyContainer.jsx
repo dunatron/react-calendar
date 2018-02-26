@@ -6,7 +6,7 @@ import Loader from '../components/Loader';
 // Connect Redux
 import {connect} from "react-redux";
 import {startFetchNewEvents, getNewEvents} from "../actions/eventsActions";
-import {getSingleEventFulfilled} from "../actions/currentEventActions";
+import {getSingleEventFulfilled, openSingleEventModal, closeSingleEventModal} from "../actions/currentEventActions";
 import EventModal from '../components/Modals/EventModal';
 
 
@@ -15,9 +15,9 @@ class CalendarBodyContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      eventModalIsOpen: false,
-    };
+    // this.state = {
+    //   eventModalIsOpen: false,
+    // };
     this.eventClick = this.eventClick.bind(this);
   }
 
@@ -49,15 +49,17 @@ class CalendarBodyContainer extends Component {
   }
 
   closeEventModal = () => {
-    this.setState({
-      eventModalIsOpen: false
-    })
+    this.props.dispatch(closeSingleEventModal());
+    // this.setState({
+    //   eventModalIsOpen: false
+    // })
   };
 
   openEventModal = () => {
-    this.setState({
-      eventModalIsOpen: true
-    })
+    this.props.dispatch(openSingleEventModal());
+    // this.setState({
+    //   eventModalIsOpen: true
+    // })
   };
 
   render() {
@@ -90,9 +92,7 @@ class CalendarBodyContainer extends Component {
           currentDate={this.props.currentDate}
           events={eventsArr}
           eventClick={this.eventClick}/>
-        <EventModal
-          closeModal={() => this.closeEventModal()}
-          isOpen={this.state.eventModalIsOpen}/>
+        <EventModal closeModal={() => this.closeEventModal()} />
       </div>
     )
   }

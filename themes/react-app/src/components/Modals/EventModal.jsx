@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import Modal from 'material-ui/Modal';
@@ -46,10 +46,15 @@ const styles = theme => ({
   }
 });
 
-class EventModal extends React.Component {
+class EventModal extends Component {
+
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.currentEvent !== this.props.currentEvent
+      || nextProps.isModalOpen !== this.props.isModalOpen);
+  }
 
   render() {
-    const {classes, currentEvent} = this.props;
+    const {classes, currentEvent, isModalOpen} = this.props;
     console.log('Render EventModal');
     return (
       <div>
@@ -63,7 +68,7 @@ class EventModal extends React.Component {
           }}
           aria-labelledby="event-modal-title"
           aria-describedby="event-modal-description"
-          open={this.props.isOpen}
+          open={isModalOpen}
           onClose={this.props.closeModal}>
           <div style={getModalStyle()} className={classes.paper}>
             {/*<IconButton  color={"primary"} variant="raised">*/}
@@ -89,6 +94,7 @@ EventModal.propTypes = {
 const reduxWrapper = connect(
   state => ({
     currentEvent: state.currentEvent.eventData,
+    isModalOpen: state.currentEvent.displayModal
   })
 );
 

@@ -31,3 +31,9 @@ export function closeSingleEventModal() {
     type: "CLOSE_MODAL",
   }
 }
+
+export function openSingleEventModal() {
+  return {
+    type: "OPEN_MODAL",
+  }
+}
