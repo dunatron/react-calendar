@@ -71,20 +71,35 @@ class CalendarBodyContainer extends Component {
     }
 
     // ToDo: this can be done better and will help with performance
-    let newEventsArray = null;
-    if (filter.length >= 1) {
-      newEventsArray = events.filter(function (el) {
-        return filter.includes(el.SecondaryTag.Title)
-      });
-    } else {
-      newEventsArray = events;
-    }
+    // let newEventsArray = null;
+    // if (filter.length >= 1) {
+    //   newEventsArray = events.filter(function (el) {
+    //     return filter.includes(el.SecondaryTag.Title)
+    //   });
+    //   return newEventsArray;
+    // } else {
+    //   return events;
+    // }
+
+    let TheEvents = () => {
+      let newEventsArray = null;
+      if (filter.length >= 1) {
+        newEventsArray = events.filter(function (el) {
+          return filter.includes(el.SecondaryTag.Title)
+        });
+        return newEventsArray;
+      } else {
+        return events;
+      }
+    };
+
+    let MyEvents = TheEvents();
 
 
     return (<div style={{height: '100%'}}>
         <CalendarBody
           currentDate={this.props.currentDate}
-          events={newEventsArray}
+          events={MyEvents}
           eventClick={this.eventClick}/>
         <EventModal closeModal={() => this.closeEventModal()} />
       </div>
