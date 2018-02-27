@@ -47,6 +47,7 @@ const styles = theme => ({
     width: '100%',
     height: 'auto !important',
     padding: 0,
+    margin: '40px 0'
   },
   eventToolTip: {
     left: '-5px !important',
@@ -105,7 +106,8 @@ const styles = theme => ({
       marginTop: 0,
       height: 'inherit !important',
       padding: '0 25px 0 0',
-      boxSizing: 'content-box !important'
+      boxSizing: 'content-box !important',
+      margin: 0
     },
     innerSquare: {
       margin: '0',
