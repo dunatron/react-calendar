@@ -41,7 +41,7 @@ const styles = theme => ({
     position: 'relative',
     margin: 0,
     boxSizing: 'border-box',
-    padding: '10px'
+    padding: '40px 10px'
   },
   eventsWrapper: {
     width: '100%',
@@ -111,6 +111,7 @@ const styles = theme => ({
     },
     innerSquare: {
       margin: '0',
+      padding: '10px'
     },
     eventCardBtn: {
       width: '100%',
