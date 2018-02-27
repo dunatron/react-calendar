@@ -49,8 +49,6 @@ class Logos extends Component {
   }
 
   render() {
-
-    console.log('Render Logos');
     const {classes, happLogo, clientLogo} = this.props;
     return (
       <div className={classes.LogosWrapper} >

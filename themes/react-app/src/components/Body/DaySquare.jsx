@@ -166,6 +166,7 @@ class DaySquare extends Component {
   render() {
 
     const {classes, events} = this.props;
+    let start = performance.now();
 
     const MyList = ({virtual, itemHeight,}) => (
       <ul className={classes.eventsWrapper} style={virtual.style}>
@@ -187,6 +188,9 @@ class DaySquare extends Component {
     );
 
     const MyVirtualList = VirtualList()(MyList);
+
+    let end = performance.now();
+    // Calculate the time taken and output the result in the console
 
     return (
       <div className={this.props.className}>

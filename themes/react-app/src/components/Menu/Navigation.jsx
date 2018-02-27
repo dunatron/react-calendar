@@ -38,8 +38,6 @@ const styles = theme => ({
 class Navigation extends Component {
 
   render() {
-
-    console.log('Navigation Render');
     const {classes} = this.props;
 
     return (

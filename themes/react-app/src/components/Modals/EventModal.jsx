@@ -55,7 +55,6 @@ class EventModal extends Component {
 
   render() {
     const {classes, currentEvent, isModalOpen} = this.props;
-    console.log('Render EventModal');
     return (
       <div>
         <Modal

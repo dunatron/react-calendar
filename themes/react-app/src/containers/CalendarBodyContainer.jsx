@@ -14,10 +14,6 @@ class CalendarBodyContainer extends Component {
 
   constructor(props) {
     super(props);
-
-    // this.state = {
-    //   eventModalIsOpen: false,
-    // };
     this.eventClick = this.eventClick.bind(this);
   }
 
@@ -45,63 +41,45 @@ class CalendarBodyContainer extends Component {
   };
 
   componentWillMount() {
-    this.fetchEventsForMonth().then(() => {});
+    this.fetchEventsForMonth().then(() => {
+    });
   }
 
   closeEventModal = () => {
     this.props.dispatch(closeSingleEventModal());
-    // this.setState({
-    //   eventModalIsOpen: false
-    // })
   };
 
   openEventModal = () => {
     this.props.dispatch(openSingleEventModal());
-    // this.setState({
-    //   eventModalIsOpen: true
-    // })
+  };
+
+  TheEvents = (filter, events) => {
+    let newEventsArray = null;
+    if (filter.length >= 1) {
+      newEventsArray = events.filter(function (el) {
+        return filter.includes(el.SecondaryTag.Title)
+      });
+      return newEventsArray;
+    } else {
+      return events;
+    }
   };
 
   render() {
-    console.log('CalendarBodyContainer Render');
     const {events: {events, fetching}, filter} = this.props;
 
     if (fetching) {
       return <Loader loadingText={"Loading Events for Calendar"} size={40} fontSize={22}/>;
     }
 
-    // ToDo: this can be done better and will help with performance
-    // let newEventsArray = null;
-    // if (filter.length >= 1) {
-    //   newEventsArray = events.filter(function (el) {
-    //     return filter.includes(el.SecondaryTag.Title)
-    //   });
-    //   return newEventsArray;
-    // } else {
-    //   return events;
-    // }
-
-    let TheEvents = () => {
-      let newEventsArray = null;
-      if (filter.length >= 1) {
-        newEventsArray = events.filter(function (el) {
-          return filter.includes(el.SecondaryTag.Title)
-        });
-        return newEventsArray;
-      } else {
-        return events;
-      }
-    };
-
-    let MyEvents = TheEvents();
-
+    let MyEvents = this.TheEvents(filter, events);
 
     return (<div style={{height: '100%'}}>
         <CalendarBody
           currentDate={this.props.currentDate}
           events={MyEvents}
           eventClick={this.eventClick}/>
-        <EventModal closeModal={() => this.closeEventModal()} />
+        <EventModal closeModal={() => this.closeEventModal()}/>
       </div>
     )
   }

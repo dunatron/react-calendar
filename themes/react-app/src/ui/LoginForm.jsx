@@ -18,7 +18,6 @@ class LoginForm extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('are you handling submit?')
     if(!this.state.username || !this.state.password) {
       this.props.onError();
     } else {

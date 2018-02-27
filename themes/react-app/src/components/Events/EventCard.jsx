@@ -122,8 +122,6 @@ class EventCard extends Component {
 
     const {classes, eventObject: {Title, Date, Start, Finish, LocationText, Description, Lat, Lon, IsEventFindaEvent}} = this.props;
 
-    console.log(this.props);
-
     const EventCardMedia = () => {
       switch (IsEventFindaEvent) {
         case false: {

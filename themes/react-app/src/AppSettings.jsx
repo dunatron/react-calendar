@@ -39,7 +39,6 @@ class AppSettings extends Component {
   }
 
   render() {
-    console.log('Render AppSettings');
     const {data: { loading, getAppSettings}} = this.props;
 
     if (loading) {

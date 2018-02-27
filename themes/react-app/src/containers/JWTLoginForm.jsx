@@ -17,9 +17,8 @@ class JWTLoginForm extends React.Component {
     })
       .then(response => {
         localStorage.setItem('jwt', response.data.createToken.Token);
-        console.log(response)
       })
-  }
+  };
   render () {
     return <LoginForm onSubmit={this.onSubmit} />
   }

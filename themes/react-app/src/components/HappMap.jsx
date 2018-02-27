@@ -25,10 +25,6 @@ class HappMap extends Component {
 
   constructor(props) {
     super(props)
-
-    console.log('Map Super Props');
-    console.log(props);
-
     this.state = {
       isMarkerShown: true,
       zoom: props.defaultZoom,
@@ -38,8 +34,6 @@ class HappMap extends Component {
       }
     };
 
-    console.log(this.state);
-
   }
 
   componentDidMount() {
@@ -48,17 +42,6 @@ class HappMap extends Component {
 
   componentWillUpdate() {
 
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log('Maps nextProps');
-    console.log(nextProps);
-    // this.setState({
-    //   location: {
-    //     lat: nextProps.lat,
-    //     lng: nextProps.lng
-    //   }
-    // })
   }
 
   delayedShowMarker = () => {

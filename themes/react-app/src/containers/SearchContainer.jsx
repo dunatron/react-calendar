@@ -66,7 +66,7 @@ class SearchContainer extends Component {
     // 2. call search events function
     this.searchEvents(this.state.searchText)
       .then(() =>{
-        console.log("Finished searching events")
+
       })
 
   };
@@ -91,7 +91,6 @@ class SearchContainer extends Component {
   };
 
   render() {
-
     const {classes, searching, searchText, results} = this.props;
 
     const SearchResults = () => {
@@ -129,7 +128,6 @@ class SearchContainer extends Component {
                     <IconButton
                       onClick={this.handleSearch}
                       onMouseDown={() => {
-                        console.log('Search icon mouse down event')
                       }}
                     >
                       <SearchIcon/>

@@ -131,7 +131,6 @@ class CalendarBody extends Component {
   render() {
 
     const {classes, currentDate, events} = this.props;
-    console.log('Render CalendarBody');
 
     return (
       <ReactCSSTransitionGroup

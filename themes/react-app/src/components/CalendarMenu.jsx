@@ -24,8 +24,6 @@ class CalendarMenu extends Component {
 
     const {classes, clientLogo, happLogo} = this.props;
 
-    console.log('CalendarMenu render', this.props);
-
     return (
       <ReactCSSTransitionGroup
         transitionName="example"

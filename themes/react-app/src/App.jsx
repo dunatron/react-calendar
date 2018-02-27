@@ -98,9 +98,6 @@ class App extends Component {
   };
 
   render() {
-
-    console.log('App Render');
-
     const CalendarBody = (props) => {
       return (
         <CalendarBodyContainer

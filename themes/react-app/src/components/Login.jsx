@@ -40,9 +40,6 @@ class Login extends Component {
 
     const {classes} = this.props;
 
-    console.log('Props in Login')
-    console.log(this.props)
-
     const {token} = store.getState();
 
     const {data: {validateToken, loading}} = this.props;
@@ -133,15 +130,14 @@ class Login extends Component {
           const {ID, Token} = response.data.createToken;
 
           if (typeof Token === 'undefined') {
-            console.log('TOKEN IS NOT DEFINED')
-            alert('Please Try again')
+            alert('Please Try again as you have no token')
           } else {
             this._saveUserData(ID, Token)
             this.props.history.push(`/`)
           }
         })
 
-        .catch(err => console.log(err));
+        //.catch(err => console.log(err));
 
     } else {
       // SIGN_UP

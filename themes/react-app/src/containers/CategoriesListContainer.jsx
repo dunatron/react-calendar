@@ -25,27 +25,12 @@
 
 import React, {Component} from 'react';
 import {gql, compose} from 'react-apollo';
-import {withStyles} from 'material-ui/styles';
 import Loader from '../components/Loader';
 import HappTag from '../components/Menu/HappTag';
 
 import {connect } from "react-redux";
 import {fetchTags, startFetchTags} from '../actions/tagsReducer'
 import {withApollo} from "react-apollo/index";
-
-const styles = theme => ({
-  progress: {
-    margin: '100px'
-  },
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-  nested: {
-    paddingLeft: theme.spacing.unit * 4,
-  },
-});
 
 const ALL_TAGS_QUERY = gql`
 query getCategories {
@@ -79,14 +64,16 @@ class CategoriesList extends Component {
 
   componentWillMount() {
     this.fetchTags().then(() => {
-      console.log('Tags have been loaded into redux store');
+
     })
   }
 
-  render() {
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.tags.fetching !== this.props.tags.fetching);
+  }
 
-    console.log('Render CategoriesListContainer');
-    const {classes, tags:{fetching, allTags, fetched, error}} = this.props;
+  render() {
+    const { tags:{fetching, allTags, fetched, error}} = this.props;
 
     if (fetching) {
       return <Loader loadingText={"fetching tags"} size={20} fontSize={18}/>;
@@ -109,7 +96,6 @@ const reduxWrapper = connect(
 );
 
 export default compose(
-  withStyles(styles),
   withApollo,
   reduxWrapper,
   // graphql(CategoriesQuery)

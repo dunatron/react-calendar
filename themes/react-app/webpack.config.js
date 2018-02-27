@@ -4,6 +4,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 require("babel-core/register");
 require("babel-polyfill");
+require('react-dom/test-utils');
 
 const THEME_NAME = 'react-app'; // define SilverStripe theme name
 const DOTENV = require('dotenv').config({path: '../../.env'});

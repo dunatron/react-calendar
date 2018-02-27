@@ -162,7 +162,6 @@ class Actions extends Component {
   // };
 
   toggleDrawer = (side, open) => () => {
-    console.log(side, ' has been toggled');
     this.setState({
       [side]: open,
     });
@@ -191,7 +190,6 @@ class Actions extends Component {
   }
 
   afterOpenLoginModal() {
-    console.log('clsoe the setting drawer');
     this.toggleDrawer('settingsDraw', false)
   }
 
@@ -202,7 +200,7 @@ class Actions extends Component {
     // 2. call search events function
     this.searchEvents(this.state.searchText)
       .then(() =>{
-        console.log("Finished searching events")
+
       })
 
     this.props.history.push(`/`);

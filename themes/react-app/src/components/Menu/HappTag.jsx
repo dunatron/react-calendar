@@ -52,8 +52,12 @@ class HappTag extends Component {
     })
   };
 
-  render() {
+  shouldComponentUpdate(nextProps, nextState) {
+    return (nextState.open !== this.state.open)
+      || (nextState.numberOfTagsChecked !== this.state.numberOfTagsChecked);
+  }
 
+  render() {
     const {classes, listValue} = this.props;
 
     const HappTagTitle = listValue.Title;
