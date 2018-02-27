@@ -47,7 +47,7 @@ const styles = theme => ({
     width: '100%',
     height: 'auto !important',
     padding: 0,
-    margin: '40px 0'
+    margin: 0
   },
   eventToolTip: {
     left: '-5px !important',
