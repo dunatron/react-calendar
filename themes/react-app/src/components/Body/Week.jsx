@@ -35,12 +35,6 @@ const styles = theme => ({
       'width': 'calc(100% / 7)',
       'border': 'none',
       //'padding': '15px 0'
-    },
-    weekHeader: {
-      display: 'none !important'
-    },
-    weekDays: {
-      display: 'block !important'
     }
   },
   weekHeader: {
@@ -49,27 +43,10 @@ const styles = theme => ({
   },
   weekDays: {
     height: '100%',
-    //display: 'none'
   }
 });
 
 class Week extends Component {
-
-  _toggleWeek = (ref) => {
-
-    // ToDo : use refs and add and remove classes instead of changing element style
-    // https://www.javascriptstuff.com/use-refs-not-ids/
-    let element = document.getElementById(ref);
-
-    let currStyle = element.style.display;
-
-    if(currStyle === 'block'){
-      element.style.display = 'none';
-    } else {
-      element.style.display = 'block';
-    }
-
-  };
 
   render() {
 
@@ -110,11 +87,6 @@ class Week extends Component {
 
     return (
       <div className={classes.week} style={ {height: `calc(100% / ${weeksInMonth})`} } key={days[0].toString()}>
-        <div className={classes.weekHeader}>
-          <Button variant="raised" color="secondary" className={classes.button} onClick={() => this._toggleWeek(`WeeksDays-${WeekNumber}`)}>
-            Expand Week {WeekNumber}
-          </Button>
-        </div>
         <div className={classes.weekDays} ref={`WeeksDays-${WeekNumber}`} id={`WeeksDays-${WeekNumber}`}>{days}</div>
       </div>
     );
