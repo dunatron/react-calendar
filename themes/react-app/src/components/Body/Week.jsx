@@ -49,7 +49,7 @@ const styles = theme => ({
   },
   weekDays: {
     height: '100%',
-    display: 'none'
+    //display: 'none'
   }
 });
 
