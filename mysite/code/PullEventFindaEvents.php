@@ -74,19 +74,19 @@ class PullEventFindaEvents extends BuildTask
             echo '<br>';
 
             echo '<p>' . $event->id . '</p>';
-//            // Check if we have this event already
-//            if (Event::get_by_finda_id(Event::class, $event->id) == false) {
-//                //create a new event
-//                $isNewEvent = true;
-//                $newEvent = Event::create();
-//                $newEvent->EventFindaID = $event->id;
-//                echo '<p style="color:green;">' . $event->name . ' created</p>';
-//            } else {
-//                //receive and update existing event
-//                $newEvent = Event::get_by_finda_id('Event', $event->id);
-//                $isNewEvent = false;
-//                echo '<p style="color:orange;">' . $event->name . ' updated</p>';
-//            }
+            // Check if we have this event already
+            if (Event::get_by_finda_id('MyOrg\Model\Event', $event->id) == false) {
+                //create a new event
+                $isNewEvent = true;
+                $newEvent = Event::create();
+                $newEvent->EventFindaID = $event->id;
+                echo '<p style="color:green;">' . $event->name . ' created</p>';
+            } else {
+                //receive and update existing event
+                $newEvent = Event::get_by_finda_id('MyOrg\Model\Event', $event->id);
+                $isNewEvent = false;
+                echo '<p style="color:orange;">' . $event->name . ' updated</p>';
+            }
 
             $isNewEvent = true;
             $newEvent = Event::create();

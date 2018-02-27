@@ -35,7 +35,7 @@ const styles = theme => ({
       'width': 'calc(100% / 7)',
       'border': 'none',
       //'padding': '15px 0'
-    }
+    },
   },
   weekHeader: {
     display: 'flex',

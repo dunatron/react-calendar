@@ -65,21 +65,10 @@ class CalendarBody extends Component {
   constructor(props) {
     super(props);
 
-    const {currentDate} = props;
-
     this.state = {
-      currentYear: null,
       month: moment(),
-      currentDate: currentDate,
-      events: this.props.events
     };
 
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      events: nextProps.events
-    })
   }
 
   shouldComponentUpdate(nextProps) {
@@ -87,12 +76,10 @@ class CalendarBody extends Component {
       || nextProps.events !== this.props.events);
   }
 
-  renderWeeks() {
+  renderWeeks(events, currentDate) {
     let weeks = [],
       done = false,
-      date = moment(this.state.currentDate).startOf("month").add("w" - 1).day("Sunday"),
-      //date = moment(this.state.currentDate).startOf("month").day("Sunday"),
-      //date = moment(this.state.currentDate).startOf('month'),
+      date = moment(currentDate).startOf("month").add("w" - 1).day("Sunday"),
       monthIndex = date.month(),
       count = 0;
 
@@ -103,7 +90,7 @@ class CalendarBody extends Component {
       let startWeek = moment(date).startOf('week').format();
       let endOfWeek = moment(date).endOf('week').format();
 
-      for (let event of this.state.events) {
+      for (let event of events) {
         let eventDate = moment(event.Date).format();
         if (moment(eventDate).isSameOrBefore(endOfWeek) && moment(eventDate).isSameOrAfter(startWeek)) {
           weeksEvents.push(event);
@@ -132,6 +119,8 @@ class CalendarBody extends Component {
 
     const {classes, currentDate, events} = this.props;
 
+    const WEEKS = this.renderWeeks(events, currentDate);
+
     return (
       <ReactCSSTransitionGroup
         transitionName="example"
@@ -150,7 +139,7 @@ class CalendarBody extends Component {
             <span className={classes.DayName}>Saturday</span>
           </div>
           <div className={classes.SquaresWrapper}>
-            {this.renderWeeks()}
+            {WEEKS}
           </div>
         </div>
       </ReactCSSTransitionGroup>
