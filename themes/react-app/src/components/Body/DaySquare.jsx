@@ -44,7 +44,9 @@ const styles = theme => ({
     padding: '10px'
   },
   eventsWrapper: {
-    width: '100%'
+    width: '100%',
+    height: 'auto !important',
+    padding: 0,
   },
   eventToolTip: {
     left: '-5px !important',
@@ -101,8 +103,9 @@ const styles = theme => ({
       overflowX: 'hidden',
       position: 'relative',
       marginTop: 0,
-      height: 'inherit',
-      padding: '0 25px 0 0'
+      height: 'inherit !important',
+      padding: '0 25px 0 0',
+      boxSizing: 'content-box !important'
     },
     innerSquare: {
       margin: '0',
@@ -162,7 +165,7 @@ class DaySquare extends Component {
     const {classes, events} = this.props;
 
     const MyList = ({virtual, itemHeight,}) => (
-      <ul className={classes.eventsWrapper}>
+      <ul className={classes.eventsWrapper} style={virtual.style}>
         {virtual.items.map(item => (
           <Tooltip id="tooltip-top-start" key={item.ID} title={item.Title} classes={{
             popper: classes.eventToolTip
