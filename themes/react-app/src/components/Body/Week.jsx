@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {withStyles} from 'material-ui/styles';
-import moment from 'moment';
 import DaySquare from './DaySquare';
 import {fade} from 'material-ui/styles/colorManipulator';
-import Button from 'material-ui/Button';
 
 const styles = theme => ({
   week: {
@@ -50,39 +48,37 @@ class Week extends Component {
 
   render() {
 
-    const {classes, events, WeekNumber} = this.props;
+    const {classes, events, WeekNumber, date, month} = this.props;
 
-    let daysInMonth = moment().daysInMonth();
-    let weeksInMonth = Math.ceil(((daysInMonth + 5) / 7));
+    let daysInMonth = month.daysInMonth();
+    let weeksInMonth = Math.ceil((daysInMonth / 7));
 
-    let days = [],
-      date = this.props.date,
-      month = this.props.month;
+    let days = [];
 
     for (let i = 0; i < 7; i++) {
       let day = {
-        name: date.format("dd").substring(0, 1),
-        number: date.date(),
+        prettyDate: date.format("dddd Do MMMM"),
+        number: date.format("D"),
         isCurrentMonth: date.month() === month.month(),
         isToday: date.isSame(new Date(), "day"),
         date: date,
         dateCompare: date.format('YYYY-MM-DD')
       };
 
-      let DaysEvents = events.filter(function (el) {
+      let DaysEvents = events.filter((el) => {
         return day.dateCompare.includes(el.Date)
       });
 
       days.push(<DaySquare
-        key={day.date.toString()}
+        key={i}
         className={classes.Day + (day.isToday ? " today" : "") + (day.isCurrentMonth ? "" : " different-month") + (day.date.isSame(this.props.selected) ? " selected" : "")}
-        //onClick={console.log('DAY SQUARE CLICK')}
         dayNumber={day.number}
+        prettyDate={day.prettyDate}
+        isToday={day.isToday}
         events={DaysEvents}
         eventClick={this.props.eventClick}
       />);
-      date = date.clone();
-      date.add(1, "d");
+      Object.assign({}, date, date.add(1, "d"));
     }
 
     return (

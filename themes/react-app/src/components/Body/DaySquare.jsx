@@ -14,17 +14,13 @@ const styles = theme => ({
     textOverflow: 'ellipsis',
   },
   dayNumber: {
-    lineHeight: '50px',
-    fontSize: '26px',
-    textAlign: 'center',
-    top: '0',
-    left: '0',
-    padding: '2px',
-    backgroundColor: fade(theme.palette.primary.main, 0.8),
-    color: theme.palette.common.white,
-    minWidth: '26px',
-    transition: 'opacity 0.5s ease-in-out',
-    zIndex: 1
+    display: 'none',
+  },
+  isTodayNumber: {
+    display: 'none'
+  },
+  prettyDate: {
+    color: theme.palette.primary.main,
   },
   // innerSquare: {
   //   height: 'inherit',
@@ -83,9 +79,37 @@ const styles = theme => ({
       width: `calc(100% - 15px)`,
     },
     dayNumber: {
+      display: 'block',
       position: 'absolute',
       fontSize: '13px',
       lineHeight: '20px',
+      textAlign: 'center',
+      top: '0',
+      left: '0',
+      padding: '2px',
+      backgroundColor: fade(theme.palette.primary.main, 0.8),
+      color: theme.palette.common.white,
+      minWidth: '26px',
+      transition: 'opacity 0.5s ease-in-out',
+      zIndex: 1
+    },
+    isTodayNumber: {
+      display: 'block',
+      position: 'absolute',
+      fontSize: '13px',
+      lineHeight: '20px',
+      textAlign: 'center',
+      top: '0',
+      left: '0',
+      padding: '2px',
+      backgroundColor: fade(theme.palette.secondary.main, 0.8),
+      color: theme.palette.common.white,
+      minWidth: '26px',
+      transition: 'opacity 0.5s ease-in-out',
+      zIndex: 1
+    },
+    prettyDate: {
+      display: 'none'
     },
     // eventsWrapper: {
     //   overflowY: 'scroll',
@@ -157,16 +181,8 @@ class DaySquare extends Component {
     );
   }
 
-  /*
-   <li key={`item_${item.id}`} style={{height: itemHeight}}>
-            {item.Title}
-          </li>
-          */
-
   render() {
-
-    const {classes, events} = this.props;
-    let start = performance.now();
+    const {classes, events, isToday, prettyDate} = this.props;
 
     const MyList = ({virtual, itemHeight,}) => (
       <ul className={classes.eventsWrapper} style={virtual.style}>
@@ -189,12 +205,10 @@ class DaySquare extends Component {
 
     const MyVirtualList = VirtualList()(MyList);
 
-    let end = performance.now();
-    // Calculate the time taken and output the result in the console
-
     return (
       <div className={this.props.className}>
-        <span className={classes.dayNumber}>{this.props.dayNumber}</span>
+        <span className={classes.prettyDate}>{prettyDate}</span>
+        <span className={(isToday ? classes.isTodayNumber : classes.dayNumber)}>{this.props.dayNumber}</span>
         <div className={classes.innerSquare}>
           {/*{this.renderEvents()}*/}
           <MyVirtualList
