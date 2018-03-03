@@ -9,7 +9,15 @@ import {startFetchNewEvents, getNewEvents} from "../actions/eventsActions";
 import {getSingleEventFulfilled, openSingleEventModal, closeSingleEventModal} from "../actions/currentEventActions";
 import EventModal from '../components/Modals/EventModal';
 
-
+/**
+ * 1. container class that contains the following data: events, filter, currentDate
+ * 2. It will essentially render the calendar body.
+ * 3. The biggest thing here is when a tag changes It will re-render the calendar body,
+ *  this causes a bit of a performance issue when we re-render, especially if there is a large number of events.
+ *  4. The biggest "lag" is when we have filters applied and we uncheck the last filter as to re-render the calendar again with all events
+ *
+ *  Any sort of performance optimization around this would be fantastic
+ */
 class CalendarBodyContainer extends Component {
 
   constructor(props) {

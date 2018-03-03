@@ -5,11 +5,6 @@ import Week from './Body/Week';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import {fade} from 'material-ui/styles/colorManipulator';
 
-
-/**
- * READ THIS
- * https://www.codementor.io/chrisharrington/building-a-calendar-using-react-js--less-css-and-font-awesome-du107z6nt
- */
 const styles = theme => ({
   CalendarBodyWrapper: {
     'height': 'auto',
@@ -26,11 +21,11 @@ const styles = theme => ({
     'display': 'flex',
     'justify-content': 'center',
     'align-items': 'center',
-    'text-shadow': '0 1px 1px rgba(0, 0, 0, 0.4)',
+    // 'text-shadow': '0 1px 1px rgba(0, 0, 0, 0.4)',
     'letter-spacing': '3px',
     'font-size': '14px',
     'text-transform': 'uppercase',
-    'color': 'rgba(255, 255, 255, 0.9)'
+    'color': theme.palette.primary.contrastText
   },
   SquaresWrapper: {
     'width': '100%',
@@ -107,7 +102,8 @@ class CalendarBody extends Component {
         eventClick={this.props.eventClick}
       />);
 
-      date.add(1, "w");
+      //date.add(1, "w");
+      Object.assign({}, date,  date.add(1, "w"));
       done = count++ > 2 && monthIndex !== date.month();
       monthIndex = date.month();
     }
