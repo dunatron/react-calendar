@@ -18,7 +18,7 @@ const initialState = {
   Lon: false,
   EventImages: [],
   Tickets: [],
-  SecondaryTag: null,
+  SecondaryTag: '',
   Owner: null
 };
 

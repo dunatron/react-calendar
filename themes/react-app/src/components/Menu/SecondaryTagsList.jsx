@@ -4,6 +4,7 @@ import List, {ListItem, ListItemText} from 'material-ui/List';
 import Checkbox from 'material-ui/Checkbox';
 
 import {addFilterTag, removerFilterTag} from "../../actions/tagsReducer";
+import {filterEvents} from "../../actions/eventsActions";
 import {compose, withApollo} from "react-apollo/index";
 import {connect} from "react-redux";
 
@@ -43,6 +44,8 @@ class SecondaryTagsList extends Component {
       this.props.dispatch(removerFilterTag(value.Title))
       this.props.updateCheckNumber(-1);
     }
+
+    this.props.dispatch(filterEvents());
 
     this.setState({
       checked: newChecked,

@@ -5,6 +5,8 @@ import {compose, withApollo} from "react-apollo/index";
 import {fade} from 'material-ui/styles/colorManipulator';
 import Tooltip from 'material-ui/Tooltip';
 import VirtualList from 'react-virtual-list';
+import {connect} from "react-redux";
+const R = require('ramda');
 
 const styles = theme => ({
   label: {
@@ -156,33 +158,22 @@ const styles = theme => ({
   },
 });
 
+@connect((store, ownProps) => {
+  let events = R.pathOr({}, [ownProps.year, ownProps.month, ownProps.day, 'data'], store.event.visibleEvents);
+  //let events = R.pathOr('N/A', ['2018', 3, 27], store.event.events2);
+  return {
+    daysEvents: events
+  }
+})
 class DaySquare extends Component {
 
-  renderEvents() {
-    const {events, classes} = this.props;
-
-    const listItems = events.map((d) =>
-      <Tooltip id="tooltip-top-start" key={d.ID} title={d.Title} classes={{
-        popper: classes.eventToolTip
-      }}>
-        <Button
-          color="primary"
-          onClick={() => this.props.eventClick(d.ID, d.Title)}
-          classes={{
-            root: classes.eventCardBtn, // className, e.g. `OverridesClasses-root-X`
-            label: classes.label, // className, e.g. `OverridesClasses-label-X`
-          }}>{d.Title}</Button>
-      </Tooltip>);
-
-    return (
-      <div className={classes.eventsWrapper}>
-        {listItems}
-      </div>
-    );
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.daysEvents !== this.props.daysEvents);
   }
 
   render() {
-    const {classes, events, isToday, prettyDate} = this.props;
+    console.log('DaySquare render');
+    const {classes, isToday, prettyDate, daysEvents} = this.props;
 
     const MyList = ({virtual, itemHeight,}) => (
       <ul className={classes.eventsWrapper} style={virtual.style}>
@@ -212,7 +203,7 @@ class DaySquare extends Component {
         <div className={classes.innerSquare}>
           {/*{this.renderEvents()}*/}
           <MyVirtualList
-            items={events}
+            items={daysEvents}
             itemHeight={32}
           />
         </div>

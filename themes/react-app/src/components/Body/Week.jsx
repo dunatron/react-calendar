@@ -47,8 +47,8 @@ const styles = theme => ({
 class Week extends Component {
 
   render() {
-
-    const {classes, events, WeekNumber, date, month} = this.props;
+    console.log('week render');
+    const {classes, WeekNumber, date, month} = this.props;
 
     let daysInMonth = month.daysInMonth();
     let weeksInMonth = Math.ceil((daysInMonth / 7));
@@ -62,12 +62,11 @@ class Week extends Component {
         isCurrentMonth: date.month() === month.month(),
         isToday: date.isSame(new Date(), "day"),
         date: date,
-        dateCompare: date.format('YYYY-MM-DD')
+        dateCompare: date.format('YYYY-MM-DD'),
+        year: date.format('YYYY'),
+        month: date.format('MM'),
+        day: date.format('DD')
       };
-
-      let DaysEvents = events.filter((el) => {
-        return day.dateCompare.includes(el.Date)
-      });
 
       days.push(<DaySquare
         key={i}
@@ -75,8 +74,10 @@ class Week extends Component {
         dayNumber={day.number}
         prettyDate={day.prettyDate}
         isToday={day.isToday}
-        events={DaysEvents}
         eventClick={this.props.eventClick}
+        year={day.year}
+        month={day.month}
+        day={day.day}
       />);
       Object.assign({}, date, date.add(1, "d"));
     }

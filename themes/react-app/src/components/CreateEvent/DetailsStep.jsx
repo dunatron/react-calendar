@@ -28,20 +28,31 @@ const styles = theme => ({
 
 class DetailsStep extends Component {
 
-  state = {
-    Title: '',
-    Description: '',
-    SecondaryTag: '',
-    age: ''
-  };
+  // state = {
+  //   Title: '',
+  //   Description: '',
+  //   SecondaryTag: '',
+  //   age: ''
+  // };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  tagsDropDownList = (tags) => {
+    const TagsList = [];
+    tags.map(tag => {
+      // TagsList.push(<MenuItem value={tag.Title}>{tag.Title}</MenuItem>)
+      tag.SecondaryTags.map(secondary => {
+        TagsList.push(<MenuItem value={secondary.Title}>{secondary.Title}</MenuItem>)
+      })
+    });
+    return TagsList;
+  };
+
   render() {
 
-    const { classes } = this.props;
+    const { classes, Tags } = this.props;
 
     return (
       <div className={classes.container}>
@@ -58,17 +69,16 @@ class DetailsStep extends Component {
           onChange={(e) => this.props.dispatch(updateField('Description', e.target.value))}
           label="Dense"
           multiline
-          rows="4"
           id="margin-dense"
           className={classes.textField}
           helperText="Some important text"
           margin="dense"
         />
         <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="age-simple">Age</InputLabel>
+          <InputLabel htmlFor="age-simple">Category</InputLabel>
           <Select
-            value={this.state.age}
-            onChange={this.handleChange}
+            value={this.props.SecondaryTag}
+            onChange={(e) => this.props.dispatch(updateField('SecondaryTag', e.target.value))}
             inputProps={{
               name: 'age',
               id: 'age-simple',
@@ -77,21 +87,9 @@ class DetailsStep extends Component {
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {this.tagsDropDownList(Tags)}
           </Select>
         </FormControl>
-        <TextField
-          value={this.state.SecondaryTag}
-          onChange={(e) => this.setState({SecondaryTag: e.target.value})}
-          label="Normal"
-          id="margin-normal"
-          defaultValue="Default Value"
-          className={classes.textField}
-          helperText="Some important text"
-          margin="normal"
-        />
       </div>
     );
   }
@@ -104,7 +102,9 @@ DetailsStep.propTypes = {
 const reduxWrapper = connect(
   state => ({
     Title: state.createEvent.Title,
-    Description: state.createEvent.Description
+    Description: state.createEvent.Description,
+    SecondaryTag: state.createEvent.SecondaryTag,
+    Tags: state.tags.allTags
   })
 );
 

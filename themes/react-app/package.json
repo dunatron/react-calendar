@@ -41,6 +41,7 @@
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.6",
     "promise": "8.0.1",
+    "ramda": "^0.25.0",
     "react": "^16.0.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-copy-to-clipboard": "^5.0.1",

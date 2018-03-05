@@ -67,11 +67,10 @@ class CalendarBody extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return (nextProps.currentDate !== this.props.currentDate
-      || nextProps.events !== this.props.events);
+    return (nextProps.currentDate !== this.props.currentDate);
   }
 
-  renderWeeks(events, currentDate) {
+  renderWeeks(currentDate) {
     let weeks = [],
       done = false,
       date = moment(currentDate).startOf("month").add("w" - 1).day("Sunday"),
@@ -80,17 +79,8 @@ class CalendarBody extends Component {
 
     while (!done) {
 
-      const weeksEvents = [];
-
       let startWeek = moment(date).startOf('week').format();
       let endOfWeek = moment(date).endOf('week').format();
-
-      for (let event of events) {
-        let eventDate = moment(event.Date).format();
-        if (moment(eventDate).isSameOrBefore(endOfWeek) && moment(eventDate).isSameOrAfter(startWeek)) {
-          weeksEvents.push(event);
-        }
-      }
 
       weeks.push(<Week
         WeekNumber={count + 1}
@@ -98,7 +88,6 @@ class CalendarBody extends Component {
         endWeek={endOfWeek}
         key={date.toString()} date={date.clone()} month={this.state.month} select={this.select}
         selected={this.props.selected}
-        events={weeksEvents}
         eventClick={this.props.eventClick}
       />);
 
@@ -112,10 +101,10 @@ class CalendarBody extends Component {
   }
 
   render() {
+    console.log('CalendarBody render');
+    const {classes, currentDate} = this.props;
 
-    const {classes, currentDate, events} = this.props;
-
-    const WEEKS = this.renderWeeks(events, currentDate);
+    const WEEKS = this.renderWeeks(currentDate);
 
     return (
       <ReactCSSTransitionGroup

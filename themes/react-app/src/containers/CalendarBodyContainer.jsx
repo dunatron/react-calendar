@@ -5,7 +5,7 @@ import {gql, compose} from 'react-apollo';
 import Loader from '../components/Loader';
 // Connect Redux
 import {connect} from "react-redux";
-import {startFetchNewEvents, getNewEvents} from "../actions/eventsActions";
+import {startFetchNewEvents, getNewEvents, filterEvents} from "../actions/eventsActions";
 import {getSingleEventFulfilled, openSingleEventModal, closeSingleEventModal} from "../actions/currentEventActions";
 import EventModal from '../components/Modals/EventModal';
 
@@ -40,6 +40,7 @@ class CalendarBodyContainer extends Component {
       .then((res) => {
         // 3. Events have been updated and loading mode will be false
         this.props.dispatch(getNewEvents(res.data.getEventsBetween));
+        this.props.dispatch(filterEvents());
       })
   };
 
@@ -61,31 +62,21 @@ class CalendarBodyContainer extends Component {
     this.props.dispatch(openSingleEventModal());
   };
 
-  TheEvents = (filter, events) => {
-    let newEventsArray = null;
-    if (filter.length >= 1) {
-      newEventsArray = events.filter(function (el) {
-        return filter.includes(el.SecondaryTag.Title)
-      });
-      return newEventsArray;
-    } else {
-      return events;
-    }
-  };
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.loadingEvents !== this.props.loadingEvents)
+      || (nextProps.header.currentDate !== this.props.header.currentDate);
+  }
 
   render() {
-    const {events: {events, fetching}, filter} = this.props;
-
-    if (fetching) {
+    console.log('CalendarBodyContainer render');
+    const {loadingEvents} = this.props;
+    if (loadingEvents) {
       return <Loader loadingText={"Loading Events for Calendar"} size={40} fontSize={22}/>;
     }
-
-    let MyEvents = this.TheEvents(filter, events);
 
     return (<div style={{height: '100%'}}>
         <CalendarBody
           currentDate={this.props.currentDate}
-          events={MyEvents}
           eventClick={this.eventClick}/>
         <EventModal closeModal={() => this.closeEventModal()}/>
       </div>
@@ -109,8 +100,8 @@ export const ALL_EVENTS_BETWEEN_QUERY = gql`
 const reduxWrapper = connect(
   state => ({
     header: state.header,
-    events: state.event,
-    filter: state.tags.filterTags
+    filter: state.tags.filterTags,
+    loadingEvents: state.event.fetching
   })
 );
 
