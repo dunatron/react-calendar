@@ -36,6 +36,7 @@ fragment EventOverview on Event {
 
 class EventList extends Component {
   render() {
+    console.log('EventList render');
     const {classes, data: {loading, readEvents}} = this.props;
 
     if (loading) {

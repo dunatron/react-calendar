@@ -24,6 +24,7 @@ const MyMapComponent = compose(
 class HappMap extends Component {
 
   constructor(props) {
+
     super(props)
     this.state = {
       isMarkerShown: true,

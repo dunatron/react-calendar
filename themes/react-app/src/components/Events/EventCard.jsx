@@ -119,7 +119,7 @@ class EventCard extends Component {
   };
 
   render() {
-
+    console.log('eventCard render');
     const {classes, eventObject: {Title, Date, Start, Finish, LocationText, Description, Lat, Lon, IsEventFindaEvent}} = this.props;
 
     const EventCardMedia = () => {

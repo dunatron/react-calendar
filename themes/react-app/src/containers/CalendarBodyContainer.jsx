@@ -68,7 +68,6 @@ class CalendarBodyContainer extends Component {
   }
 
   render() {
-    console.log('CalendarBodyContainer render');
     const {loadingEvents} = this.props;
     if (loadingEvents) {
       return <Loader loadingText={"Loading Events for Calendar"} size={40} fontSize={22}/>;

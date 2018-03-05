@@ -79,6 +79,8 @@ class CalendarBody extends Component {
 
     while (!done) {
 
+      const weeksEvents = [];
+
       let startWeek = moment(date).startOf('week').format();
       let endOfWeek = moment(date).endOf('week').format();
 
@@ -101,7 +103,7 @@ class CalendarBody extends Component {
   }
 
   render() {
-    console.log('CalendarBody render');
+
     const {classes, currentDate} = this.props;
 
     const WEEKS = this.renderWeeks(currentDate);

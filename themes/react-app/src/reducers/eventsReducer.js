@@ -1,17 +1,7 @@
 const R = require('ramda');
 
 const initialState = {
-  events: [
-    {
-      ID: 1,
-      Title: "My Project Blues",
-      Date: "2018-02-27",
-      SecondaryTag: {
-        Title: "Blues"
-      }
-    }
-  ],
-  events2: {
+  events: {
     '2018': {
       '03': {
         '27': [
@@ -80,12 +70,12 @@ export default function reducer(state = initialState, action) {
       }
 
       return {
-        ...state, fetching: false, fetched: true, events: action.payload, events2: EventsList,
+        ...state, fetching: false, fetched: true, events: EventsList,
       }
     }
     case "FILTER_EVENTS": {
       const {currentTags} = action.payload;
-      let allEvents = state.events2;
+      let allEvents = state.events;
 
       const getTagForEvent = R.path(['SecondaryTag', 'Title']);
       const filterWithTags = tags => event => R.contains(getTagForEvent(event), tags);

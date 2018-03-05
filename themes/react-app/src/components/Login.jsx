@@ -115,6 +115,7 @@ class Login extends Component {
   }
 
   _confirm = async () => {
+    console.log('Login render')
     const {FirstName, Email, Password} = this.state;
     if (this.state.login) {
       // LOGIN
@@ -204,12 +205,6 @@ query validateToken {
       Code
     }
 }`;
-
-// export default compose(
-//   graphql(SIGNUP_MUTATION, { name: 'signupMutation' }),
-//   graphql(LOGIN_MUTATION, { name: 'loginMutation' }),
-//   withStyles(styles)
-// )(Login)
 
 export default compose(
   graphql(validateToken),

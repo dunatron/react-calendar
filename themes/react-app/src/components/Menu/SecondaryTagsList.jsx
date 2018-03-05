@@ -36,12 +36,12 @@ class SecondaryTagsList extends Component {
     if (currentIndex === -1) {
       // add to redux filter
       newChecked.push(value);
-      this.props.dispatch(addFilterTag(value.Title))
+      this.props.dispatch(addFilterTag(value.Title));
       this.props.updateCheckNumber(+1);
     } else {
       // remove from redux filter
       newChecked.splice(currentIndex, 1);
-      this.props.dispatch(removerFilterTag(value.Title))
+      this.props.dispatch(removerFilterTag(value.Title));
       this.props.updateCheckNumber(-1);
     }
 

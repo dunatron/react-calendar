@@ -46,7 +46,7 @@ class EventDataSheet extends Component {
 
 
   render() {
-
+    console.log('EventDataSheet render');
     const {data: {loading, getSingleEvent}, eventTitle} = this.props;
 
     if (loading) {
