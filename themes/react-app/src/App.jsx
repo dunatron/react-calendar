@@ -1,19 +1,18 @@
 import React, {Component} from 'react';
 import CalendarMenu from './components/CalendarMenu';
-
+// styles
 import {withStyles} from 'material-ui/styles';
-import moment from 'moment';
-import {gql, graphql, compose} from 'react-apollo';
+import {compose} from 'react-apollo';
+// router
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import './sass/App.scss';
+// pages/containers
 import CalendarBodyContainer from './containers/CalendarBodyContainer';
 import CreateEventContainer from './containers/CreateEventContainer'
 import SearchContainer from './containers/SearchContainer';
-// Connect Redux
+// connect redux
 import {connect} from "react-redux";
 import {nextMonth, prevMonth} from './actions/headerActions';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
-// import {withRouter} from "react-router";
-// import {BrowserRouter} from 'react-router-dom'
 
 const styles = {
   Calendar: {
@@ -35,56 +34,8 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      currentDate: moment(),
-      currentMonth: null,
-      currentYear: null,
-      monthName: null,
-      modalIsOpen: false,
-      open: false,
-      currentEvent: {
-        ID: 1000,
-        Title: null
-      }
-    };
-
     this.nextMonthClick = this.nextMonthClick.bind(this);
     this.previousMonthClick = this.previousMonthClick.bind(this);
-    // Modal state
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.handleToggle = this.handleToggle.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-  }
-
-  componentDidMount() {
-
-  }
-
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
-
-  afterOpenModal() {
-    // references are now sync'd and can be accessed
-  }
-
-  closeModal() {
-    this.setState({modalIsOpen: false});
-  }
-
-  handleToggle() {
-    this.setState({
-      open: !this.state.open
-    })
-  }
-
-  handleClose() {
-    this.setState({
-      open: false
-    })
   }
 
   nextMonthClick = (e) => {
@@ -98,7 +49,10 @@ class App extends Component {
   };
 
   render() {
-    const CalendarBody = (props) => {
+    const { classes, header, happLogo, clientLogo} = this.props;
+
+    // calendar body as const so it can be passed as variable/component into react router
+    const CalendarBody = () => {
       return (
         <CalendarBodyContainer
           currentDate={header.currentDate}
@@ -107,10 +61,6 @@ class App extends Component {
         />
       );
     };
-
-    const {classes} = this.props;
-
-    const { header, happLogo, clientLogo} = this.props;
 
     return (
       <BrowserRouter>
