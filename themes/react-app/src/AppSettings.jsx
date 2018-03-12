@@ -3,10 +3,12 @@ import React, {Component} from 'react';
 import {gql, graphql, compose} from 'react-apollo';
 import './sass/App.scss';
 // Connect Redux
+import {updateLogo} from './actions/settingsActions';
 import Loader from './components/Loader';
 import DynamicTheme from "./dynamicTheme";
 import {MuiThemeProvider} from 'material-ui/styles';
 import App from './App';
+import {connect} from "react-redux";
 
 const APP_SETTINGS_QUERY = gql`  
   query getAppSettings {
@@ -43,15 +45,24 @@ class AppSettings extends Component {
     const {HappLogo, ClientLogo} = AppSettings;
     const dynamicTheme = DynamicTheme(AppSettings);
 
+    this.props.logoUpdate('happLogo', HappLogo);
+    this.props.logoUpdate('clientLogo', ClientLogo);
+
     return (
       <MuiThemeProvider theme={dynamicTheme}>
-        <App clientLogo={ClientLogo} happLogo={HappLogo} />
+        <App />
       </MuiThemeProvider>
     )
   }
 }
 
-
+const reduxWrapper = connect(
+  null, // don't listen to store
+  dispatch => ({
+    logoUpdate: (type, url) => dispatch(updateLogo(type, url)),
+  })
+);
 export default compose(
+  reduxWrapper,
   graphql(APP_SETTINGS_QUERY),
 )(AppSettings);

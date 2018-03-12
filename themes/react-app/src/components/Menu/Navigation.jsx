@@ -3,6 +3,9 @@ import {withStyles} from 'material-ui/styles';
 import LeftArrow from 'material-ui-icons/KeyboardArrowLeft';
 import RightArrow from 'material-ui-icons/KeyboardArrowRight';
 import IconButton from 'material-ui/IconButton';
+import {connect} from "react-redux";
+import {compose} from "react-apollo/index";
+import {nextMonth, prevMonth} from '../../actions/headerActions';
 
 const styles = theme => ({
   LogosWrapper: {
@@ -37,6 +40,16 @@ const styles = theme => ({
 
 class Navigation extends Component {
 
+  nextMonthClick = (e) => {
+    e.preventDefault();
+    this.props.nextMonth();
+  };
+
+  previousMonthClick = async (e) => {
+    e.preventDefault();
+    this.props.prevMonth();
+  };
+
   render() {
     const {classes} = this.props;
 
@@ -44,7 +57,7 @@ class Navigation extends Component {
       <div className={classes.LogosWrapper}>
         <IconButton
           className={classes.ArrowButton}
-          onClick={this.props.previousMonthClick}
+          onClick={this.previousMonthClick}
         >
 
           <LeftArrow className={classes.ArrowIcon} />
@@ -52,7 +65,7 @@ class Navigation extends Component {
         <h1 className={classes.CurrentMonth}>{this.props.currentMonth} {this.props.currentYear}</h1>
         <IconButton
           className={classes.ArrowButton}
-          onClick={this.props.nextMonthClick}
+          onClick={this.nextMonthClick}
         >
           <RightArrow className={classes.ArrowIcon} />
         </IconButton>
@@ -62,4 +75,18 @@ class Navigation extends Component {
   }
 }
 
-export default withStyles(styles)(Navigation);
+const reduxWrapper = connect(
+  state => ({
+    currentMonth: state.header.currentMonth,
+    currentYear: state.header.currentYear
+  }),
+  dispatch => ({
+    nextMonth: () => dispatch(nextMonth()),
+    prevMonth: () => dispatch(prevMonth()),
+  })
+);
+
+export default compose(
+  reduxWrapper,
+  withStyles(styles)
+)(Navigation);

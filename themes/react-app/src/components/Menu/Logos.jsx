@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {withStyles} from 'material-ui/styles';
+import {connect} from "react-redux";
+import {compose} from "react-apollo/index";
 
 const styles = theme => ({
   LogosWrapper: {
@@ -44,7 +46,7 @@ class Logos extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    // return (nextProps.happLogo !== this.props.happLogo) || (nextProps.happLogo !== this.props.clientLogo);
+    //return (nextProps.happLogo !== this.props.happLogo) || (nextProps.clientLogo !== this.props.clientLogo);
     return false
   }
 
@@ -59,4 +61,14 @@ class Logos extends Component {
   }
 }
 
-export default withStyles(styles)(Logos);
+const reduxWrapper = connect(
+  state => ({
+    happLogo: state.settings.happLogo,
+    clientLogo: state.settings.clientLogo,
+  })
+);
+
+export default compose(
+  reduxWrapper,
+  withStyles(styles)
+)(Logos);

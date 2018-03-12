@@ -22,7 +22,7 @@ class CalendarMenu extends Component {
 
   render() {
 
-    const {classes, clientLogo, happLogo} = this.props;
+    const {classes} = this.props;
 
     return (
       <ReactCSSTransitionGroup
@@ -32,13 +32,8 @@ class CalendarMenu extends Component {
         transitionEnterTimeout={500}
         transitionLeaveTimeout={300}>
         <div className={classes.MainMenu}>
-          <Logos clientLogo={clientLogo} happLogo={happLogo} />
-          <Navigation
-            currentMonth={this.props.currentMonth}
-            currentYear={this.props.currentYear}
-            nextMonthClick={this.props.nextMonthClick}
-            previousMonthClick={this.props.previousMonthClick}
-          />
+          <Logos/>
+          <Navigation/>
           <Actions/>
         </div>
       </ReactCSSTransitionGroup>
