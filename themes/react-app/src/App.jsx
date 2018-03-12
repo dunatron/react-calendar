@@ -50,31 +50,19 @@ class App extends Component {
 
   render() {
     const { classes, header, happLogo, clientLogo} = this.props;
-
-    // calendar body as const so it can be passed as variable/component into react router
-    const CalendarBody = () => {
-      return (
-        <CalendarBodyContainer
-          currentDate={header.currentDate}
-          startDate={header.startOfMonth}
-          endDate={header.endOfMonth}
-        />
-      );
-    };
-
     return (
       <BrowserRouter>
         <div className={classes.Calendar}>
           <CalendarMenu
-            currentDate={header.currentDate}
             happLogo={happLogo}
             clientLogo={clientLogo}
+            currentDate={header.currentDate}
             currentMonth={header.currentMonth}
             currentYear={header.currentYear}
             nextMonthClick={this.nextMonthClick}
             previousMonthClick={this.previousMonthClick}/>
           <Switch>
-            <Route exact path='/' component={CalendarBody}/>
+            <Route exact path='/' component={CalendarBodyContainer}/>
             <Route exact path='/create' component={CreateEventContainer}/>
             <Route exact path='/search' component={SearchContainer}/>
           </Switch>

@@ -39,7 +39,7 @@ const initialState = {
   },
   visibleEvents: {},
   currentEvent: {},
-  fetching: false,
+  fetching: true,
   fetched: false,
   error: null,
 };

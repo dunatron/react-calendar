@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import CalendarBody from '../components/CalendarBody';
 import {withApollo} from 'react-apollo'
 import {gql, compose} from 'react-apollo';
-import Loader from '../components/Loader';
 // Connect Redux
 import {connect} from "react-redux";
 import {startFetchNewEvents, getNewEvents, filterEvents} from "../actions/eventsActions";
@@ -25,16 +24,15 @@ class CalendarBodyContainer extends Component {
     this.eventClick = this.eventClick.bind(this);
   }
 
-  fetchEventsForMonth = async () => {
-    const {header} = this.props;
+  fetchEventsForMonth = async (startDate, endDate) => {
     // 1. Place Component into loading mode
-    await this.props.dispatch(startFetchNewEvents());
+    this.props.dispatch(startFetchNewEvents());
     // 2. Start Fetching the events
-    await this.props.client.query({
+    this.props.client.query({
       query: ALL_EVENTS_BETWEEN_QUERY,
       variables: {
-        startDate: this.props.header.startOfMonth,
-        endDate: this.props.header.endOfMonth
+        startDate: startDate,
+        endDate: endDate
       }
     })
       .then((res) => {
@@ -50,8 +48,17 @@ class CalendarBodyContainer extends Component {
   };
 
   componentWillMount() {
-    this.fetchEventsForMonth().then(() => {
+    const {header: {startOfMonth, endOfMonth}} = this.props;
+    this.fetchEventsForMonth(startOfMonth, endOfMonth).then(() => {
     });
+  }
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.header.currentDate !== this.props.header.currentDate) {
+      let {header: {startOfMonth, endOfMonth}} = nextProps;
+      this.fetchEventsForMonth(startOfMonth, endOfMonth).then(() => {
+      });
+    }
   }
 
   closeEventModal = () => {
@@ -63,19 +70,13 @@ class CalendarBodyContainer extends Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    return (nextProps.loadingEvents !== this.props.loadingEvents)
-      || (nextProps.header.currentDate !== this.props.header.currentDate);
+    return (nextProps.header.currentDate !== this.props.header.currentDate);
   }
 
   render() {
-    const {loadingEvents} = this.props;
-    if (loadingEvents) {
-      return <Loader loadingText={"Loading Events for Calendar"} size={40} fontSize={22}/>;
-    }
-
     return (<div style={{height: '100%'}}>
         <CalendarBody
-          currentDate={this.props.currentDate}
+          currentDate={this.props.header.currentDate}
           eventClick={this.eventClick}/>
         <EventModal closeModal={() => this.closeEventModal()}/>
       </div>
@@ -99,7 +100,6 @@ export const ALL_EVENTS_BETWEEN_QUERY = gql`
 const reduxWrapper = connect(
   state => ({
     header: state.header,
-    filter: state.tags.filterTags,
     loadingEvents: state.event.fetching
   })
 );

@@ -1,15 +1,8 @@
 import React, {Component} from 'react';
-import CalendarMenu from './components/CalendarMenu';
 
-import {withStyles} from 'material-ui/styles';
-import moment from 'moment';
 import {gql, graphql, compose} from 'react-apollo';
 import './sass/App.scss';
-import CalendarBodyContainer from './containers/CalendarBodyContainer';
-import CreateEventContainer from './containers/CreateEventContainer'
-import SearchContainer from './containers/SearchContainer';
 // Connect Redux
-import {withRouter} from "react-router";
 import Loader from './components/Loader';
 import DynamicTheme from "./dynamicTheme";
 import {MuiThemeProvider} from 'material-ui/styles';

@@ -4,6 +4,7 @@ import moment from 'moment';
 import Week from './Body/Week';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import {fade} from 'material-ui/styles/colorManipulator';
+import EventsLoader from './Body/EventsLoader';
 
 const styles = theme => ({
   CalendarBodyWrapper: {
@@ -126,6 +127,8 @@ class CalendarBody extends Component {
             <span className={classes.DayName}>Saturday</span>
           </div>
           <div className={classes.SquaresWrapper}>
+            {/* LOADING EVENTS OVERLAY*/}
+            <EventsLoader loadingText={"updating events"} size={40} fontSize={30} />
             {WEEKS}
           </div>
         </div>
