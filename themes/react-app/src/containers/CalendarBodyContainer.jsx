@@ -8,15 +8,6 @@ import {startFetchNewEvents, getNewEvents, filterEvents} from "../actions/events
 import {getSingleEventFulfilled, openSingleEventModal, closeSingleEventModal} from "../actions/currentEventActions";
 import EventModal from '../components/Modals/EventModal';
 
-/**
- * 1. container class that contains the following data: events, filter, currentDate
- * 2. It will essentially render the calendar body.
- * 3. The biggest thing here is when a tag changes It will re-render the calendar body,
- *  this causes a bit of a performance issue when we re-render, especially if there is a large number of events.
- *  4. The biggest "lag" is when we have filters applied and we uncheck the last filter as to re-render the calendar again with all events
- *
- *  Any sort of performance optimization around this would be fantastic
- */
 class CalendarBodyContainer extends Component {
 
   constructor(props) {
@@ -26,9 +17,9 @@ class CalendarBodyContainer extends Component {
 
   fetchEventsForMonth = async (startDate, endDate) => {
     // 1. Place Component into loading mode
-    this.props.dispatch(startFetchNewEvents());
+    this.props.fetchAllEvents();
     // 2. Start Fetching the events
-    this.props.client.query({
+    await this.props.client.query({
       query: ALL_EVENTS_BETWEEN_QUERY,
       variables: {
         startDate: startDate,
@@ -37,46 +28,46 @@ class CalendarBodyContainer extends Component {
     })
       .then((res) => {
         // 3. Events have been updated and loading mode will be false
-        this.props.dispatch(getNewEvents(res.data.getEventsBetween));
-        this.props.dispatch(filterEvents());
+        this.props.storeAllEvents(res.data.getEventsBetween);
+        this.props.filterEvents();
       })
   };
 
   eventClick = async (id, title) => {
     this.openEventModal();
-    this.props.dispatch(getSingleEventFulfilled(id, title));
+    this.props.getEventData(id, title);
   };
 
   componentWillMount() {
-    const {header: {startOfMonth, endOfMonth}} = this.props;
-    this.fetchEventsForMonth(startOfMonth, endOfMonth).then(() => {
+    const {startDate, endDate} = this.props;
+    this.fetchEventsForMonth(startDate, endDate).then(() => {
     });
   }
 
   componentWillUpdate(nextProps) {
-    if (nextProps.header.currentDate !== this.props.header.currentDate) {
-      let {header: {startOfMonth, endOfMonth}} = nextProps;
-      this.fetchEventsForMonth(startOfMonth, endOfMonth).then(() => {
+    if (nextProps.currentDate !== this.props.currentDate) {
+      let {startDate, endDate} = nextProps;
+      this.fetchEventsForMonth(startDate, endDate).then(() => {
       });
     }
   }
 
   closeEventModal = () => {
-    this.props.dispatch(closeSingleEventModal());
+    this.props.closeModal()
   };
 
   openEventModal = () => {
-    this.props.dispatch(openSingleEventModal());
+    this.props.openModal();
   };
 
   shouldComponentUpdate(nextProps) {
-    return (nextProps.header.currentDate !== this.props.header.currentDate);
+    return (nextProps.currentDate !== this.props.currentDate);
   }
 
   render() {
     return (<div style={{height: '100%'}}>
         <CalendarBody
-          currentDate={this.props.header.currentDate}
+          currentDate={this.props.currentDate}
           eventClick={this.eventClick}/>
         <EventModal closeModal={() => this.closeEventModal()}/>
       </div>
@@ -99,8 +90,18 @@ export const ALL_EVENTS_BETWEEN_QUERY = gql`
 
 const reduxWrapper = connect(
   state => ({
-    header: state.header,
+    currentDate: state.header.currentDate,
+    startDate: state.header.startOfMonth,
+    endDate: state.header.endOfMonth,
     loadingEvents: state.event.fetching
+  }),
+  dispatch => ({
+    closeModal: () => dispatch(closeSingleEventModal()),
+    openModal: () => dispatch(openSingleEventModal()),
+    getEventData: (id, title) => dispatch(getSingleEventFulfilled(id, title)),
+    fetchAllEvents: () => dispatch(startFetchNewEvents()),
+    storeAllEvents: (events) => dispatch(getNewEvents(events)),
+    filterEvents: () => dispatch(filterEvents())
   })
 );
 
