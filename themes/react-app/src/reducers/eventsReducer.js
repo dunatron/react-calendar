@@ -70,7 +70,7 @@ export default function reducer(state = initialState, action) {
       }
 
       return {
-        ...state, fetching: false, fetched: true, events: EventsList,
+        ...state, fetching: true, fetched: true, events: EventsList,
       }
     }
     case "FILTER_EVENTS": {
@@ -92,6 +92,7 @@ export default function reducer(state = initialState, action) {
 
       return {
         ...state,
+        fetching: false,
         visibleEvents: allEvents
       }
     }

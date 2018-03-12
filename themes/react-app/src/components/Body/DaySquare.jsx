@@ -158,13 +158,7 @@ const styles = theme => ({
   },
 });
 
-// @connect((store, ownProps) => {
-//   let events = R.pathOr([], [ownProps.year, ownProps.month, ownProps.day, 'data'], store.event.visibleEvents);
-//   //let events = R.pathOr('N/A', ['2018', 3, 27], store.event.events2);
-//   return {
-//     daysEvents: events
-//   }
-// })
+// ToDo: separate day square and and days events
 class DaySquare extends Component {
 
   shouldComponentUpdate(nextProps) {
@@ -215,7 +209,8 @@ class DaySquare extends Component {
 const reduxWrapper = connect(
   (state, ownProps) => ({
     daysEvents: R.pathOr([], [ownProps.year, ownProps.month, ownProps.day, 'data'], state.event.visibleEvents)
-  })
+  }),
+  null // currently not dispatching any actions
 );
 
 export default compose(
