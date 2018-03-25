@@ -8,7 +8,6 @@ import {startFetchNewEvents, getNewEvents, filterEvents} from "../actions/events
 import {getSingleEventFulfilled, openSingleEventModal, closeSingleEventModal} from "../actions/currentEventActions";
 import EventModal from '../components/Modals/EventModal';
 
-// ToDo: fix bug where 1st and last day of the month does not have events
 class CalendarBodyContainer extends Component {
 
   constructor(props) {

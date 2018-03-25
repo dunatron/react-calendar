@@ -10,10 +10,7 @@ import Typography from 'material-ui/Typography';
 // Steps
 import DetailsStep from '../components/CreateEvent/DetailsStep';
 import DateTimeStep from '../components/CreateEvent/DateTimeStep';
-
-import indigo from 'material-ui/colors/indigo';
-import pink from 'material-ui/colors/pink';
-import red from 'material-ui/colors/red';
+import MediaStep from '../components/CreateEvent/MediaStep';
 
 const styles = theme => ({
 
@@ -57,10 +54,7 @@ function getStepContent(step) {
     case 1:
       return <DateTimeStep />;
     case 2:
-      return `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`;
+      return <MediaStep />;
     default:
       return 'Unknown step';
   }
