@@ -13,12 +13,10 @@ class FileUploader extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      importOption: "merge", // ["merge", "replace"]
       stage: 0,
       dragStatus: "",
       uploading: false,
       uploadPercent: 0,
-      gLCodesArray: [],
     }
   }
 
@@ -166,72 +164,6 @@ class FileUploader extends Component {
     }
   }
 
-  doUpload = (uniqueId, piece, base64, name, type, size) => {
-    var me = this
-    var fileLength = base64.length
-    var chunkSize = 10000
-    var postSize = 150000
-    var filePieces = Math.floor(fileLength / postSize) + 1
-    var currentPiece = base64.substr(piece * postSize, postSize)
-    var currentCmd = piece + 1 == filePieces ? "saving" : "uploading"
-    var chunkIndex = 0
-    var fArray = []
-    var pieceLen = currentPiece.length
-
-    this.setState({
-      stage: 1,
-      dragStatus: "dropActive",
-    })
-
-    while (chunkIndex < pieceLen) {
-      var fbit = currentPiece.substr(chunkIndex, chunkSize)
-      fArray.push(fbit)
-      chunkIndex += chunkSize
-    }
-    piece += 1
-    apex.jQuery.ajax({
-      type: "POST",
-      url: "wwv_flow.show",
-      data: {
-        p_request: "APPLICATION_PROCESS=APP_UPLOAD_FILE",
-        p_instance: $("#pInstance").val(),
-        p_flow_id: nomos.applicationId,
-        p_flow_step_id: nomos.pageId,
-        x01: "uploadFile",
-        x02: name,
-        x03: type,
-        x04: size,
-        x05: nomos.pageId,
-        x06: currentCmd,
-        x07: piece,
-        x08: "event",
-        x09: uniqueId,
-        x10: this.props.event.id,
-        f01: fArray,
-      },
-      success: function() {
-        if (piece < filePieces) {
-          me.doUpload(uniqueId, piece, base64, name, type, size)
-          me.setState({
-            uploading: true,
-            uploadPercent: piece / filePieces * 100,
-          })
-        } else {
-          me.setState({
-            stage: 0,
-            dragStatus: "",
-            uploading: false,
-            uploadPercent: 0,
-          })
-          if (EventActions) {
-            EventActions.refreshDocs(true)
-          }
-        }
-      },
-      async: true,
-    })
-  }
-
   onFileChange = () => {
     var me = this
     var files = this.refs.uploadInput.getDOMNode().files
@@ -334,14 +266,6 @@ class FileUploader extends Component {
     // var input = this.refs.uploadInput.getDOMNode()
     // $(input).trigger("click")
     this.refs.uploadInput.click()
-  }
-
-  randomId = length => {
-    return Math.round(
-      Math.pow(36, length + 1) - Math.random() * Math.pow(36, length)
-    )
-      .toString(36)
-      .slice(1)
   }
 }
 
