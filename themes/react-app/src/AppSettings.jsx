@@ -1,14 +1,16 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import {gql, graphql, compose} from 'react-apollo';
+import { gql, graphql, compose } from 'react-apollo';
 import './sass/App.scss';
 // Connect Redux
-import {updateLogo} from './actions/settingsActions';
+import { updateLogo } from './actions/settingsActions';
 import Loader from './components/Loader';
 import DynamicTheme from "./dynamicTheme";
-import {MuiThemeProvider} from 'material-ui/styles';
+import { MuiThemeProvider } from 'material-ui/styles';
+import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import App from './App';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 const APP_SETTINGS_QUERY = gql`  
   query getAppSettings {
@@ -34,15 +36,15 @@ class AppSettings extends Component {
   }
 
   render() {
-    const {data: { loading, getAppSettings}} = this.props;
+    const { data: { loading, getAppSettings } } = this.props;
 
     if (loading) {
-      return <Loader loadingText={'Securing App'} size={40} fontSize={22}/>;
+      return <Loader loadingText={'Securing App'} size={40} fontSize={22} />;
     }
 
     // Get app settings from query and apply to MUITheme
     const AppSettings = getAppSettings[0];
-    const {HappLogo, ClientLogo} = AppSettings;
+    const { HappLogo, ClientLogo } = AppSettings;
     const dynamicTheme = DynamicTheme(AppSettings);
 
     this.props.logoUpdate('happLogo', HappLogo);
@@ -50,7 +52,9 @@ class AppSettings extends Component {
 
     return (
       <MuiThemeProvider theme={dynamicTheme}>
-        <App />
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <App />
+        </MuiPickersUtilsProvider>
       </MuiThemeProvider>
     )
   }

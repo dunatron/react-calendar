@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {withStyles} from 'material-ui/styles';
+import React, { Component } from 'react';
+import { withStyles } from 'material-ui/styles';
 import Logos from './Menu/Logos';
 import Navigation from './Menu/Navigation';
 import Actions from './Menu/Actions';
@@ -22,7 +22,7 @@ class CalendarMenu extends Component {
 
   render() {
 
-    const {classes} = this.props;
+    const { classes } = this.props;
 
     return (
       <ReactCSSTransitionGroup
@@ -32,9 +32,9 @@ class CalendarMenu extends Component {
         transitionEnterTimeout={500}
         transitionLeaveTimeout={300}>
         <div className={classes.MainMenu}>
-          <Logos/>
-          <Navigation/>
-          <Actions/>
+          <Logos />
+          <Navigation />
+          <Actions />
         </div>
       </ReactCSSTransitionGroup>
     );

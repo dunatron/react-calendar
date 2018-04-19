@@ -1,15 +1,14 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { withApollo, compose } from 'react-apollo'
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 import Select from 'material-ui/Select';
-import Input, { InputLabel } from 'material-ui/Input';
+import { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-import {updateTitleField, updateField} from '../../actions/createEventActions';
-import {connect} from "react-redux";
-import createEvent from "../../reducers/createEventReducer";
+import { FormControl } from 'material-ui/Form';
+import { updateField } from '../../actions/createEventActions';
+import { connect } from "react-redux";
 
 const styles = theme => ({
   container: {

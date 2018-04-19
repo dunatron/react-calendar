@@ -14,3 +14,21 @@ export function updateField(type, value) {
     }
   }
 }
+
+export function addNewDateTime() {
+  return {
+    type: "ADD_NEW_DATE_TIME",
+    payload: null
+  }
+}
+
+export function updateDateTime(i, k, v) {
+  return {
+    type: "UPDATE_DATE_TIME",
+    payload: {
+      index: i,
+      key: k,
+      value: v
+    }
+  }
+}
