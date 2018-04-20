@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withApollo, compose } from 'react-apollo'
 import { connect } from "react-redux";
 import { withStyles } from 'material-ui/styles';
-import TextField from 'material-ui/TextField';
 import BasicDatePicker from '../BasicDatePicker';
 import BasicTimePicker from '../BasicTimePicker';
 import { Button } from 'material-ui';
@@ -14,6 +13,19 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
+  dateRowHeader: {
+    fontSize: "16px",
+    color: theme.palette.primary.main
+  },
+  dateRow: {
+    display: "flex",
+    width: "100%",
+    flexWrap: "wrap",
+    padding: "15px 0"
+  },
+  pickerContainer: {
+    padding: "15px"
+  },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
@@ -23,32 +35,31 @@ const styles = theme => ({
 
 class DateTimeStep extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      eventDates: [
-        { date: "", start: "", finish: "" },
-        { date: "", start: "", finish: "" }
-      ]
-    }
-  }
-
-  //function DateTimeStep(props) {
-
   dateRow = (item, index) => {
-    console.log("dateRow ", item, index)
+    const { classes } = this.props;
     let { date, finish, start } = item
+    let newStart = new Date(start)
+    let newFinish = new Date(finish)
     return (
       <div>
-        <BasicDatePicker selectedDate={date} handleDateChange={(date) => this.handleDateChange(index, "date", date.format("hh:mm"))} />
-        <BasicTimePicker selectedTime={new Date()} />
-        <BasicTimePicker selectedTime={new Date()} />
+        <span className={classes.dateRowHeader}>[{index + 1}]</span>
+        <div className={classes.dateRow}>
+          <div className={classes.pickerContainer}>
+            <BasicDatePicker label="date" selectedDate={date} handleDateChange={(date) => this.handleDateTimeChange(index, "date", date.format("YYYY-MM-DD"))} />
+          </div>
+          <div className={classes.pickerContainer}>
+            <BasicTimePicker label="start time" selectedTime={newStart} handleTimeChange={(time) => this.handleDateTimeChange(index, "start", time.format("YYYY-MM-DD hh:mm a"))} />
+          </div>
+          <div className={classes.pickerContainer}>
+            <BasicTimePicker label="finish time" selectedTime={newFinish} handleTimeChange={(time) => this.handleDateTimeChange(index, "finish", time.format("YYYY-MM-DD hh:mm a"))} />
+          </div>
+        </div>
+        <hr />
       </div>
     )
   }
 
-  handleDateChange = (index, key, date) => {
-    console.log("Handling Change ", index, date)
+  handleDateTimeChange = (index, key, date) => {
     this.props.dispatch(updateDateTime(index, key, date))
   }
 
@@ -56,26 +67,19 @@ class DateTimeStep extends Component {
     this.props.dispatch(addNewDateTime())
   }
 
-
   render = () => {
     const { classes, DateTimes } = this.props;
-
-    console.log("Date Times from redux ? ", DateTimes)
-
     return (
       <div>
-        <Button onClick={this.addDateTime}> Add new DateTime </Button>
         <form className={classes.container} noValidate>
           {DateTimes && DateTimes.map((item, index) => {
-            console.log('mappings ', item, index)
             return this.dateRow(item, index)
           })}
         </form>
+        <Button variant="raised" color="primary" onClick={this.addDateTime}> Add new DateTime </Button>
       </div>
     );
   }
-
-
 }
 
 DateTimeStep.propTypes = {

@@ -1,9 +1,9 @@
 import moment from 'moment';
 
 const DEFAULT_DATE_TIME_OBJ = {
-  date: moment().format('YYYY-MM-DD hh:mm'),
-  start: moment().format('hh:mm'),
-  finish: moment().format('hh:mm'),
+  date: moment().format('YYYY-MM-DD'),
+  start: moment().format('YYYY-MM-DD hh:mm a'),
+  finish: moment().format('YYYY-MM-DD hh:mm a'),
 }
 
 const initialState = {
@@ -46,14 +46,28 @@ export default function reducer(state = initialState, action) {
       return { ...state, DateTimes: [...state.DateTimes, DEFAULT_DATE_TIME_OBJ] }
     }
     case "UPDATE_DATE_TIME": {
-      let index = action.payload.index
-      let key = action.payload.key
-      let value = action.payload.value
-      console.log("index ", index)
-      console.log("key ", key)
-      console.log("value ", value)
+
+      const { index, key, value } = action.payload
+
+      const dateTimes = [...state.DateTimes]
+
+      const updatedDateTimes = dateTimes.map((obj, idx) => {
+        if (idx !== index) {
+          // This isn't the item we care about - keep it as-is
+          return obj
+        }
+        // Otherwise, this is the one we want - return an updated value
+        let mutatedObj = [...obj]
+        mutatedObj[key] = value
+        return {
+          ...obj,
+          ...mutatedObj
+        }
+      })
+
       return {
-        ...state
+        ...state,
+        DateTimes: updatedDateTimes
       }
     }
     default: return { ...state }

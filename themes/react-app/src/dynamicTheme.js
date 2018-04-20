@@ -1,6 +1,6 @@
 // https://material.io/color/#!/?view.left=1&view.right=0&primary.color=D81B60&secondary.color=512DA8&primary.text.color=ffffff
 
-import {createMuiTheme} from 'material-ui/styles';
+import { createMuiTheme } from 'material-ui/styles';
 
 const createDynamicMuiTheme = (settings) => {
 
@@ -13,7 +13,7 @@ const createDynamicMuiTheme = (settings) => {
     SecondaryColorDark = "#140078",
     SecondaryContrastText = "#FFF";
 
-  const {PCMain, PCLight, PCDark, SCMain, SCLight, SCDark, PCContrast, SCContrast} = settings;
+  const { PCMain, PCLight, PCDark, SCMain, SCLight, SCDark, PCContrast, SCContrast } = settings;
 
   if (PCMain) {
     PrimaryColorMain = `#${PCMain}`

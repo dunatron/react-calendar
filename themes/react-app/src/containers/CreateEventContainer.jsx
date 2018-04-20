@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { withApollo, compose } from 'react-apollo'
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
@@ -33,11 +33,12 @@ const styles = theme => ({
   },
   createEventContainer: {
 
-    overflow: 'scroll'
+    overflowX: 'scroll'
   },
   [theme.breakpoints.up('md')]: {
     createEventContainer: {
-      height: `calc(100% - ${theme.spec.menuMinHeight}px)`,
+      overflowX: "hidden",
+      height: `calc(100% - ${theme.spec.menuDesktopHeight}px)`,
     }
   },
 

@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {withStyles} from 'material-ui/styles';
+import React, { Component } from 'react';
+import { withStyles } from 'material-ui/styles';
 import LeftArrow from 'material-ui-icons/KeyboardArrowLeft';
 import RightArrow from 'material-ui-icons/KeyboardArrowRight';
 import IconButton from 'material-ui/IconButton';
-import {connect} from "react-redux";
-import {compose} from "react-apollo/index";
-import {nextMonth, prevMonth} from '../../actions/headerActions';
+import { connect } from "react-redux";
+import { compose } from "react-apollo/index";
+import { nextMonth, prevMonth } from '../../actions/headerActions';
 
 const styles = theme => ({
   LogosWrapper: {
@@ -51,7 +51,7 @@ class Navigation extends Component {
   };
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
 
     return (
       <div className={classes.LogosWrapper}>
