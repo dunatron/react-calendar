@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {withStyles} from 'material-ui/styles';
+import React, { Component } from 'react';
+import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper'
 import ReactModal from 'react-modal';
@@ -14,12 +14,12 @@ import CloseIcon from 'material-ui-icons/Close';
 import Loader from '../Loader';
 import CategoriesList from '../../containers/CategoriesListContainer';
 import LoginForm from '../Login';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { Drawer, MenuItem} from 'material-ui'
-import {compose, gql, graphql} from "react-apollo/index";
+import { Drawer, MenuItem } from 'material-ui'
+import { compose, gql, graphql } from "react-apollo/index";
 import store from '../../state/store';
-import {searchEvents} from "../../actions/searchEventActions";
+import { searchEvents } from "../../actions/searchEventActions";
 
 
 const drawerWidth = 240;
@@ -168,7 +168,7 @@ class Actions extends Component {
   };
 
   openModal() {
-    this.setState({modalIsOpen: true});
+    this.setState({ modalIsOpen: true });
   }
 
   afterOpenModal() {
@@ -177,16 +177,16 @@ class Actions extends Component {
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({ modalIsOpen: false });
   }
 
   openLoginModal() {
-    this.setState({loginModalIsOpen: true});
+    this.setState({ loginModalIsOpen: true });
     this.toggleDrawer('settingsDraw', false)
   }
 
   closeLoginModal() {
-    this.setState({loginModalIsOpen: false});
+    this.setState({ loginModalIsOpen: false });
   }
 
   afterOpenLoginModal() {
@@ -199,7 +199,7 @@ class Actions extends Component {
 
     // 2. call search events function
     this.searchEvents(this.state.searchText)
-      .then(() =>{
+      .then(() => {
 
       })
 
@@ -219,11 +219,11 @@ class Actions extends Component {
 
   render() {
 
-    const {classes} = this.props;
+    const { classes } = this.props;
 
-    const {token} = store.getState();
+    const { token } = store.getState();
 
-    const {data: {validateToken, loading}} = this.props;
+    const { data: { validateToken, loading } } = this.props;
     if (loading) {
       return <Loader loadingText={"applying settings"} size={20} fontSize={12} />
     }
@@ -268,8 +268,8 @@ class Actions extends Component {
           anchor="left"
           open={this.state.filterDraw}
           onClose={this.toggleDrawer('filterDraw', false)}
-          //children={}
-          // onClose={(e) => {e.preventDefault()}}
+        //children={}
+        // onClose={(e) => {e.preventDefault()}}
         >
           <div className={classes.drawerInner}>
             <div className={classes.drawerHeader}>
@@ -277,7 +277,7 @@ class Actions extends Component {
                 <CloseIcon />
               </IconButton>
             </div>
-            <CategoriesList/>
+            <CategoriesList />
           </div>
 
         </Drawer>
@@ -286,7 +286,7 @@ class Actions extends Component {
           anchor="right"
           open={this.state.settingsDraw}
           onClose={this.toggleDrawer('settingsDraw', false)}
-          >
+        >
           <MenuItem onClick={this.toggleDrawer('settingsDraw', false)}>CLOSE</MenuItem>
           <MenuItem >Select Happ Calendar</MenuItem>
           <MenuItem>
@@ -343,13 +343,13 @@ class Actions extends Component {
           <div>2 ) CodeExampleList Will contain a currentData which will have data about one card</div>
           <div>3 ) On a card Button press send the data up to CodeExampleList</div>
           <form>
-            <input/>
+            <input />
             <button>tab navigation</button>
             <button>stays</button>
             <button>inside</button>
             <button>the modal</button>
 
-            <Paper className={classes.paper} children={<div>The body</div>}/>
+            <Paper className={classes.paper} children={<div>The body</div>} />
 
           </form>
         </ReactModal>

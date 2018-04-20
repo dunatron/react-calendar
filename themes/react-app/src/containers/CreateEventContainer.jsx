@@ -6,6 +6,7 @@ import Stepper, { Step, StepLabel, StepContent } from 'material-ui/Stepper';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
+import HelperAlert from '../components/HelperAlert'
 
 // Steps
 import DetailsStep from '../components/CreateEvent/DetailsStep';
@@ -61,6 +62,22 @@ function getStepContent(step) {
   }
 }
 
+function getStepHelp(step) {
+  switch (step) {
+    case 0:
+      return <HelperAlert header="Event Details" message="Please enter 
+      the event Title, Description and also please pick a category" />;
+    case 1:
+      return <HelperAlert header="Date & Times" message="Please select the event Date, Start time, and Finish time.
+       You can add multiple rows of event date times" />;
+    case 2:
+      return <HelperAlert header="Event Image" message="Please upload your event image by dragging it into the draggable area
+       or by clicking the draggable area and choosing your image" />;
+    default:
+      return 'Unknown step';
+  }
+}
+
 class CreateEventContainer extends Component {
 
   state = {
@@ -101,7 +118,7 @@ class CreateEventContainer extends Component {
             {steps.map((label, index) => {
               return (
                 <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
+                  <StepLabel>{label}{getStepHelp(index)}</StepLabel>
                   <StepContent>
                     <Typography>{getStepContent(index)}</Typography>
                     <div className={classes.actionsContainer}>
