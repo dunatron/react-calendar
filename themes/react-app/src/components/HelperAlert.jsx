@@ -66,7 +66,7 @@ class SimpleSnackbar extends React.Component {
             <IconButton
               key="close"
               aria-label="Close"
-              color="secondary"
+              color="primary"
               className={classes.close}
               onClick={this.handleClose}
             >
