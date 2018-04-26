@@ -1,11 +1,14 @@
-import React, {Component} from 'react';
-import {withStyles} from 'material-ui/styles';
+import React, { Component } from 'react';
+import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
-import {compose, withApollo} from "react-apollo/index";
-import {fade} from 'material-ui/styles/colorManipulator';
+import { compose, withApollo } from "react-apollo/index";
+import { fade } from 'material-ui/styles/colorManipulator';
 import Tooltip from 'material-ui/Tooltip';
 import VirtualList from 'react-virtual-list';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
+import ReactDOM from 'react-dom'
+
+
 const R = require('ramda');
 
 const styles = theme => ({
@@ -32,6 +35,13 @@ const styles = theme => ({
   //   position: 'relative',
   //   margin: 0,
   // },
+  outerSquare: {
+    position: "relative",
+    height: "100%",
+    width: "100%",
+    overflow: "hidden",
+    right: "15px"
+  },
   innerSquare: {
     height: 'inherit',
     overflowY: 'hidden',
@@ -135,9 +145,19 @@ const styles = theme => ({
       boxSizing: 'content-box !important',
       margin: 0
     },
+    outerSquare: {
+      position: "absolute",
+      margin: `${theme.spec.eventGapSpace}px 0 0 0`,
+      height: `calc(100% - ${theme.spec.eventGapSpace}px)`,
+      width: "100%",
+      overflow: "hidden",
+      right: "-15px"
+    },
     innerSquare: {
       margin: '0',
-      padding: '10px'
+      padding: `0 ${theme.spec.eventGapSpace}px 0 0`,
+      overflowY: 'scroll',
+      overflowX: 'hidden',
     },
     eventCardBtn: {
       width: '100%',
@@ -161,23 +181,48 @@ const styles = theme => ({
 // ToDo: separate day square and and days events
 class DaySquare extends Component {
 
+  constructor(props) {
+    super(props);
+    // create a ref to store the textInput DOM element
+    this.virtualContainer = React.createRef();
+
+    const state = {
+      hasMounted: false
+    };
+
+    this.state = state;
+  }
+
   shouldComponentUpdate(nextProps) {
     return (nextProps.daysEvents !== this.props.daysEvents);
   }
 
-  render() {
-    console.log('DaySquare render');
-    const {classes, isToday, prettyDate, daysEvents} = this.props;
+  componentDidMount = () => {
+    this.setState({ hasMounted: true })
+  }
 
-    const MyList = ({virtual, itemHeight,}) => (
-      <ul className={classes.eventsWrapper} style={virtual.style}>
+  generateList = (events) => {
+    console.log("render generateList ", this.props)
+    const { classes, daysEvents } = this.props;
+
+    const virtualListOptions = {
+      container: this.refs.virtualContainer, // use this scrollable element as a container
+      // initialState: {
+      //   firstItemIndex: 0, // show first ten items
+      //   lastItemIndex: 9,  // during initial render
+      // },
+    }
+
+    const MyList = ({ virtual, itemHeight, }) => (
+      // <ul className={classes.eventsWrapper} style={virtual.style}>
+      <div style={virtual.style}>
         {virtual.items.map(item => (
           <Tooltip id="tooltip-top-start" key={item.ID} title={item.Title} classes={{
             popper: classes.eventToolTip
           }}>
             <Button
               color="primary"
-              style={{height: itemHeight}}
+              style={{ height: itemHeight }}
               onClick={() => this.props.eventClick(item.ID, item.Title)}
               classes={{
                 root: classes.eventCardBtn, // className, e.g. `OverridesClasses-root-X`
@@ -185,21 +230,40 @@ class DaySquare extends Component {
               }}>{item.Title}</Button>
           </Tooltip>
         ))}
-      </ul>
+      </div>
+      // </ul>
     );
 
-    const MyVirtualList = VirtualList()(MyList);
+    const MyVirtualList = VirtualList(virtualListOptions)(MyList);
+    return <MyVirtualList
+      items={daysEvents}
+      itemHeight={32}
+    />
+  }
+
+  renderEvents = (events) => {
+    return events.map((event, index) => {
+      return <p>{index}</p>
+    })
+  }
+
+  render() {
+    console.log('DaySquare render');
+    const { classes, isToday, prettyDate, daysEvents } = this.props;
 
     return (
       <div className={this.props.className}>
         <span className={classes.prettyDate}>{prettyDate}</span>
         <span className={(isToday ? classes.isTodayNumber : classes.dayNumber)}>{this.props.dayNumber}</span>
-        <div className={classes.innerSquare}>
-          {/*{this.renderEvents()}*/}
-          <MyVirtualList
+        <div className={classes.outerSquare}>
+          <div className={classes.innerSquare} id="virtualContainer" ref="virtualContainer">
+            {/* {this.renderEvents(daysEvents)} */}
+            {/* <MyVirtualList
             items={daysEvents}
             itemHeight={32}
-          />
+          /> */}
+            {this.state.hasMounted && this.generateList()}
+          </div>
         </div>
       </div>
     );

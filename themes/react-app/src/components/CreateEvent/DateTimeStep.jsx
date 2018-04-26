@@ -5,13 +5,18 @@ import { connect } from "react-redux";
 import { withStyles } from 'material-ui/styles';
 import BasicDatePicker from '../BasicDatePicker';
 import BasicTimePicker from '../BasicTimePicker';
-import { Button } from 'material-ui';
+import Tooltip from 'material-ui/Tooltip';
+import { Button, IconButton } from 'material-ui';
+import DeleteIcon from 'material-ui-icons/Delete';
 import { addNewDateTime, updateDateTime } from '../../actions/createEventActions';
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
+  },
+  dateRowContainer: {
+    position: "relative"
   },
   dateRowHeader: {
     fontSize: "16px",
@@ -22,6 +27,10 @@ const styles = theme => ({
     width: "100%",
     flexWrap: "wrap",
     padding: "15px 0"
+  },
+  removeRowButton: {
+    position: "absolute",
+    right: 0
   },
   pickerContainer: {
     padding: "15px"
@@ -41,8 +50,16 @@ class DateTimeStep extends Component {
     let newStart = new Date(start)
     let newFinish = new Date(finish)
     return (
-      <div>
+      <div className={classes.dateRowContainer} >
         <span className={classes.dateRowHeader}>[{index + 1}]</span>
+        <Tooltip id="tooltip-top-start" title={"remove date row"} classes={{
+          popper: classes.eventToolTip
+        }}>
+          <IconButton className={classes.removeRowButton} aria-label="Delete" color="primary">
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+
         <div className={classes.dateRow}>
           <div className={classes.pickerContainer}>
             <BasicDatePicker label="date" selectedDate={date} handleDateChange={(date) => this.handleDateTimeChange(index, "date", date.format("YYYY-MM-DD"))} />

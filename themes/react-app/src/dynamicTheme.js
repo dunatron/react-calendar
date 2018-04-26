@@ -44,7 +44,8 @@ const createDynamicMuiTheme = (settings) => {
     direction: "ltr",
     "spec": {
       menuDesktopHeight: 60,
-      dayNameHeight: 40
+      dayNameHeight: 40,
+      eventGapSpace: 15
     },
     "palette": {
       "common": {
