@@ -40,7 +40,6 @@ const styles = theme => ({
     height: "100%",
     width: "100%",
     overflow: "hidden",
-    right: "15px"
   },
   innerSquare: {
     height: 'inherit',
@@ -58,8 +57,8 @@ const styles = theme => ({
     margin: 0
   },
   eventToolTip: {
-    left: '-5px !important',
-    maxWidth: `calc(100% - 25px)`,
+    // left: '-5px !important',
+    // maxWidth: `calc(100% - 25px)`,
     pointerEvents: 'none'
   },
   eventCardBtn: {
@@ -194,19 +193,36 @@ class DaySquare extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return (nextProps.daysEvents !== this.props.daysEvents);
+    if(nextProps.isMobileDevice !== this.props.isMobileDevice){
+      return true
+    }
+    if(nextProps.daysEvents !== this.props.daysEvents) {
+      return true
+    }
+    return false
   }
 
   componentDidMount = () => {
     this.setState({ hasMounted: true })
   }
 
-  generateList = (events) => {
+  generateList = () => {
     console.log("render generateList ", this.props)
-    const { classes, daysEvents } = this.props;
+    const { classes, daysEvents, isMobileDevice } = this.props;
+    let container, buffer, itemHeight
+
+    if(isMobileDevice){
+      container = window
+      buffer = 0 // filter will lag as we are buffering 31 * buffer
+      itemHeight = 36
+    } else {
+      container = this.refs.virtualContainer
+      buffer = 0
+      itemHeight = 32
+    }
 
     const virtualListOptions = {
-      container: this.refs.virtualContainer, // use this scrollable element as a container
+      container: container, // use this scrollable element as a container
       // initialState: {
       //   firstItemIndex: 0, // show first ten items
       //   lastItemIndex: 9,  // during initial render
@@ -237,7 +253,8 @@ class DaySquare extends Component {
     const MyVirtualList = VirtualList(virtualListOptions)(MyList);
     return <MyVirtualList
       items={daysEvents}
-      itemHeight={32}
+      itemHeight={itemHeight}
+      itemBuffer={buffer}
     />
   }
 
@@ -249,20 +266,16 @@ class DaySquare extends Component {
 
   render() {
     console.log('DaySquare render');
-    const { classes, isToday, prettyDate, daysEvents } = this.props;
+    const { classes, isToday, prettyDate, windowHeight, isMobileDevice} = this.props;
+    let {hasMounted} = this.state
 
     return (
       <div className={this.props.className}>
         <span className={classes.prettyDate}>{prettyDate}</span>
         <span className={(isToday ? classes.isTodayNumber : classes.dayNumber)}>{this.props.dayNumber}</span>
         <div className={classes.outerSquare}>
-          <div className={classes.innerSquare} id="virtualContainer" ref="virtualContainer">
-            {/* {this.renderEvents(daysEvents)} */}
-            {/* <MyVirtualList
-            items={daysEvents}
-            itemHeight={32}
-          /> */}
-            {this.state.hasMounted && this.generateList()}
+          <div className={classes.innerSquare} id="virtualContainer" ref="virtualContainer" style={isMobileDevice ? {paddingBottom: windowHeight/4} : {}}>
+            {hasMounted && this.generateList()}
           </div>
         </div>
       </div>
@@ -272,7 +285,9 @@ class DaySquare extends Component {
 
 const reduxWrapper = connect(
   (state, ownProps) => ({
-    daysEvents: R.pathOr([], [ownProps.year, ownProps.month, ownProps.day, 'data'], state.event.visibleEvents)
+    daysEvents: R.pathOr([], [ownProps.year, ownProps.month, ownProps.day, 'data'], state.event.visibleEvents),
+    isMobileDevice: state.settings.isMobileDevice,
+    windowHeight: state.settings.windowHeight
   }),
   null // currently not dispatching any actions
 );

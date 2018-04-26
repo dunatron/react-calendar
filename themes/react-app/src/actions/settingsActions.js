@@ -7,3 +7,13 @@ export function updateLogo(type, url) {
     }
   }
 }
+
+export function updateDimensions(width, height){
+  return {
+    type: "UPDATE_DIMENSIONS",
+    payload: {
+      width: width,
+      height: height
+    }
+  }
+}
