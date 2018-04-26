@@ -3,7 +3,8 @@ const initialState = {
   happLogo: '',
   windowWidth: window.innerWidth,
   windowHeight: window.innerHeight,
-  isMobileDevice: true
+  isMobileDevice: true,
+  actionsBarIsFixed: false
 };
 
 export default function reducer(state = initialState, action) {
@@ -23,6 +24,9 @@ export default function reducer(state = initialState, action) {
         windowHeight: height,
         isMobileDevice: isMobile
       }
+    }
+    case "UPDATE_ACTION_BAR_STATUS": {
+      return {...state, actionsBarIsFixed: action.payload}
     }
   }
   return state;

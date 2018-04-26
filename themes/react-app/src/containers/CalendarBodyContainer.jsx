@@ -61,7 +61,10 @@ class CalendarBodyContainer extends Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    return (nextProps.currentDate !== this.props.currentDate);
+    if(nextProps.currentDate !== this.props.currentDate) {
+      return true
+    }
+    return false;
   }
 
   render() {
@@ -93,7 +96,7 @@ const reduxWrapper = connect(
     currentDate: state.header.currentDate,
     startDate: state.header.startOfMonth,
     endDate: state.header.endOfMonth,
-    loadingEvents: state.event.fetching
+    loadingEvents: state.event.fetching,
   }),
   dispatch => ({
     closeModal: () => dispatch(closeSingleEventModal()),

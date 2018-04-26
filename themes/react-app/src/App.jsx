@@ -56,17 +56,19 @@ class App extends Component {
   }
 
   render() {
-    const { classes, windowWidth} = this.props;
+    const {classes, windowWidth, actionsBarIsFixed} = this.props;
     console.log("WINDOW MOUNTED WITH WIDTH OF ", windowWidth)
     return (
       <BrowserRouter>
         <div className={classes.Calendar}>
           <CalendarMenu/>
-          <Switch>
-            <Route exact path='/' component={CalendarBodyContainer}/>
-            <Route exact path='/create' component={CreateEventContainer}/>
-            <Route exact path='/search' component={SearchContainer}/>
-          </Switch>
+          <div style={actionsBarIsFixed ? {paddingLeft: "50px", height: "inherit"} : {height: "inherit"}}>
+            <Switch>
+              <Route exact path='/' component={CalendarBodyContainer}/>
+              <Route exact path='/create' component={CreateEventContainer}/>
+              <Route exact path='/search' component={SearchContainer}/>
+            </Switch>
+          </div>
         </div>
       </BrowserRouter>
     )
@@ -79,6 +81,7 @@ const reduxWrapper = connect(
   state => ({
     windowWidth: state.settings.windowWidth,
     windowHeight: state.settings.windowHeight,
+    actionsBarIsFixed: state.settings.actionsBarIsFixed
   }),
   dispatch => ({
     updateWindowWidth: () => dispatch(closeSingleEventModal()),

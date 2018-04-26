@@ -20,6 +20,9 @@ import { Drawer, MenuItem } from 'material-ui'
 import { compose, gql, graphql } from "react-apollo/index";
 import store from '../../state/store';
 import { searchEvents } from "../../actions/searchEventActions";
+// Connect Redux
+import {connect} from "react-redux";
+import {updateActionBarStatus} from "../../actions/settingsActions";
 
 
 const drawerWidth = 240;
@@ -45,6 +48,18 @@ const styles = theme => ({
     'align-items': 'center',
     'justify-content': 'center',
     minHeight: `${theme.spec.menuDesktopHeight}px`
+  },
+  FixedActionsWrapper: {
+    display: 'flex',
+    flex: '1',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.palette.primary.contrastText,
+    minHeight: `${theme.spec.menuDesktopHeight}px`,
+    position: "fixed",
+    top: 0,
+    zIndex: 800,
+    flexDirection: "column"
   },
   loadingWrapper: {
     'display': 'flex',
@@ -144,7 +159,8 @@ class Actions extends Component {
       filterDraw: false, // left
       searchDraw: false, // top
       settingsDraw: false, // right
-      openSecondary: true
+      openSecondary: true,
+      actionsIsFixed: false,
     };
 
     // this.openModal = this.openModal.bind(this);
@@ -155,6 +171,35 @@ class Actions extends Component {
     this.afterOpenLoginModal = this.afterOpenLoginModal.bind(this);
     this.closeLoginModal = this.closeLoginModal.bind(this);
 
+  }
+
+  componentDidMount = () => {
+    window.addEventListener("scroll", this.handleScroll2)
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener("scroll", this.handleScroll2)
+  }
+
+
+  handleScroll2 = event => {
+    // Save the element we're wanting to scroll
+    var el = document.querySelector("#target")
+    var pageY = window.scrollY
+    //  If  we've scrolled past the height of the element, add a class
+    if (el.getBoundingClientRect().bottom <= 0) {
+      // this.setState({
+      //   actionsIsFixed: true,
+      // })
+      this.props.updateActionBarStatus(true)
+
+      //  If we've scrolled back up to  the top of the container, remove the class
+    } else if (pageY == 0) {
+      // this.setState({
+      //   actionsIsFixed: false,
+      // })
+      this.props.updateActionBarStatus(false)
+    }
   }
 
   // shouldComponentUpdate = () => {
@@ -219,43 +264,47 @@ class Actions extends Component {
 
   render() {
 
-    const { classes } = this.props;
+    const { classes, isMobileDevice, windowHeight, actionsBarIsFixed } = this.props;
+
+    const fixedFilterStyle = {
+      minHeight: windowHeight
+    }
 
     const { token } = store.getState();
 
-    const { data: { validateToken, loading } } = this.props;
+    const { data: { validateToken, loading }  } = this.props;
     if (loading) {
       return <Loader loadingText={"applying settings"} size={20} fontSize={12} />
     }
 
     return (
-      <div className={classes.ActionsWrapper}>
+      <div className={actionsBarIsFixed ? classes.FixedActionsWrapper : classes.ActionsWrapper} id="target">
 
         <Link to='/' >
           <Tooltip id="tooltip-all-links" placement="top" title="main calendar">
-            <IconButton aria-label="" className={classes.actionIcon}>
+            <IconButton aria-label="" className={classes.actionIcon} color="primary">
               <DateRangeIcon />
             </IconButton>
           </Tooltip>
         </Link>
         <Link to='/search' >
           <Tooltip id="tooltip-all-links" placement="top" title="search area">
-            <IconButton aria-label="Search for events" className={classes.actionIcon}>
+            <IconButton aria-label="Search for events" className={classes.actionIcon} color="primary">
               <SearchIcon />
             </IconButton>
           </Tooltip>
         </Link>
         <Link to='/create' >
           <Tooltip id="tooltip-all-links" placement="top" title="create new event">
-            <IconButton aria-label="Create new events" className={classes.actionIcon}>
+            <IconButton aria-label="Create new events" className={classes.actionIcon} color="primary">
               <AddCircleIcon />
             </IconButton>
           </Tooltip>
         </Link>
-        <IconButton aria-label="Filter tags for events" className={classes.actionIcon} onClick={this.toggleDrawer('filterDraw', true)}>
+        <IconButton aria-label="Filter tags for events" className={classes.actionIcon} onClick={this.toggleDrawer('filterDraw', true)} color="primary">
           <FilterListIcon />
         </IconButton>
-        <IconButton aria-label="Settings for application" className={classes.actionIcon} onClick={this.toggleDrawer('settingsDraw', true)}>
+        <IconButton aria-label="Settings for application" className={classes.actionIcon} onClick={this.toggleDrawer('settingsDraw', true)} color="primary">
           <SettingIcon />
         </IconButton>
 
@@ -265,6 +314,7 @@ class Actions extends Component {
           classes={{
             paper: classes.drawerPaper,
           }}
+          style={actionsBarIsFixed ? fixedFilterStyle : {}}
           anchor="left"
           open={this.state.filterDraw}
           onClose={this.toggleDrawer('filterDraw', false)}
@@ -273,7 +323,7 @@ class Actions extends Component {
         >
           <div className={classes.drawerInner}>
             <div className={classes.drawerHeader}>
-              <IconButton className={classes.closeFilterIcon} onClick={this.toggleDrawer('filterDraw', false)}>
+              <IconButton className={classes.closeFilterIcon} onClick={this.toggleDrawer('filterDraw', false)} color="secondary">
                 <CloseIcon />
               </IconButton>
             </div>
@@ -367,7 +417,20 @@ query validateToken {
     }
 }`;
 
+const reduxWrapper = connect(
+  state => ({
+    actionsBarIsFixed: state.settings.actionsBarIsFixed,
+    windowWidth: state.settings.windowWidth,
+    windowHeight: state.settings.windowHeight,
+    isMobileDevice: state.settings.isMobileDevice,
+  }),
+  dispatch => ({
+    updateActionBarStatus: (status) => dispatch(updateActionBarStatus(status)),
+  })
+);
+
 export default compose(
   graphql(validateToken),
+  reduxWrapper,
   withStyles(styles)
 )(Actions);
