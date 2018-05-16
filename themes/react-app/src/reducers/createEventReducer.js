@@ -45,6 +45,27 @@ export default function reducer(state = initialState, action) {
 
       return { ...state, DateTimes: [...state.DateTimes, DEFAULT_DATE_TIME_OBJ] }
     }
+    case "REMOVE_DATE_TIME": {
+      return {
+        ...state,
+        DateTimes: [
+          ...state.DateTimes.slice(0, action.payload),
+          ...state.DateTimes.slice(action.payload + 1)
+        ]
+      }
+    }
+    case "ADD_IMAGE": {
+      return {...state, EventImages: [...state.EventImages, action.payload]}
+    }
+    case "REMOVE_IMAGE": {
+      return {
+        ...state,
+        EventImages: [
+          ...state.EventImages.slice(0, action.payload),
+          ...state.EventImages.slice(action.payload + 1)
+        ]
+      }
+    }
     case "UPDATE_DATE_TIME": {
 
       const { index, key, value } = action.payload

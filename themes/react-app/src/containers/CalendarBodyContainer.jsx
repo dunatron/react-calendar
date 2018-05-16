@@ -33,6 +33,18 @@ class CalendarBodyContainer extends Component {
       })
   };
 
+  /**
+   * ToDo: (Experimental)
+   * Drive the modal state by what is in the router.
+   * onClick() use browser router to push /event/${ID} to url
+   * Maybe look to see if a component can tell what is in its route?
+   * router able to detect when route changes? onChange component to do graphQL query?
+   * onComponentMount for first visits for copy paste url. Will get the url and feed variable into its grapghQL query
+   * NOTE: already using redux to get data for a singleEvent so detect browser url here.
+   * Make modal open when /event/${ID} is detected in the browser
+   * Also could use this type of patern for the /m/y for navigation
+   *
+   */
   eventClick = async (id, title) => {
     this.openEventModal();
     this.props.getEventData(id, title);

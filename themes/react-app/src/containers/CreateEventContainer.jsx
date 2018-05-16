@@ -12,6 +12,7 @@ import HelperAlert from '../components/HelperAlert'
 import DetailsStep from '../components/CreateEvent/DetailsStep';
 import DateTimeStep from '../components/CreateEvent/DateTimeStep';
 import MediaStep from '../components/CreateEvent/MediaStep';
+import ReviewStep from '../components/CreateEvent/ReviewStep';
 
 const styles = theme => ({
 
@@ -46,7 +47,7 @@ const styles = theme => ({
 });
 
 function getSteps() {
-  return ['Event Details', 'Date & Time', 'Event Media'];
+  return ['Event Details', 'Date & Time', 'Event Media', 'Review Event'];
 }
 
 function getStepContent(step) {
@@ -57,6 +58,8 @@ function getStepContent(step) {
       return <DateTimeStep />;
     case 2:
       return <MediaStep />;
+    case 3:
+      return <ReviewStep />;
     default:
       return 'Unknown step';
   }
@@ -73,6 +76,8 @@ function getStepHelp(step) {
     case 2:
       return <HelperAlert header="Event Image" message="Please upload your event image by dragging it into the draggable area
        or by clicking the draggable area and choosing your image" />;
+    case 3:
+      return <HelperAlert header="Review Event" message="Please Review your event Details are correct before submitting your event" />;
     default:
       return 'Unknown step';
   }

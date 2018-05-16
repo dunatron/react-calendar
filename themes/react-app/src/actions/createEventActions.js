@@ -22,6 +22,29 @@ export function addNewDateTime() {
   }
 }
 
+export function removeDateTime(idx) {
+  return {
+    type: "REMOVE_DATE_TIME",
+    payload: idx
+  }
+}
+
+export function addImage(imageObj) {
+  return {
+    type: "ADD_IMAGE",
+    payload: imageObj
+  }
+}
+
+export function removeImage(idx) {
+  return {
+    type: "REMOVE_IMAGE",
+    payload: idx
+  }
+}
+
+
+
 export function updateDateTime(i, k, v) {
   return {
     type: "UPDATE_DATE_TIME",
