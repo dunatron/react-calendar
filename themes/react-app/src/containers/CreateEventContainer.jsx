@@ -187,6 +187,32 @@ class CreateEventContainer extends Component {
   }
 }
 
+// mutation addEventImage($eventID:ID!, $imgSrc: String!) {
+//   addEventImage(eventID:$eventID, imgSrc:$imgSrc) {
+//     Title
+//     EventImages {
+//       edges {
+//         node {
+//           ID
+//         }
+//       }
+//     }
+//   }
+// }
+
+// mutation addEvent(
+//   $Title: String,
+//   $Description:String!
+// ){
+//   createEvent(Input:{
+//     Title:$Title,
+//       Description:$Description
+//   }) {
+//     Title
+//     Description
+//   }
+// }
+
 CreateEventContainer.propTypes = {
   classes: PropTypes.object,
 };
