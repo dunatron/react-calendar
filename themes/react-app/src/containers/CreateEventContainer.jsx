@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { withApollo, compose } from 'react-apollo'
+import { graphql, gql, compose, withApollo } from 'react-apollo'
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Stepper, { Step, StepLabel, StepContent } from 'material-ui/Stepper';
@@ -7,6 +8,7 @@ import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import HelperAlert from '../components/HelperAlert'
+
 
 // Steps
 import DetailsStep from '../components/CreateEvent/DetailsStep';
@@ -87,6 +89,7 @@ class CreateEventContainer extends Component {
 
   state = {
     activeStep: 0,
+    uploading: false
   };
 
   handleNext = () => {
@@ -108,8 +111,27 @@ class CreateEventContainer extends Component {
   };
 
   processEvent = async () => {
+    this.setState({
+      uploading: true
+    })
+    console.log('Begin Processing Events to database ')
+    const { newEvent: {Title, Description} } = this.props;
     // 1. finish the Steps with handleNext action
+
+
+    await this.props.createEventMutation({
+      variables: {
+        Title,
+        Description
+      }
+    }).then((res)=> {
+      console.log('The stored event res ', res)
+    })
+
     this.handleNext()
+    this.setState({
+      uploading: false
+    })
     // 2. prepare the data to be uploaded as single events
     // 3. perform a graphQL Mutation
   };
@@ -119,7 +141,15 @@ class CreateEventContainer extends Component {
 
     const { classes } = this.props;
     const steps = getSteps();
-    const { activeStep } = this.state;
+    const { activeStep, uploading } = this.state;
+
+    if(uploading) {
+      return <div>
+
+        UPLOADING Event Please wait...
+
+      </div>
+    }
 
     return (
       <div className={classes.createEventContainer}>
@@ -149,22 +179,16 @@ class CreateEventContainer extends Component {
                           onClick={this.handleNext}
                           className={classes.button}
                         >
-                          {/*{activeStep === steps.length - 1 ? 'Finish' : 'Next'}*/}
+                          {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                         </Button>
 
-                        {activeStep === steps.length - 1
-                          ?
+                        {activeStep === steps.length - 1 ?
                           <Button
                           variant="raised"
                           color="primary"
                           onClick={() => this.processEvent()}
-                          className={classes.button}>Finish</Button>
-                          :
-                          <Button
-                          variant="raised"
-                          color="primary"
-                          onClick={this.handleNext}
-                          className={classes.button}>Next</Button>
+                          className={classes.button}>Process Event</Button>
+                          : null
                         }
                       </div>
                     </div>
@@ -187,37 +211,52 @@ class CreateEventContainer extends Component {
   }
 }
 
-// mutation addEventImage($eventID:ID!, $imgSrc: String!) {
-//   addEventImage(eventID:$eventID, imgSrc:$imgSrc) {
-//     Title
-//     EventImages {
-//       edges {
-//         node {
-//           ID
-//         }
-//       }
-//     }
-//   }
-// }
+const CREATE_EVENT_MUTATION = gql`
+mutation addEvent(
+  $Title: String,
+  $Description:String!
+){
+  createEvent(Input:{
+    Title:$Title,
+      Description:$Description
+  }) {
+    ID
+    Title
+    Description
+  }
+}
+`;
 
-// mutation addEvent(
-//   $Title: String,
-//   $Description:String!
-// ){
-//   createEvent(Input:{
-//     Title:$Title,
-//       Description:$Description
-//   }) {
-//     Title
-//     Description
-//   }
-// }
+const CREATE_EVENT_IMAGE_MUTATION = gql`
+mutation addEventImage($eventID:ID!, $imgSrc: String!) {
+  addEventImage(eventID:$eventID, imgSrc:$imgSrc) {
+    Title
+    EventImages {
+      edges {
+        node {
+          ID
+        }
+      }
+    }
+  }
+}
+`;
+
 
 CreateEventContainer.propTypes = {
   classes: PropTypes.object,
 };
 
+const reduxWrapper = connect(
+  state => ({
+    newEvent: state.createEvent
+  })
+);
+
 export default compose(
+  graphql(CREATE_EVENT_MUTATION, { name: 'createEventMutation' }),
+  graphql(CREATE_EVENT_IMAGE_MUTATION, { name: 'createEventImageMutation' }),
+  withStyles(styles),
   withApollo,
-  withStyles(styles)
+  reduxWrapper,
 )(CreateEventContainer);
