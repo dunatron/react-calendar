@@ -59,6 +59,20 @@ SilverStripe\GraphQL\Controller:
           operations:
             create: true
             read: true
+      mutations:
+        addEventImage:
+          type: MyOrg\Model\Event
+          args:
+            eventID: ID!
+            imgSrc: String!
+          resolver: MyOrg\Model\AddEventImageResolver
+#    mutations:
+#      updateEventImages:
+#        type: MyOrg\Model\Event
+#        args:
+#          eventID: ID
+#          imgSrc: String
+#        resolver: MyOrg\Model\UpdateEventImagesResolver
   # Enforce HTTP basic authentication for GraphQL requests
   authenticators:
     class: SilverStripe\GraphQL\Auth\BasicAuthAuthenticator

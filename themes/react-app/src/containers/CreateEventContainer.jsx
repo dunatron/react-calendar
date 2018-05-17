@@ -107,6 +107,13 @@ class CreateEventContainer extends Component {
     });
   };
 
+  processEvent = async () => {
+    // 1. finish the Steps with handleNext action
+    this.handleNext()
+    // 2. prepare the data to be uploaded as single events
+    // 3. perform a graphQL Mutation
+  };
+
 
   render() {
 
@@ -142,8 +149,23 @@ class CreateEventContainer extends Component {
                           onClick={this.handleNext}
                           className={classes.button}
                         >
-                          {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                          {/*{activeStep === steps.length - 1 ? 'Finish' : 'Next'}*/}
                         </Button>
+
+                        {activeStep === steps.length - 1
+                          ?
+                          <Button
+                          variant="raised"
+                          color="primary"
+                          onClick={() => this.processEvent()}
+                          className={classes.button}>Finish</Button>
+                          :
+                          <Button
+                          variant="raised"
+                          color="primary"
+                          onClick={this.handleNext}
+                          className={classes.button}>Next</Button>
+                        }
                       </div>
                     </div>
                   </StepContent>
