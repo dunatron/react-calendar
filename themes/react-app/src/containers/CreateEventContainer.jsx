@@ -114,19 +114,46 @@ class CreateEventContainer extends Component {
     this.setState({
       uploading: true
     })
+
+    const NewEventIDs = []
+
     console.log('Begin Processing Events to database ')
-    const { newEvent: {Title, Description} } = this.props;
+    const { newEvent: {AccessType, Approved, Date, DateTimes, Description, 
+      EventImages, Finish, Free, Lat, LocationText, Lon, Owner, Restriction, 
+      SecondaryTag, SpecEntry, Start, TicketPhone, TicketUrl, Tickets, Title, Venue, 
+      Website
+    } } = this.props;
     // 1. finish the Steps with handleNext action
 
+    for(let Date in DateTimes){
+      await this.props.createEventMutation({
+        variables: {
+          Title,
+          Date: Date.date, 
+          Description, 
+          Venue, 
+          Start: Date.start, 
+          Finish: Date.finish, 
+          Approved, 
+          Free, 
+          Website, 
+          TicketUrl, 
+          TicketPhone, 
+          Restriction, 
+          SpecEntry, 
+          AccessType, 
+          LocationText, 
+          Lon, 
+          // OwnerID, 
+          SecondaryTagID: SecondaryTag
+        }
+      }).then((res)=> {
+        console.log('The stored event res ', res)
+        NewEventIDs.push(res.data.createEvent.ID) //push in res.dat.eventID
+      })
+    }
 
-    await this.props.createEventMutation({
-      variables: {
-        Title,
-        Description
-      }
-    }).then((res)=> {
-      console.log('The stored event res ', res)
-    })
+    console.log('ALL NEW IDS ', NewEventIDs)
 
     this.handleNext()
     this.setState({
@@ -214,11 +241,45 @@ class CreateEventContainer extends Component {
 const CREATE_EVENT_MUTATION = gql`
 mutation addEvent(
   $Title: String,
-  $Description:String!
+  $Date: String, 
+  $Description:String!, 
+  $Venue: String, 
+  $Start: String, 
+  $Finish: String, 
+  $Approved: Boolean, 
+  $Free: Boolean, 
+  $Website: String, 
+  $TicketUrl: String, 
+  $TicketPhone: String, 
+  $Restriction: String, 
+  $SpecEntry: String, 
+  $AccessType: String, 
+  $LocationText: String, 
+  $Lat: String,
+  $Lon: String, 
+  $OwnerID: ID, 
+  $SecondaryTagID: ID
 ){
   createEvent(Input:{
-    Title:$Title,
-      Description:$Description
+    Title: $Title,
+    Date: $Date, 
+    Description: $Description, 
+    Venue: $Venue, 
+    Start: $Start, 
+    Finish: $Finish, 
+    Approved: $Approved, 
+    Free: $Free, 
+    Website: $Website, 
+    TicketUrl: $TicketUrl, 
+    TicketPhone: $TicketPhone, 
+    Restriction: $Restriction, 
+    SpecEntry: $SpecEntry, 
+    AccessType: $AccessType, 
+    LocationText: $LocationText, 
+    Lat: $Lat,
+    Lon: $Lon, 
+    OwnerID: $OwnerID, 
+    SecondaryTagID: $SecondaryTagID
   }) {
     ID
     Title

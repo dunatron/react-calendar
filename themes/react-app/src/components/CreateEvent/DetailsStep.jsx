@@ -43,7 +43,7 @@ class DetailsStep extends Component {
     tags.map(tag => {
       // TagsList.push(<MenuItem value={tag.Title}>{tag.Title}</MenuItem>)
       tag.SecondaryTags.map(secondary => {
-        TagsList.push(<MenuItem value={secondary.Title}>{secondary.Title}</MenuItem>)
+        TagsList.push(<MenuItem value={secondary.HappTagID}>{secondary.Title}</MenuItem>)
       })
     });
     return TagsList;
