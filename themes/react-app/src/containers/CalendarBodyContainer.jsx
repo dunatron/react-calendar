@@ -63,7 +63,7 @@ class CalendarBodyContainer extends Component {
       });
     }
   }
-
+s
   closeEventModal = () => {
     this.props.closeModal()
   };
@@ -72,12 +72,12 @@ class CalendarBodyContainer extends Component {
     this.props.openModal();
   };
 
-  shouldComponentUpdate(nextProps) {
-    if(nextProps.currentDate !== this.props.currentDate) {
-      return true
-    }
-    return false;
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   if(nextProps.currentDate !== this.props.currentDate) {
+  //     return true
+  //   }
+  //   return false;
+  // }
 
   render() {
     return (<div style={{height: '100%'}}>

@@ -67,14 +67,21 @@ class CalendarBody extends Component {
 
   }
 
-  shouldComponentUpdate(nextProps) {
-    return (nextProps.currentDate !== this.props.currentDate);
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return (nextProps.currentDate !== this.props.currentDate);
+  // }
 
+/**
+ *
+ * ToDo: change currentDate to be monthYear.
+ * dayMonthYear will not always have the same day
+ * */
   renderWeeks(currentDate) {
     let weeks = [],
       done = false,
-      date = moment(currentDate).startOf("month").add("w" - 1).day("Sunday"),
+      // date = moment(currentDate).startOf("month").add("w" - 1).day("Sunday"),
+      // date = moment(currentDate).startOf("month").add(-1, "w").day("Sunday"),
+      date = moment(currentDate).startOf("month").day("Sunday"),
       monthIndex = date.month(),
       count = 0;
 

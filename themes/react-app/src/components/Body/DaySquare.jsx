@@ -192,22 +192,21 @@ class DaySquare extends Component {
     this.state = state;
   }
 
-  shouldComponentUpdate(nextProps) {
-    if(nextProps.isMobileDevice !== this.props.isMobileDevice){
-      return true
-    }
-    if(nextProps.daysEvents !== this.props.daysEvents) {
-      return true
-    }
-    return false
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   if(nextProps.isMobileDevice !== this.props.isMobileDevice){
+  //     return true
+  //   }
+  //   if(nextProps.daysEvents !== this.props.daysEvents) {
+  //     return true
+  //   }
+  //   return false
+  // }
 
   componentDidMount = () => {
     this.setState({ hasMounted: true })
   }
 
   generateList = () => {
-    console.log("render generateList ", this.props)
     const { classes, daysEvents, isMobileDevice } = this.props;
     let container, buffer, itemHeight
 
@@ -265,7 +264,6 @@ class DaySquare extends Component {
   }
 
   render() {
-    console.log('DaySquare render');
     const { classes, isToday, prettyDate, windowHeight, isMobileDevice} = this.props;
     let {hasMounted} = this.state
 
