@@ -26,11 +26,11 @@ class CalendarMenu extends Component {
 
     return (
       <ReactCSSTransitionGroup
-        transitionName="example"
+        transitionName="menuAnimation"
         transitionAppear={true}
-        transitionAppearTimeout={300}
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={300}>
+        transitionAppearTimeout={3000}
+        transitionEnterTimeout={5000}
+        transitionLeaveTimeout={3000}>
         <div className={classes.MainMenu}>
           <Logos />
           <Navigation />

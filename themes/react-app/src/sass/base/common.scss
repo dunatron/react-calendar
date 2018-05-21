@@ -1,0 +1,96 @@
+.example {
+   opacity: 0;
+   border: '1px solid red';
+ }
+
+.example-appear {
+  opacity: 1.0;
+  background-color: black;
+}
+
+.example-enter {
+  opacity: 0.01;
+  background-color: blue;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 5000ms ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 3000ms ease-in;
+}
+
+.eventList {
+  opacity: 0;
+  border: '1px solid red';
+}
+
+
+/****************
+* eventList || EVENTLIST ANIMATIONS
+*****************/
+.eventList-appear {
+  opacity: 1.0;
+  background-color: yellow;
+}
+
+.eventList-enter {
+  opacity: 0.01;
+  background-color: blue;
+}
+
+.eventList-enter.eventList-enter-active {
+  opacity: 1;
+  transition: opacity 5000ms ease-in;
+}
+
+.eventList-leave {
+  opacity: 1;
+}
+
+.eventList-leave.eventList-leave-active {
+  opacity: 0.01;
+  transition: opacity 3000ms ease-in;
+}
+
+/****************
+* menuAnimation || MENU ANIMATIONS
+*****************/
+.menuAnimation {
+  opacity: 0;
+  border: '1px solid red';
+}
+
+.menuAnimation-appear {
+  opacity: 0.5;
+  background-color: red;
+}
+
+.menuAnimation-enter {
+  opacity: 0.8;
+  background-color: green;
+}
+
+.menuAnimation-enter.menuAnimation-enter-active {
+  opacity: 1;
+  transition: opacity 5000ms ease-in;
+  background-color: blue;
+}
+
+.menuAnimation-leave {
+  opacity: 1;
+  background-color: yellow;
+}
+
+.menuAnimation-leave.menuAnimation-leave-active {
+  background-color: purple;
+  opacity: 0.01;
+  transition: opacity 3000ms ease-in;
+}

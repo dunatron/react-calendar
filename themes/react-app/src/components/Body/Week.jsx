@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {withStyles} from 'material-ui/styles';
 import DaySquare from './DaySquare';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import {fade} from 'material-ui/styles/colorManipulator';
 
 const styles = theme => ({
@@ -84,7 +85,16 @@ class Week extends Component {
 
     return (
       <div className={classes.week} style={ {height: `calc(100% / ${weeksInMonth})`} } key={days[0].toString()}>
-        <div className={classes.weekDays} ref={`WeeksDays-${WeekNumber}`} id={`WeeksDays-${WeekNumber}`}>{days}</div>
+        <div className={classes.weekDays} ref={`WeeksDays-${WeekNumber}`} id={`WeeksDays-${WeekNumber}`}>
+          <ReactCSSTransitionGroup
+            transitionName="example"
+            transitionAppear={true}
+            transitionAppearTimeout={500}
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={500 }>
+          {days}
+          </ReactCSSTransitionGroup>
+          </div>
       </div>
     );
   }

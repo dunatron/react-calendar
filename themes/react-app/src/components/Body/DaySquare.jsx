@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import { withStyles } from 'material-ui/styles';
+import React, {Component, Fragment} from 'react';
+import {withStyles} from 'material-ui/styles';
 import Button from 'material-ui/Button';
-import { compose, withApollo } from "react-apollo/index";
-import { fade } from 'material-ui/styles/colorManipulator';
+import {compose, withApollo} from "react-apollo/index";
+import {fade} from 'material-ui/styles/colorManipulator';
 import Tooltip from 'material-ui/Tooltip';
 import VirtualList from 'react-virtual-list';
-import { connect } from "react-redux";
+import {connect} from "react-redux";
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ReactDOM from 'react-dom'
 
 
@@ -203,14 +204,14 @@ class DaySquare extends Component {
   // }
 
   componentDidMount = () => {
-    this.setState({ hasMounted: true })
+    this.setState({hasMounted: true})
   }
 
   generateList = () => {
-    const { classes, daysEvents, isMobileDevice } = this.props;
+    const {classes, daysEvents, isMobileDevice} = this.props;
     let container, buffer, itemHeight
 
-    if(isMobileDevice){
+    if (isMobileDevice) {
       container = window
       buffer = 0 // filter will lag as we are buffering 31 * buffer
       itemHeight = 36
@@ -228,7 +229,7 @@ class DaySquare extends Component {
       // },
     }
 
-    const MyList = ({ virtual, itemHeight, }) => (
+    const MyList = ({virtual, itemHeight,}) => (
       // <ul className={classes.eventsWrapper} style={virtual.style}>
       <div style={virtual.style}>
         {virtual.items.map(item => (
@@ -237,7 +238,7 @@ class DaySquare extends Component {
           }}>
             <Button
               color="primary"
-              style={{ height: itemHeight }}
+              style={{height: itemHeight}}
               onClick={() => this.props.eventClick(item.ID, item.Title)}
               classes={{
                 root: classes.eventCardBtn, // className, e.g. `OverridesClasses-root-X`
@@ -264,7 +265,7 @@ class DaySquare extends Component {
   }
 
   render() {
-    const { classes, isToday, prettyDate, windowHeight, isMobileDevice} = this.props;
+    const {classes, isToday, prettyDate, windowHeight, isMobileDevice} = this.props;
     let {hasMounted} = this.state
 
     return (
@@ -272,8 +273,18 @@ class DaySquare extends Component {
         <span className={classes.prettyDate}>{prettyDate}</span>
         <span className={(isToday ? classes.isTodayNumber : classes.dayNumber)}>{this.props.dayNumber}</span>
         <div className={classes.outerSquare}>
-          <div className={classes.innerSquare} id="virtualContainer" ref="virtualContainer" style={isMobileDevice ? {paddingBottom: windowHeight/4} : {}}>
-            {hasMounted && this.generateList()}
+          <div className={classes.innerSquare} id="virtualContainer" ref="virtualContainer"
+               style={isMobileDevice ? {paddingBottom: windowHeight / 4} : {}}>
+            <ReactCSSTransitionGroup
+              transitionName="eventList"
+              transitionAppear={true}
+              transitionAppearTimeout={500}
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={500}>
+                {hasMounted && (
+                  this.generateList()
+                )}
+            </ReactCSSTransitionGroup>
           </div>
         </div>
       </div>

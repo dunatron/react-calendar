@@ -114,7 +114,7 @@ class CalendarBody extends Component {
 
     const {classes, currentDate} = this.props;
 
-    const WEEKS = this.renderWeeks(currentDate);
+    // const WEEKS = this.renderWeeks(currentDate);
 
     return (
       <ReactCSSTransitionGroup
@@ -136,7 +136,8 @@ class CalendarBody extends Component {
           <div className={classes.SquaresWrapper}>
             {/* LOADING EVENTS OVERLAY*/}
             <EventsLoader loadingText={"updating events"} size={40} fontSize={30} />
-            {WEEKS}
+            {/*{WEEKS}*/}
+            {this.renderWeeks(currentDate)}
           </div>
         </div>
       </ReactCSSTransitionGroup>
