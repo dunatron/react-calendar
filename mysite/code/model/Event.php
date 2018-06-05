@@ -6,6 +6,8 @@ use SilverStripe\ORM\Connect\MySQLSchemaManager;
 use SilverStripe\GraphQL\Scaffolding\Interfaces\ScaffoldingProvider;
 use SilverStripe\GraphQL\Scaffolding\Scaffolders\SchemaScaffolder;
 use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Definition\ObjectType;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Assets\Image;
 use SilverStripe\Security\Member;
@@ -339,6 +341,19 @@ class Event extends DataObject implements ScaffoldingProvider
             })
             ->setUsePagination(true)
             ->end();
+
+//        $scaffolder
+//            ->mutation('createEventImages', __CLASS__)
+//            ->addArgs([
+////                'eventIDS' => Type::listOf(Type::string())
+//            'eveentIDS' => Type::listOf(Type::id())
+//            ])
+//            ->setResolver(function ($object, array $args, $context, ResolveInfo $info) {
+//                $events = self::get();
+//                return $events;
+//            })
+//            ->setUsePagination(true)
+//            ->end();
 
 
         return $scaffolder;

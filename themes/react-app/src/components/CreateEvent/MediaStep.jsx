@@ -23,7 +23,7 @@ class MediaStep extends Component {
         {EventImages.length >=1 ? this.renderImages(EventImages) : null}
         <DnDFileReader
           event={this.props.event}
-          processData={(data, type, size, name, lastModified) => this.processData(data, type, size, name, lastModified)}
+          processData={(data,rawFile, type, name, size, lastModified) => this.processData(data, rawFile, type, name, size, lastModified)}
         />
       </div>
     );
@@ -49,10 +49,10 @@ class MediaStep extends Component {
     )
   }
 
-  processData = (data, type, size, name, lastModified) => {
+  processData = (data, rawFile, type, name, size, lastModified) => {
     switch (type) {
       case "img":
-        this._addImage(data, type, size, name, lastModified)
+        this._addImage(data, rawFile, type, name, size, lastModified)
         break
       case 1:
         this.renderWait(components, barStyle)
@@ -60,8 +60,8 @@ class MediaStep extends Component {
     }
   }
 
-  _addImage = (data, type, size, name, lastModified) => {
-    const imageObj = {data, type, size, name, lastModified}
+  _addImage = (data, rawFile, type, name, size, lastModified) => {
+    const imageObj = {data, rawFile, type, name, size, lastModified}
     this.props.addImage(imageObj)
   }
 

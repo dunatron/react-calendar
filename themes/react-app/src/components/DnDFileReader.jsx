@@ -64,6 +64,7 @@ class DnDFileReader extends Component {
       uploading: false,
       uploadPercent: 0,
       fileSrc: null,
+      rawFile: null,
       type: null,
       error: null,
       alertText: "",
@@ -256,8 +257,8 @@ class DnDFileReader extends Component {
   }
 
   processFileData = (data) => {
-    const { type, size, name, lastModified } = this.state
-    this.props.processData(data, type, name, size, lastModified)
+    const { type, size, rawFile, name, lastModified } = this.state
+    this.props.processData(data, rawFile, type, name, size, lastModified)
   }
 
   processCsv = file => {
@@ -292,6 +293,7 @@ class DnDFileReader extends Component {
     let imgSrc
     await this.setState({
       type: "img",
+      rawFile: file
     })
     reader.readAsDataURL(file)
     reader.onload = () => {

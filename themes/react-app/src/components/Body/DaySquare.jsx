@@ -251,11 +251,18 @@ class DaySquare extends Component {
     );
 
     const MyVirtualList = VirtualList(virtualListOptions)(MyList);
-    return <MyVirtualList
-      items={daysEvents}
-      itemHeight={itemHeight}
-      itemBuffer={buffer}
-    />
+    return <ReactCSSTransitionGroup
+      transitionName="example"
+      transitionAppear={true}
+      transitionAppearTimeout={500}
+      transitionEnterTimeout={500}
+      transitionLeaveTimeout={500}>
+      <MyVirtualList
+        items={daysEvents}
+        itemHeight={itemHeight}
+        itemBuffer={buffer}
+      />
+    </ReactCSSTransitionGroup>
   }
 
   renderEvents = (events) => {
@@ -281,9 +288,9 @@ class DaySquare extends Component {
               transitionAppearTimeout={500}
               transitionEnterTimeout={500}
               transitionLeaveTimeout={500}>
-                {hasMounted && (
-                  this.generateList()
-                )}
+              {hasMounted && (
+                this.generateList()
+              )}
             </ReactCSSTransitionGroup>
           </div>
         </div>

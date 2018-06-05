@@ -60,7 +60,7 @@ class DateTimeStep extends Component {
     let newStart = new Date(start)
     let newFinish = new Date(finish)
     return (
-      <div className={classes.dateRowContainer} >
+      <div className={classes.dateRowContainer} key={index}>
         <Card className={classes.card}>
         <span className={classes.dateRowHeader}>[{index + 1}]</span>
         <Tooltip id="tooltip-top-start" title={"remove date row"} classes={{

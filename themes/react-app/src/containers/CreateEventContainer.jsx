@@ -116,7 +116,7 @@ class CreateEventContainer extends Component {
     })
 
     const NewEventIDs = []
-
+    console.group('DATA SENT TO SERVER')
     console.log('Begin Processing Events to database ')
     const { newEvent: {AccessType, Approved, Date, DateTimes, Description, 
       EventImages, Finish, Free, Lat, LocationText, Lon, Owner, Restriction, 
@@ -125,7 +125,8 @@ class CreateEventContainer extends Component {
     } } = this.props;
     // 1. finish the Steps with handleNext action
 
-    for(let Date in DateTimes){
+    for(let Date of DateTimes){
+      console.log('DATES BEING USED FOR EVENT ', Date)
       await this.props.createEventMutation({
         variables: {
           Title,
@@ -149,11 +150,34 @@ class CreateEventContainer extends Component {
         }
       }).then((res)=> {
         console.log('The stored event res ', res)
-        NewEventIDs.push(res.data.createEvent.ID) //push in res.dat.eventID
+        NewEventIDs.push(parseInt(res.data.createEvent.ID)) //push in res.dat.eventID
       })
     }
 
     console.log('ALL NEW IDS ', NewEventIDs)
+    console.log('ALL NEW IDS value', NewEventIDs.values())
+
+    if(EventImages.length > 0) {
+      for(let Image of EventImages){
+        console.log('TRYING TO CREATE EVENT IMAGE WITH: ', Image)
+        if(Image.data) {
+          await this.props.addEventImage({
+            variables: {
+              imgSrc: Image.data,
+              eventIds: NewEventIDs
+            }
+          }).then((res) => {
+            console.log("NEW EVENT IMAGES ", res)
+          })
+        }
+
+      }
+
+    }
+
+
+
+    console.groupEnd()
 
     this.handleNext()
     this.setState({
@@ -288,6 +312,15 @@ mutation addEvent(
 }
 `;
 
+const ADD_EVENT_IMAGE = gql`
+mutation createEventImages($imgSrc:String! $eventIds:[ID]) {
+  createEventImages(imgSrc:$imgSrc, eventIds: $eventIds) {
+    ID
+    Title
+  }
+}
+`;
+
 const CREATE_EVENT_IMAGE_MUTATION = gql`
 mutation addEventImage($eventID:ID!, $imgSrc: String!) {
   addEventImage(eventID:$eventID, imgSrc:$imgSrc) {
@@ -316,6 +349,7 @@ const reduxWrapper = connect(
 
 export default compose(
   graphql(CREATE_EVENT_MUTATION, { name: 'createEventMutation' }),
+  graphql(ADD_EVENT_IMAGE, { name: 'addEventImage' }),
   graphql(CREATE_EVENT_IMAGE_MUTATION, { name: 'createEventImageMutation' }),
   withStyles(styles),
   withApollo,
