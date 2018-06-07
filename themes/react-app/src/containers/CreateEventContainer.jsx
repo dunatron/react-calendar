@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { graphql, gql, compose, withApollo } from 'react-apollo'
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {graphql, gql, compose, withApollo} from 'react-apollo'
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Stepper, { Step, StepLabel, StepContent } from 'material-ui/Stepper';
+import {withStyles} from 'material-ui/styles';
+import Stepper, {Step, StepLabel, StepContent} from 'material-ui/Stepper';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
@@ -55,13 +55,14 @@ function getSteps() {
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <DetailsStep />;
+      return ['Event Details', 'Date & Time', 'Event Media', 'Review Event'
+      return <DetailsStep/>;
     case 1:
-      return <DateTimeStep />;
+      return <DateTimeStep/>;
     case 2:
-      return <MediaStep />;
+      return <MediaStep/>;
     case 3:
-      return <ReviewStep />;
+      return <ReviewStep/>;
     default:
       return 'Unknown step';
   }
@@ -71,15 +72,16 @@ function getStepHelp(step) {
   switch (step) {
     case 0:
       return <HelperAlert header="Event Details" message="Please enter 
-      the event Title, Description and also please pick a category" />;
+      the event Title, Description and also please pick a category"/>;
     case 1:
       return <HelperAlert header="Date & Times" message="Please select the event Date, Start time, and Finish time.
-       You can add multiple rows of event date times" />;
+       You can add multiple rows of event date times"/>;
     case 2:
       return <HelperAlert header="Event Image" message="Please upload your event image by dragging it into the draggable area
-       or by clicking the draggable area and choosing your image" />;
+       or by clicking the draggable area and choosing your image"/>;
     case 3:
-      return <HelperAlert header="Review Event" message="Please Review your event Details are correct before submitting your event" />;
+      return <HelperAlert header="Review Event"
+                          message="Please Review your event Details are correct before submitting your event"/>;
     default:
       return 'Unknown step';
   }
@@ -89,7 +91,8 @@ class CreateEventContainer extends Component {
 
   state = {
     activeStep: 0,
-    uploading: false
+    uploading: false,
+    uploadingText: ""
   };
 
   handleNext = () => {
@@ -118,63 +121,68 @@ class CreateEventContainer extends Component {
     const NewEventIDs = []
     console.group('DATA SENT TO SERVER')
     console.log('Begin Processing Events to database ')
-    const { newEvent: {AccessType, Approved, Date, DateTimes, Description, 
-      EventImages, Finish, Free, Lat, LocationText, Lon, Owner, Restriction, 
-      SecondaryTag, SpecEntry, Start, TicketPhone, TicketUrl, Tickets, Title, Venue, 
-      Website
-    } } = this.props;
-    // 1. finish the Steps with handleNext action
+    const {
+      newEvent: {
+        AccessType, Approved, Date, DateTimes, Description,
+        EventImages, Finish, Free, Lat, LocationText, Lon, Owner, Restriction,
+        SecondaryTag, SpecEntry, Start, TicketPhone, TicketUrl, Tickets, Title, Venue,
+        Website
+      }
+    } = this.props;
+    // 1. create a new event for every date object we have
+    for (let Date of DateTimes) {
+      try {
+        let newEventResult = await this.props.createEventMutation({
+          variables: {
+            Title,
+            Date: Date.date,
+            Description,
+            Venue,
+            Start: Date.start,
+            Finish: Date.finish,
+            Approved,
+            Free,
+            Website,
+            TicketUrl,
+            TicketPhone,
+            Restriction,
+            SpecEntry,
+            AccessType,
+            LocationText,
+            Lon,
+            // OwnerID,
+            SecondaryTagID: SecondaryTag
+          }
+        })
+        NewEventIDs.push(parseInt(newEventResult.data.createEvent.ID)) //push in res.dat.eventID
+        this.setState({
+          uploadingText: "creating events..." + NewEventIDs.join(', ')
+        })
 
-    for(let Date of DateTimes){
-      console.log('DATES BEING USED FOR EVENT ', Date)
-      await this.props.createEventMutation({
-        variables: {
-          Title,
-          Date: Date.date, 
-          Description, 
-          Venue, 
-          Start: Date.start, 
-          Finish: Date.finish, 
-          Approved, 
-          Free, 
-          Website, 
-          TicketUrl, 
-          TicketPhone, 
-          Restriction, 
-          SpecEntry, 
-          AccessType, 
-          LocationText, 
-          Lon, 
-          // OwnerID, 
-          SecondaryTagID: SecondaryTag
-        }
-      }).then((res)=> {
-        console.log('The stored event res ', res)
-        NewEventIDs.push(parseInt(res.data.createEvent.ID)) //push in res.dat.eventID
-      })
-    }
-
-    console.log('ALL NEW IDS ', NewEventIDs)
-    console.log('ALL NEW IDS value', NewEventIDs.values())
-
-    if(EventImages.length > 0) {
-      for(let Image of EventImages){
-        console.log('TRYING TO CREATE EVENT IMAGE WITH: ', Image)
-        if(Image.data) {
-          await this.props.addEventImage({
-            variables: {
-              imgSrc: Image.data,
-              eventIds: NewEventIDs
-            }
-          }).then((res) => {
-            console.log("NEW EVENT IMAGES ", res)
-          })
-        }
-
+      } catch (error) {
+        console.error(error)
       }
 
     }
 
+    if (EventImages.length > 0 && NewEventIDs.length > 0) {
+      try {
+        for (let Image of EventImages) {
+          console.log('TRYING TO CREATE EVENT IMAGE WITH: ', Image)
+          if (Image.data) {
+            let addImageResult = await this.props.addEventImage({
+              variables: {
+                imgSrc: Image.data,
+                eventIds: NewEventIDs
+              }
+            })
+            console.log(addImageResult)
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
 
     console.groupEnd()
@@ -183,21 +191,19 @@ class CreateEventContainer extends Component {
     this.setState({
       uploading: false
     })
-    // 2. prepare the data to be uploaded as single events
-    // 3. perform a graphQL Mutation
   };
 
 
   render() {
 
-    const { classes } = this.props;
+    const {classes} = this.props;
     const steps = getSteps();
-    const { activeStep, uploading } = this.state;
+    const {activeStep, uploading, uploadingText} = this.state;
 
-    if(uploading) {
+    if (uploading) {
       return <div>
 
-        UPLOADING Event Please wait...
+        {uploadingText}
 
       </div>
     }
@@ -235,10 +241,10 @@ class CreateEventContainer extends Component {
 
                         {activeStep === steps.length - 1 ?
                           <Button
-                          variant="raised"
-                          color="primary"
-                          onClick={() => this.processEvent()}
-                          className={classes.button}>Process Event</Button>
+                            variant="raised"
+                            color="primary"
+                            onClick={() => this.processEvent()}
+                            className={classes.button}>Process Event</Button>
                           : null
                         }
                       </div>
@@ -348,9 +354,9 @@ const reduxWrapper = connect(
 );
 
 export default compose(
-  graphql(CREATE_EVENT_MUTATION, { name: 'createEventMutation' }),
-  graphql(ADD_EVENT_IMAGE, { name: 'addEventImage' }),
-  graphql(CREATE_EVENT_IMAGE_MUTATION, { name: 'createEventImageMutation' }),
+  graphql(CREATE_EVENT_MUTATION, {name: 'createEventMutation'}),
+  graphql(ADD_EVENT_IMAGE, {name: 'addEventImage'}),
+  graphql(CREATE_EVENT_IMAGE_MUTATION, {name: 'createEventImageMutation'}),
   withStyles(styles),
   withApollo,
   reduxWrapper,

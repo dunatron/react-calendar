@@ -62,6 +62,8 @@ class ReviewStep extends Component {
         Start: date.start,
         TicketPhone,
         TicketUrl,
+        Thumbnail: EventImages[0].data,
+        IsEventFindaEvent: false,
         Tickets,
         Title,
         Venue,
