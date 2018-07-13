@@ -14,6 +14,7 @@ import CloseIcon from "material-ui-icons/Close"
 import Loader from "../Loader"
 import CategoriesList from "../../containers/CategoriesListContainer"
 import LoginForm from "../Login"
+import LoginModal from "../Modals/LoginModal"
 import { Link } from "react-router-dom"
 
 import { Drawer, MenuItem } from "material-ui"
@@ -23,6 +24,7 @@ import { searchEvents } from "../../actions/searchEventActions"
 // Connect Redux
 import { connect } from "react-redux"
 import { updateActionBarStatus } from "../../actions/settingsActions"
+import { setUserName, setUserAge, setToken } from "../../actions/userActions"
 // Drawers
 import FilterDrawer from "./FilterDrawer"
 import SettingsDrawer from "./SettingsDrawer"
@@ -230,6 +232,7 @@ class Actions extends Component {
   }
 
   closeModal() {
+    console.log("Trying To close the Modal ")
     this.setState({ modalIsOpen: false })
   }
 
@@ -356,7 +359,12 @@ class Actions extends Component {
           openLoginModal={this.openLoginModal}
         />
 
-        <ReactModal
+        <LoginModal
+          isOpen={this.state.loginModalIsOpen}
+          close={this.closeLoginModal}
+        />
+
+        {/* <ReactModal
           isOpen={this.state.loginModalIsOpen}
           onAfterOpen={this.afterOpenLoginModal}
           onClose={this.closeLoginModal}
@@ -402,7 +410,7 @@ class Actions extends Component {
 
             <Paper className={classes.paper} children={<div>The body</div>} />
           </form>
-        </ReactModal>
+        </ReactModal> */}
       </div>
     )
   }
@@ -424,6 +432,7 @@ const reduxWrapper = connect(
     windowWidth: state.settings.windowWidth,
     windowHeight: state.settings.windowHeight,
     isMobileDevice: state.settings.isMobileDevice,
+    user: state.user,
   }),
   dispatch => ({
     updateActionBarStatus: status => dispatch(updateActionBarStatus(status)),

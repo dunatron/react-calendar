@@ -5,6 +5,9 @@ import IconButton from "material-ui/IconButton"
 import AddCircleIcon from "material-ui-icons/AddCircleOutline"
 import { Drawer, MenuItem } from "material-ui"
 import { compose } from "react-apollo/index"
+import CloseIcon from "material-ui-icons/Close"
+import ExitToAppIcon from "material-ui-icons/ExitToApp"
+import NavigationIcon from "material-ui-icons/Navigation"
 
 const drawerWidth = 240
 const styles = theme => ({
@@ -14,7 +17,7 @@ const styles = theme => ({
   drawerHeader: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     padding: "0 8px",
     ...theme.mixins.toolbar,
   },
@@ -31,7 +34,10 @@ const styles = theme => ({
     "text-align": "center",
     display: "inline-block",
   },
-  closeFilterIcon: {
+  closeSettingsIcon: {
+    color: theme.palette.secondary.main,
+  },
+  exitToAppIcon: {
     color: theme.palette.secondary.main,
   },
 })
@@ -43,27 +49,51 @@ const SettingsDrawer = ({
   token,
   validToken,
   openLoginModal,
+  classes,
 }) => {
   return (
-    <Drawer anchor="right" open={isOpen} onClose={() => close()}>
-      <MenuItem onClick={() => close()}>CLOSE</MenuItem>
-      <MenuItem>Select Happ Calendar</MenuItem>
-      <MenuItem>
-        {token ? (
-          <Button color="contrast" onClick={() => logout()}>
-            Logout
-          </Button>
-        ) : (
+    <Drawer
+      // variant="persistent"
+      classes={{
+        paper: classes.drawerPaper,
+      }}
+      anchor="right"
+      open={isOpen}
+      onClose={() => close()}>
+      <div className={classes.drawerInner}>
+        <div className={classes.drawerHeader}>
           <IconButton
-            aria-label="Add to favorites"
-            onClick={() => openLoginModal()}>
-            <AddCircleIcon />
+            className={classes.closeSettingsIcon}
+            onClick={() => close()}
+            color="secondary">
+            <CloseIcon />
           </IconButton>
-        )}
-      </MenuItem>
+          <Button
+            variant="extendedFab"
+            aria-label="login"
+            onClick={token ? () => logout() : () => openLoginModal()}
+            className={classes.button}>
+            {token ? "Logout " : "Login"}{" "}
+            <ExitToAppIcon className={classes.exitToAppIcon} />
+          </Button>
+        </div>
+        <MenuItem>
+          {token ? (
+            <Button color="contrast" onClick={() => logout()}>
+              Logout
+            </Button>
+          ) : (
+            <IconButton
+              aria-label="Add to favorites"
+              onClick={() => openLoginModal()}>
+              <AddCircleIcon />
+            </IconButton>
+          )}
+        </MenuItem>
 
-      {validToken && "You are logged in according to validateToken."}
-      {!validToken && "You are not logged in according to validateToken."}
+        {validToken && "You are logged in according to validateToken."}
+        {!validToken && "You are not logged in according to validateToken."}
+      </div>
     </Drawer>
   )
 }
