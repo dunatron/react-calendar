@@ -1,94 +1,97 @@
-import React, {Component} from 'react';
-import {withStyles} from 'material-ui/styles';
-import List, {ListItem, ListItemText} from 'material-ui/List';
-import Checkbox from 'material-ui/Checkbox';
+import React, { Component } from "react"
+import { withStyles } from "material-ui/styles"
+import List, { ListItem, ListItemText } from "material-ui/List"
+import Checkbox from "material-ui/Checkbox"
 
-import {addFilterTag, removerFilterTag} from "../../actions/tagsReducer";
-import {filterEvents} from "../../actions/eventsActions";
-import {compose, withApollo} from "react-apollo/index";
-import {connect} from "react-redux";
+import { addFilterTag, removerFilterTag } from "../../actions/tagsReducer"
+import { filterEvents } from "../../actions/eventsActions"
+import { compose, withApollo } from "react-apollo/index"
+import { connect } from "react-redux"
 
 const styles = theme => ({
   paper: {
-    'height': 'auto',
-    'width': 'auto',
-    'margin': '1.2em',
-    'padding': '1.2em',
-    'text-align': 'center',
-    'display': 'inline-block',
+    height: "auto",
+    width: "auto",
+    margin: "1.2em",
+    padding: "1.2em",
+    "text-align": "center",
+    display: "inline-block",
   },
   list: {
-    color: theme.palette.primary.main
-  }
-});
+    color: theme.palette.primary.main,
+  },
+})
 
 class SecondaryTagsList extends Component {
-
   state = {
-    checked: [0]
-  };
+    checked: [0],
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // return nextProps.date !== this.props.date
+    // if (nextState.checked !== this.state.checked) {
+    //   return true
+    // }
+    return false
+  }
 
   handleToggle = value => () => {
-    const {checked} = this.state;
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+    const { checked } = this.state
+    const currentIndex = checked.indexOf(value)
+    const newChecked = [...checked]
 
     if (currentIndex === -1) {
       // add to redux filter
-      newChecked.push(value);
-      this.props.dispatch(addFilterTag(value.Title));
-      this.props.updateCheckNumber(+1);
+      newChecked.push(value)
+      this.props.dispatch(addFilterTag(value.Title))
+      this.props.updateCheckNumber(+1)
     } else {
       // remove from redux filter
-      newChecked.splice(currentIndex, 1);
-      this.props.dispatch(removerFilterTag(value.Title));
-      this.props.updateCheckNumber(-1);
+      newChecked.splice(currentIndex, 1)
+      this.props.dispatch(removerFilterTag(value.Title))
+      this.props.updateCheckNumber(-1)
     }
 
-    this.props.dispatch(filterEvents());
+    this.props.dispatch(filterEvents())
 
     this.setState({
       checked: newChecked,
-    });
-  };
+    })
+  }
 
   render() {
+    const { classes } = this.props
 
-    const {classes} = this.props;
-
-    const categoriesList = this.props.categories;
+    const categoriesList = this.props.categories
 
     return (
       <List className={classes.list}>
-        {categoriesList.map((d, i) =>
+        {categoriesList.map((d, i) => (
           <ListItem
             key={i}
             dense={true}
             button
             onClick={this.handleToggle(d, i)}
-            className={classes.listItem}
-          >
+            className={classes.listItem}>
             <Checkbox
               checked={this.state.checked.indexOf(d) !== -1}
               tabIndex={-1}
               disableRipple
             />
-            <ListItemText primary={d.Title}/>
+            <ListItemText primary={d.Title} />
           </ListItem>
-        )}
+        ))}
       </List>
-    );
+    )
   }
 }
 
-const reduxWrapper = connect(
-  state => ({
-    // tags: state.tags
-  })
-);
+const reduxWrapper = connect(state => ({
+  // tags: state.tags
+}))
 
 export default compose(
   withStyles(styles),
   withApollo,
-  reduxWrapper,
-)(SecondaryTagsList);
+  reduxWrapper
+)(SecondaryTagsList)
