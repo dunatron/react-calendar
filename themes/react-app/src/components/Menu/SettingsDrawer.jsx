@@ -49,6 +49,7 @@ const SettingsDrawer = ({
   token,
   validToken,
   openLoginModal,
+  hasValidToken,
   classes,
 }) => {
   return (
@@ -71,14 +72,14 @@ const SettingsDrawer = ({
           <Button
             variant="extendedFab"
             aria-label="login"
-            onClick={token ? () => logout() : () => openLoginModal()}
+            onClick={hasValidToken ? () => logout() : () => openLoginModal()}
             className={classes.button}>
-            {token ? "Logout " : "Login"}{" "}
+            {hasValidToken ? "Logout " : "Login"}{" "}
             <ExitToAppIcon className={classes.exitToAppIcon} />
           </Button>
         </div>
         <MenuItem>
-          {token ? (
+          {hasValidToken ? (
             <Button color="contrast" onClick={() => logout()}>
               Logout
             </Button>
@@ -91,8 +92,8 @@ const SettingsDrawer = ({
           )}
         </MenuItem>
 
-        {validToken && "You are logged in according to validateToken."}
-        {!validToken && "You are not logged in according to validateToken."}
+        {hasValidToken && "You are logged in according to validateToken."}
+        {!hasValidToken && "You are not logged in according to validateToken."}
       </div>
     </Drawer>
   )

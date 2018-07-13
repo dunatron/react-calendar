@@ -18,6 +18,7 @@ import LoginModal from "../Modals/LoginModal"
 import { Link } from "react-router-dom"
 
 import { Drawer, MenuItem } from "material-ui"
+import { withApollo } from "react-apollo"
 import { compose, gql, graphql } from "react-apollo/index"
 import store from "../../state/store"
 import { searchEvents } from "../../actions/searchEventActions"
@@ -162,6 +163,7 @@ class Actions extends Component {
       settingsDraw: false, // right
       openSecondary: true,
       actionsIsFixed: false,
+      loading: true,
     }
 
     // this.openModal = this.openModal.bind(this);
@@ -171,6 +173,10 @@ class Actions extends Component {
     this.openLoginModal = this.openLoginModal.bind(this)
     this.afterOpenLoginModal = this.afterOpenLoginModal.bind(this)
     this.closeLoginModal = this.closeLoginModal.bind(this)
+  }
+
+  componentWillMount() {
+    this._validateToken()
   }
 
   componentDidMount = () => {
@@ -269,28 +275,49 @@ class Actions extends Component {
     // this.props.history.push(`/`)
   }
 
+  _validateToken = async () => {
+    console.log("this.props.client ", this.props.client)
+    const res = await this.props.client.query({
+      query: VALIDATE_TOKEN_QUERY,
+    })
+    console.log("validate token res ", res)
+    this.setState({
+      loading: false,
+    })
+    console.log("FINISHED VALIDATE TOKEN FUNCTION")
+  }
+
   render() {
     const {
       classes,
       isMobileDevice,
       windowHeight,
       actionsBarIsFixed,
+      user,
     } = this.props
 
-    const { filterDraw } = this.state
+    const { filterDraw, loading } = this.state
 
     const { token } = store.getState()
 
-    const {
-      data: { validateToken, loading },
-    } = this.props
+    // Umm can we have it validating when component mounts more explecitly? so it is not in the render method
+    // It should be called when it is created, trying to get token from local storage.
+    // That way we can store the token in the redux store, or a simple loggedIn: true
+    // const {
+    //   data: { validateToken, loading },
+    // } = this.props
     if (loading) {
       return (
         <Loader loadingText={"applying settings"} size={20} fontSize={12} />
       )
     }
 
+    // Loading props will now come from the redux store
+
     console.log("Actions.jsx State ", this.state)
+
+    console.log("Ok Actions will become a container I think")
+
     return (
       <div
         className={
@@ -357,66 +384,18 @@ class Actions extends Component {
           close={this.toggleDrawer("settingsDraw", false)}
           logout={() => this._logout()}
           openLoginModal={this.openLoginModal}
+          hasValidToken={true}
         />
 
         <LoginModal
           isOpen={this.state.loginModalIsOpen}
           close={this.closeLoginModal}
         />
-
-        {/* <ReactModal
-          isOpen={this.state.loginModalIsOpen}
-          onAfterOpen={this.afterOpenLoginModal}
-          onClose={this.closeLoginModal}
-          closeTimeoutMS={200}
-          shouldCloseOnOverlayClick={true}
-          contentLabel="Example Modal">
-          <Button dense color="primary" onClick={this.closeLoginModal}>
-            CLOSE
-          </Button>
-
-          <LoginForm />
-        </ReactModal>
-
-        <ReactModal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
-          closeTimeoutMS={200}
-          shouldCloseOnOverlayClick={true}
-          contentLabel="Example Modal">
-          <Button dense color="primary" onClick={this.closeModal}>
-            CLOSE
-          </Button>
-          <h2 ref={subtitle => (this.subtitle = subtitle)}>Hello</h2>
-          <div>I am a modal</div>
-          <div>ToDo:</div>
-          <div>
-            1 ) create a store on CodeExampleList and move the Modal there.
-          </div>
-          <div>
-            2 ) CodeExampleList Will contain a currentData which will have data
-            about one card
-          </div>
-          <div>
-            3 ) On a card Button press send the data up to CodeExampleList
-          </div>
-          <form>
-            <input />
-            <button>tab navigation</button>
-            <button>stays</button>
-            <button>inside</button>
-            <button>the modal</button>
-
-            <Paper className={classes.paper} children={<div>The body</div>} />
-          </form>
-        </ReactModal> */}
       </div>
     )
   }
 }
-
-const validateToken = gql`
+export const VALIDATE_TOKEN_QUERY = gql`
   query validateToken {
     validateToken {
       Valid
@@ -440,7 +419,7 @@ const reduxWrapper = connect(
 )
 
 export default compose(
-  graphql(validateToken),
+  withApollo,
   reduxWrapper,
   withStyles(styles)
 )(Actions)

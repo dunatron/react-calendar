@@ -4,35 +4,37 @@ const initialState = {
   fetching: false,
   fetched: false,
   error: null,
-  changingFilter: false
-};
+  changingFilter: false,
+}
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case "START_FETCH_TAGS": {
-      return {...state, fetching: true}
+      return { ...state, fetching: true }
     }
     case "FETCH_INITIAL_TAGS": {
-      return {...state, allTags: action.payload, fetching: false}
+      return { ...state, allTags: action.payload, fetching: false }
     }
     case "TOGGLE_SECONDARY_TAG": {
       return {
-        ...state
+        ...state,
       }
     }
     case "REMOVE_FILTER_TAG": {
       return {
         ...state,
-        filterTags: state.filterTags.filter((item, index) => item !== action.payload)
+        filterTags: state.filterTags.filter(
+          (item, index) => item !== action.payload
+        ),
       }
     }
     case "ADD_FILTER_TAG": {
       return {
         ...state,
-        filterTags: state.filterTags.concat(action.payload)
+        filterTags: state.filterTags.concat(action.payload),
       }
     }
+    default:
+      return { ...state }
   }
-  return state;
-
 }

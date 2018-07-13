@@ -1,18 +1,16 @@
-import moment from 'moment';
+import moment from "moment"
 
 const DEFAULT_DATE_TIME_OBJ = {
-  date: moment().format('YYYY-MM-DD'),
-  start: moment().format('YYYY-MM-DD hh:mm a'),
-  finish: moment().format('YYYY-MM-DD hh:mm a'),
+  date: moment().format("YYYY-MM-DD"),
+  start: moment().format("YYYY-MM-DD hh:mm a"),
+  finish: moment().format("YYYY-MM-DD hh:mm a"),
 }
 
 const initialState = {
-  Title: '',
+  Title: "",
   Date: false,
-  DateTimes: [
-    DEFAULT_DATE_TIME_OBJ
-  ],
-  Description: '',
+  DateTimes: [DEFAULT_DATE_TIME_OBJ],
+  Description: "",
   Venue: null,
   Start: false,
   Finish: false,
@@ -30,8 +28,8 @@ const initialState = {
   EventImages: [],
   Tickets: [],
   SecondaryTag: "default",
-  Owner: null
-};
+  Owner: null,
+}
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -42,32 +40,33 @@ export default function reducer(state = initialState, action) {
       return { ...state, [action.payload.type]: action.payload.value }
     }
     case "ADD_NEW_DATE_TIME": {
-
-      return { ...state, DateTimes: [...state.DateTimes, DEFAULT_DATE_TIME_OBJ] }
+      return {
+        ...state,
+        DateTimes: [...state.DateTimes, DEFAULT_DATE_TIME_OBJ],
+      }
     }
     case "REMOVE_DATE_TIME": {
       return {
         ...state,
         DateTimes: [
           ...state.DateTimes.slice(0, action.payload),
-          ...state.DateTimes.slice(action.payload + 1)
-        ]
+          ...state.DateTimes.slice(action.payload + 1),
+        ],
       }
     }
     case "ADD_IMAGE": {
-      return {...state, EventImages: [...state.EventImages, action.payload]}
+      return { ...state, EventImages: [...state.EventImages, action.payload] }
     }
     case "REMOVE_IMAGE": {
       return {
         ...state,
         EventImages: [
           ...state.EventImages.slice(0, action.payload),
-          ...state.EventImages.slice(action.payload + 1)
-        ]
+          ...state.EventImages.slice(action.payload + 1),
+        ],
       }
     }
     case "UPDATE_DATE_TIME": {
-
       const { index, key, value } = action.payload
 
       const dateTimes = [...state.DateTimes]
@@ -82,15 +81,16 @@ export default function reducer(state = initialState, action) {
         mutatedObj[key] = value
         return {
           ...obj,
-          ...mutatedObj
+          ...mutatedObj,
         }
       })
 
       return {
         ...state,
-        DateTimes: updatedDateTimes
+        DateTimes: updatedDateTimes,
       }
     }
-    default: return { ...state }
+    default:
+      return { ...state }
   }
 }

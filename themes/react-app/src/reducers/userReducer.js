@@ -1,36 +1,25 @@
 const initialState = {
-  fetching: false,
-  fetched: false,
-  users: [],
-  user: {
-    name: "Dunatron",
-    age: 27
-  },
-  error: null,
-};
+  name: "Dunatron",
+  token: "",
+  tokenIsValid: false,
+  age: 27,
+}
 
-export default function reducer(state=initialState, action) {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case "FETCH_USER": {
-      return {...state, fetching: true}
-    }
-    case "FETCH_USER_REJECTED": {
-      return {...state, fetching: false, error: action.payload}
-    }
-    case "FETCH_USER_FULFILLED": {
-      return {
-        ...state,
-        fetching: false,
-        fetched: true,
-        user: action.payload
-      }
-    }
     case "SET_USER_NAME": {
       return {
         ...state,
-        user: {...state.user, name: action.payload}
+        name: action.payload,
       }
     }
+    case "SET_USER_TOKEN":
+      return {
+        ...state,
+        token: action.payload,
+        tokenIsValid: true,
+      }
+    default:
+      return { ...state }
   }
-  return state;
 }

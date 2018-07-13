@@ -1,13 +1,11 @@
 import React, { Component } from "react"
-import { graphql, gql, compose } from "react-apollo"
+import { graphql, compose } from "react-apollo"
+import gql from "graphql-tag"
 import TextField from "material-ui/TextField"
-import PropTypes from "prop-types"
 import Button from "material-ui/Button"
-import Icon from "material-ui/Icon"
 import { withStyles } from "material-ui/styles/index"
-import LoginForm from "../containers/JWTLoginForm"
-
-import store from "../state/store"
+import { setToken, setUserName } from "../actions/userActions"
+import { connect } from "react-redux"
 
 const styles = theme => ({
   TextField: {
@@ -36,13 +34,11 @@ class Login extends Component {
   }
 
   render() {
-    const { classes } = this.props
-
-    const { token } = store.getState()
-
     const {
-      data: { validateToken, loading },
+      classes,
+      validateTokenQuery: { validateToken, loading },
     } = this.props
+
     if (loading) {
       return null
     }
@@ -50,8 +46,6 @@ class Login extends Component {
     return (
       <div>
         {validateToken.Valid && "You are logged in."}
-        {/* {!validateToken.Valid && <LoginForm/>} */}
-
         {!validateToken.Valid && (
           <div>
             <h4 className="mv3">{this.state.login ? "Login" : "Sign Up"}</h4>
@@ -106,89 +100,89 @@ class Login extends Component {
             </div>
           </div>
         )}
-
-        {validateToken.Valid && "Logout Button"}
-
-        {token ? (
-          <Button color="contrast" onClick={() => this._logout()}>
-            Logout
-          </Button>
-        ) : (
-          <Button color="contrast">Login</Button>
-        )}
       </div>
     )
   }
 
   _confirm = async () => {
-    console.log("Login render")
     const { FirstName, Email, Password } = this.state
+
     if (this.state.login) {
       // LOGIN
-      const result = this.props
-        .loginMutation({
+      await this.props
+        .signinUserMutation({
           variables: {
             Email,
             Password,
           },
         })
-
         .then(response => {
-          //localStorage.setItem('jwt', response.data.createToken.Token);
           const { ID, Token } = response.data.createToken
-
-          if (typeof Token === "undefined") {
-            alert("Please Try again as you have no token")
+          if (typeof Token === "undefined" || Token === null) {
+            console.log("TOKEN IS NOT DEFINED")
+            alert("Credentials are not valid: Please try again")
           } else {
-            this._saveUserData(ID, Token)
-            this.props.history.push(`/`)
+            //localStorage.setItem('jwt', Token);
+            this._saveUserData(response.data.createToken)
           }
         })
-
-      //.catch(err => console.log(err));
+        .catch(err => console.log(err))
     } else {
       // SIGN_UP
-      const result = this.props.signupMutation({
-        variables: {
-          FirstName,
-          Email,
-          Password,
-        },
-      })
-
-      const { ID, token } = result.data.createMember
-      this._saveUserData(ID, token)
-      this.props.history.push(`/`)
+      await this.props
+        .createUserMutation({
+          variables: {
+            FirstName,
+            Email,
+            Password,
+          },
+        })
+        .then(res => {
+          // const {ID, token} = res.data.createMember
+          const { createMember, createToken } = res.data
+          this._saveUserData(createToken)
+        })
+        .catch(err => {
+          alert(err)
+        })
     }
   }
 
-  _saveUserData = (id, token) => {
-    localStorage.setItem("USER_ID", id)
-    localStorage.setItem("AUTH_TOKEN", token)
-  }
-
-  _logout = async () => {
-    localStorage.removeItem("USER_ID")
-    localStorage.removeItem("AUTH_TOKEN")
-    localStorage.removeItem("jwt")
-    // ToDO : this for whatever reason is not working
-    this.forceUpdate()
-    // this.props.history.push(`/`)
+  // _saveUserData = (id, token) => {
+  //   localStorage.setItem("GC_USER_ID", id)
+  //   // localStorage.setItem('USER_NAME', id);
+  //   localStorage.setItem("jwt", token)
+  //   this.props.setToken(token)
+  // }
+  _saveUserData = ({ ID, FirstName, Token }) => {
+    localStorage.setItem("GC_USER_ID", ID)
+    localStorage.setItem("FIRST_NAME", FirstName)
+    localStorage.setItem("jwt", Token)
+    this.props.setToken(Token)
   }
 }
 
-const SIGNUP_MUTATION = gql`
-  mutation newUser($FirstName: String, $Email: String) {
-    createMember(Input: { FirstName: $FirstName, Email: $Email }) {
+// This allows for sending 2 request in 1. Sign-up and sign in with a JWToken
+const CREATE_USER_MUTATION = gql`
+  mutation newUser($FirstName: String, $Email: String!, $Password: String!) {
+    createMember(
+      Input: { FirstName: $FirstName, Email: $Email, Password: $Password }
+    ) {
       ID
       Name
       FirstName
       Email
     }
+
+    createToken(Email: $Email, Password: $Password) {
+      ID
+      FirstName
+      Token
+    }
   }
 `
-
-const LOGIN_MUTATION = gql`
+// Basic mutation for retrieving a JWToken on login
+const SIGNIN_USER_MUTATION = gql`
   mutation createToken($Email: String!, $Password: String!) {
     createToken(Email: $Email, Password: $Password) {
       ID
@@ -197,7 +191,6 @@ const LOGIN_MUTATION = gql`
     }
   }
 `
-
 const validateToken = gql`
   query validateToken {
     validateToken {
@@ -208,9 +201,26 @@ const validateToken = gql`
   }
 `
 
+const reduxWrapper = connect(
+  state => ({
+    token: state.token,
+  }),
+  dispatch => ({
+    setToken: token => dispatch(setToken(token)),
+    setUserName: name => dispatch(setUserName(name)),
+    // openModal: () => dispatch(openSingleEventModal()),
+    // getEventData: (id, title) => dispatch(getSingleEventFulfilled(id, title)),
+    // fetchAllEvents: () => dispatch(startFetchNewEvents()),
+    // storeAllEvents: events => dispatch(getNewEvents(events)),
+    // filterEvents: () => dispatch(filterEvents()),
+  })
+)
+
 export default compose(
+  reduxWrapper,
   graphql(validateToken),
-  graphql(SIGNUP_MUTATION, { name: "signupMutation" }),
-  graphql(LOGIN_MUTATION, { name: "loginMutation" }),
+  graphql(validateToken, { name: "validateTokenQuery" }),
+  graphql(CREATE_USER_MUTATION, { name: "createUserMutation" }),
+  graphql(SIGNIN_USER_MUTATION, { name: "signinUserMutation" }),
   withStyles(styles)
 )(Login)
