@@ -5,7 +5,7 @@
     "require": {
         "php": ">=5.6.0",
         "silverstripe/recipe-plugin": "^1",
-        "silverstripe/recipe-cms": "1.0.0@stable",
+        "silverstripe/recipe-cms": "1.1.2@stable",
         "silverstripe-themes/simple": "~3.2.0",
         "silverstripe/graphql": "^1",
         "silverstripe/graphql-devtools": "dev-master",
@@ -26,6 +26,13 @@
             "mysite/_config/mysite.yml",
             "mysite/code/Page.php",
             "mysite/code/PageController.php",
+            "web.config"
+        ],
+        "public-files-installed": [
+            ".htaccess",
+            "index.php",
+            "install-frameworkmissing.html",
+            "install.php",
             "web.config"
         ]
     },

@@ -21,7 +21,7 @@ const styles = theme => ({
   }
 });
 
-class SimpleSnackbar extends React.Component {
+class HelperAlert extends React.Component {
   state = {
     open: false,
   };
@@ -79,8 +79,8 @@ class SimpleSnackbar extends React.Component {
   }
 }
 
-SimpleSnackbar.propTypes = {
+HelperAlert.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SimpleSnackbar);
+export default withStyles(styles)(HelperAlert);
