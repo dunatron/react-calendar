@@ -25,10 +25,16 @@ import { searchEvents } from "../../actions/searchEventActions"
 // Connect Redux
 import { connect } from "react-redux"
 import { updateActionBarStatus } from "../../actions/settingsActions"
-import { setUserName, setUserAge, setToken } from "../../actions/userActions"
+import {
+  setUserName,
+  setUserAge,
+  setToken,
+  setValidateTokenProps,
+} from "../../actions/userActions"
 // Drawers
 import FilterDrawer from "./FilterDrawer"
 import SettingsDrawer from "./SettingsDrawer"
+import { mutation } from "../../../../../vendor/silverstripe/asset-admin/client/src/state/files/moveFilesMutation"
 
 const drawerWidth = 240
 const styles = theme => ({
@@ -280,11 +286,26 @@ class Actions extends Component {
     const res = await this.props.client.query({
       query: VALIDATE_TOKEN_QUERY,
     })
+    const { data } = res
+    const { validateToken } = data
+    const { Code, Message, Valid } = validateToken
     console.log("validate token res ", res)
+    console.log("WILL SET THESE PROPS -> ", validateToken)
+    this.props.setValidateTokenProps(validateToken)
     this.setState({
       loading: false,
     })
     console.log("FINISHED VALIDATE TOKEN FUNCTION")
+  }
+
+  _refreshToken = async () => {
+    // const res = await this.props.refreshTokenMutation({
+    //   variables: {
+    //     token: null
+    //   },
+    // })
+    const res = await this.props.refreshTokenMutation()
+    console.log("REFRESH TOKEN RES", res)
   }
 
   render() {
@@ -297,8 +318,6 @@ class Actions extends Component {
     } = this.props
 
     const { filterDraw, loading } = this.state
-
-    const { token } = store.getState()
 
     // Umm can we have it validating when component mounts more explecitly? so it is not in the render method
     // It should be called when it is created, trying to get token from local storage.
@@ -384,7 +403,9 @@ class Actions extends Component {
           close={this.toggleDrawer("settingsDraw", false)}
           logout={() => this._logout()}
           openLoginModal={this.openLoginModal}
-          hasValidToken={true}
+          username={this.props.user.username}
+          tokenProps={this.props.user.tokenProps}
+          refreshToken={() => this.refreshToken()}
         />
 
         <LoginModal
@@ -405,6 +426,17 @@ export const VALIDATE_TOKEN_QUERY = gql`
   }
 `
 
+const REFRESH_TOKEN_MUTATION = gql`
+  mutation refreshToken {
+    refreshToken {
+      FirstName
+      Surname
+      Email
+      Token
+    }
+  }
+`
+
 const reduxWrapper = connect(
   state => ({
     actionsBarIsFixed: state.settings.actionsBarIsFixed,
@@ -415,11 +447,13 @@ const reduxWrapper = connect(
   }),
   dispatch => ({
     updateActionBarStatus: status => dispatch(updateActionBarStatus(status)),
+    setValidateTokenProps: props => dispatch(setValidateTokenProps(props)),
   })
 )
 
 export default compose(
   withApollo,
   reduxWrapper,
+  graphql(REFRESH_TOKEN_MUTATION, { name: "refreshTokenMutation" }),
   withStyles(styles)
 )(Actions)

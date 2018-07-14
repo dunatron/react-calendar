@@ -1,8 +1,12 @@
 const initialState = {
-  name: "Dunatron",
-  token: "",
-  tokenIsValid: false,
+  username: "",
   age: 27,
+  tokenProps: {
+    token: "",
+    valid: false,
+    message: "",
+    code: 401,
+  },
 }
 
 export default function reducer(state = initialState, action) {
@@ -10,14 +14,38 @@ export default function reducer(state = initialState, action) {
     case "SET_USER_NAME": {
       return {
         ...state,
-        name: action.payload,
+        username: action.payload,
       }
     }
     case "SET_USER_TOKEN":
       return {
         ...state,
-        token: action.payload,
-        tokenIsValid: true,
+        tokenProps: {
+          ...state.tokenProps,
+          token: action.payload,
+          valid: true,
+        },
+      }
+    case "SET_LOGIN_PROPS":
+      return {
+        ...state,
+        username: action.payload.username,
+        id: action.payload.id,
+        tokenProps: {
+          ...state.tokenProps,
+          token: action.payload.token,
+          valid: action.payload.valid,
+        },
+      }
+    case "SET_VALIDATE_TOKEN_PROPS":
+      return {
+        ...state,
+        tokenProps: {
+          ...state.tokenProps,
+          code: action.payload.code,
+          message: action.payload.message,
+          valid: action.payload.tokenIsValid,
+        },
       }
     default:
       return { ...state }

@@ -4,7 +4,7 @@ import gql from "graphql-tag"
 import TextField from "material-ui/TextField"
 import Button from "material-ui/Button"
 import { withStyles } from "material-ui/styles/index"
-import { setToken, setUserName } from "../actions/userActions"
+import { setToken, setUserName, setLoginProps } from "../actions/userActions"
 import { connect } from "react-redux"
 
 const styles = theme => ({
@@ -139,7 +139,8 @@ class Login extends Component {
         })
         .then(res => {
           // const {ID, token} = res.data.createMember
-          const { createMember, createToken } = res.data
+          const { createMember, createToken, errors } = res.data
+          //errors would be an array. For each of those array items there will be a message key with a value
           this._saveUserData(createToken)
         })
         .catch(err => {
@@ -155,10 +156,16 @@ class Login extends Component {
   //   this.props.setToken(token)
   // }
   _saveUserData = ({ ID, FirstName, Token }) => {
-    localStorage.setItem("GC_USER_ID", ID)
-    localStorage.setItem("FIRST_NAME", FirstName)
-    localStorage.setItem("jwt", Token)
-    this.props.setToken(Token)
+    if (typeof Token === "undefined" || Token === null) {
+      alert("token not valid: Please try again")
+    } else {
+      localStorage.setItem("GC_USER_ID", ID)
+      localStorage.setItem("FIRST_NAME", FirstName)
+      localStorage.setItem("jwt", Token)
+      this.props.setToken(Token)
+      const userProps = { ID, FirstName, Token, Valid: true }
+      this.props.setLoginProps(userProps)
+    }
   }
 }
 
@@ -208,6 +215,7 @@ const reduxWrapper = connect(
   dispatch => ({
     setToken: token => dispatch(setToken(token)),
     setUserName: name => dispatch(setUserName(name)),
+    setLoginProps: props => dispatch(setLoginProps(props)),
     // openModal: () => dispatch(openSingleEventModal()),
     // getEventData: (id, title) => dispatch(getSingleEventFulfilled(id, title)),
     // fetchAllEvents: () => dispatch(startFetchNewEvents()),

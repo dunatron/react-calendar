@@ -28,3 +28,32 @@ export function setToken(token) {
     payload: token,
   }
 }
+
+// export function setValidateToken(name) {
+//   return {
+//     type: "SET_VALIDATE_TOKEN_PROPS",
+//     payload: name,
+//   }
+// }
+export const setValidateTokenProps = ({ Code, Message, Valid }) => {
+  return {
+    type: "SET_VALIDATE_TOKEN_PROPS",
+    payload: {
+      tokenIsValid: Valid,
+      code: Code,
+      message: Message,
+    },
+  }
+}
+
+export const setLoginProps = ({ ID, FirstName, Token, Valid }) => {
+  return {
+    type: "SET_LOGIN_PROPS",
+    payload: {
+      username: FirstName,
+      id: ID,
+      token: Token,
+      valid: Valid,
+    },
+  }
+}
