@@ -48,45 +48,75 @@ const styles = theme => ({
   },
 })
 
-class LoginModal extends Component {
-  // shouldComponentUpdate(nextProps) {
-  //   return (nextProps.currentEvent !== this.props.currentEvent
-  //     || nextProps.isModalOpen !== this.props.isModalOpen);
-  // }
+// class LoginModal extends Component {
+//   // shouldComponentUpdate(nextProps) {
+//   //   return (nextProps.currentEvent !== this.props.currentEvent
+//   //     || nextProps.isModalOpen !== this.props.isModalOpen);
+//   // }
 
-  render() {
-    const { classes, isOpen, close } = this.props
-    return (
-      <div>
-        <Modal
-          keepMounted={true}
-          BackdropProps={{
-            transitionDuration: 0,
-          }}
-          classes={{
-            root: classes.root,
-          }}
-          aria-labelledby="login-modal-title"
-          aria-describedby="login-modal-description"
-          open={isOpen}
-          onClose={() => close()}>
-          <div style={getModalStyle()} className={classes.paper}>
-            {/*<IconButton  color={"primary"} variant="raised">*/}
-            {/*<CloseIcon/>*/}
-            {/*</IconButton>*/}
-            <Button
-              onClick={() => close()}
-              className={classes.closeIcon}
-              variant="raised"
-              color="primary">
-              <CloseIcon />
-            </Button>
-            <LoginForm />
-          </div>
-        </Modal>
-      </div>
-    )
-  }
+//   render() {
+//     const { classes, isOpen, close } = this.props
+//     return (
+//       <div>
+//         <Modal
+//           keepMounted={true}
+//           BackdropProps={{
+//             transitionDuration: 0,
+//           }}
+//           classes={{
+//             root: classes.root,
+//           }}
+//           aria-labelledby="login-modal-title"
+//           aria-describedby="login-modal-description"
+//           open={isOpen}
+//           onClose={() => close()}>
+//           <div style={getModalStyle()} className={classes.paper}>
+//             {/*<IconButton  color={"primary"} variant="raised">*/}
+//             {/*<CloseIcon/>*/}
+//             {/*</IconButton>*/}
+//             <Button
+//               onClick={() => close()}
+//               className={classes.closeIcon}
+//               variant="raised"
+//               color="primary">
+//               <CloseIcon />
+//             </Button>
+//             <LoginForm />
+//           </div>
+//         </Modal>
+//       </div>
+//     )
+//   }
+// }
+
+const LoginModal = ({ classes, isOpen, close }) => {
+  return (
+    <div>
+      <Modal
+        keepMounted={true}
+        BackdropProps={{
+          transitionDuration: 0,
+        }}
+        classes={{
+          root: classes.root,
+        }}
+        aria-labelledby="login-modal-title"
+        aria-describedby="login-modal-description"
+        open={isOpen}
+        onClose={() => close()}>
+        <div style={getModalStyle()} className={classes.paper}>
+          <Button
+            onClick={() => close()}
+            className={classes.closeIcon}
+            variant="raised"
+            color="primary">
+            <CloseIcon />
+          </Button>
+          <LoginForm />
+        </div>
+      </Modal>
+    </div>
+  )
 }
 
 LoginModal.propTypes = {
