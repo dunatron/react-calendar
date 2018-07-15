@@ -31,80 +31,91 @@ class Login extends Component {
     FirstName: "",
     Email: "",
     Password: "",
+    loading: false,
+    loadingMessage: "",
+    createdNewUser: false,
   }
 
   render() {
     const {
       classes,
+      user,
       validateTokenQuery: { validateToken, loading },
     } = this.props
 
-    if (loading) {
-      return null
+    if (this.state.loading) {
+      return <div>{this.state.loadingMessage}</div>
+    }
+
+    if (user.loggedIn) {
+      return <div>currently Logged in as {user.username}</div>
     }
 
     return (
       <div>
-        {validateToken.Valid && "You are logged in."}
-        {!validateToken.Valid && (
-          <div>
-            <h4 className="mv3">{this.state.login ? "Login" : "Sign Up"}</h4>
-            <div className="flex flex-column">
-              {!this.state.login && (
-                <TextField
-                  label="First Name"
-                  className={classes.TextField}
-                  value={this.state.FirstName}
-                  onChange={e => this.setState({ FirstName: e.target.value })}
-                  type="text"
-                  placeholder="Your name"
-                  margin="normal"
-                />
-              )}
+        <div>
+          <h4 className="mv3">{this.state.login ? "Login" : "Sign Up"}</h4>
+          <div className="flex flex-column">
+            {!this.state.login && (
               <TextField
-                label="Email"
+                label="First Name"
                 className={classes.TextField}
-                value={this.state.Email}
-                onChange={e => this.setState({ Email: e.target.value })}
+                value={this.state.FirstName}
+                onChange={e => this.setState({ FirstName: e.target.value })}
                 type="text"
-                placeholder="Your email address"
+                placeholder="Your name"
                 margin="normal"
               />
-              <TextField
-                label="Password"
-                className={classes.TextField}
-                value={this.state.Password}
-                onChange={e => this.setState({ Password: e.target.value })}
-                type="password"
-                placeholder="Choose a safe password"
-                margin="normal"
-              />
-            </div>
-            <div className="flex mt3">
-              <Button
-                className={classes.button}
-                raised
-                color="primary"
-                onClick={() => this._confirm()}>
-                {this.state.login ? "login" : "create account"}
-              </Button>
-              <Button
-                className={classes.button}
-                raised
-                color="primary"
-                onClick={() => this.setState({ login: !this.state.login })}>
-                {this.state.login
-                  ? "need to create an account?"
-                  : "already have an account?"}
-              </Button>
-            </div>
+            )}
+            <TextField
+              label="Email"
+              className={classes.TextField}
+              value={this.state.Email}
+              onChange={e => this.setState({ Email: e.target.value })}
+              type="text"
+              placeholder="Your email address"
+              margin="normal"
+            />
+            <TextField
+              label="Password"
+              className={classes.TextField}
+              value={this.state.Password}
+              onChange={e => this.setState({ Password: e.target.value })}
+              type="password"
+              placeholder="Choose a safe password"
+              margin="normal"
+            />
           </div>
-        )}
+          <div className="flex mt3">
+            <Button
+              className={classes.button}
+              raised
+              color="primary"
+              onClick={() => this._confirm()}>
+              {this.state.login ? "login" : "create account"}
+            </Button>
+            <Button
+              className={classes.button}
+              raised
+              color="primary"
+              onClick={() => this.setState({ login: !this.state.login })}>
+              {this.state.login
+                ? "need to create an account?"
+                : "already have an account?"}
+            </Button>
+          </div>
+        </div>
       </div>
     )
   }
 
   _confirm = async () => {
+    await this.setState({
+      loading: true,
+      loadingMessage: this.state.login
+        ? "Logging In"
+        : `Creating new user ${FirstName}`,
+    })
     const { FirstName, Email, Password } = this.state
 
     if (this.state.login) {
@@ -142,11 +153,18 @@ class Login extends Component {
           const { createMember, createToken, errors } = res.data
           //errors would be an array. For each of those array items there will be a message key with a value
           this._saveUserData(createToken)
+          this.setState({
+            createdNewUser: true,
+          })
         })
         .catch(err => {
           alert(err)
         })
     }
+    await this.setState({
+      loading: false,
+      loadingMessage: "",
+    })
   }
 
   // _saveUserData = (id, token) => {
@@ -163,7 +181,7 @@ class Login extends Component {
       localStorage.setItem("FIRST_NAME", FirstName)
       localStorage.setItem("jwt", Token)
       this.props.setToken(Token)
-      const userProps = { ID, FirstName, Token, Valid: true }
+      const userProps = { ID, FirstName, Token, Valid: true, loggedIn: true }
       this.props.setLoginProps(userProps)
     }
   }
@@ -211,6 +229,7 @@ const validateToken = gql`
 const reduxWrapper = connect(
   state => ({
     token: state.token,
+    user: state.user,
   }),
   dispatch => ({
     setToken: token => dispatch(setToken(token)),

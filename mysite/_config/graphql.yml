@@ -9,7 +9,10 @@ SilverStripe\GraphQL\Controller:
     Allow-Origin: '*'
     Allow-Headers: 'Authorization, Content-Type'
     Allow-Methods:  'GET, POST, OPTIONS'
-    Max-Age: 86400
+    # Max-Age: 86400
+    Max-Age:  86400  # 86,400 seconds = 1 day.
+    # Max-Age:  300  # 300 seconds = 5 mins.
+    # Max-Age:  30  # 30 seconds
   schema:
     mutations:
       createEventImages: 'MyOrg\Model\CreateEventImagesMutationCreator'
@@ -68,15 +71,6 @@ SilverStripe\GraphQL\Controller:
             eventIDs: ID!,
             imgSrc: String!
           resolver: MyOrg\Model\AddEventImageResolver
-        
-#    mutations:
-#      updateEventImages:
-#        type: MyOrg\Model\Event
-#        args:
-#          eventID: ID
-#          imgSrc: String
-#        resolver: MyOrg\Model\UpdateEventImagesResolver
-  # Enforce HTTP basic authentication for GraphQL requests
   authenticators:
     class: SilverStripe\GraphQL\Auth\BasicAuthAuthenticator
     priority: 10

@@ -1,6 +1,8 @@
 const initialState = {
   username: "",
-  age: 27,
+  loggedIn: false,
+  age: null,
+  email: "",
   tokenProps: {
     token: "",
     valid: false,
@@ -31,6 +33,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         username: action.payload.username,
         id: action.payload.id,
+        loggedIn: action.payload.loggedIn,
         tokenProps: {
           ...state.tokenProps,
           token: action.payload.token,
@@ -47,6 +50,23 @@ export default function reducer(state = initialState, action) {
           valid: action.payload.tokenIsValid,
         },
       }
+    case "REFRESH_TOKEN_PROPS":
+      return {
+        ...state,
+        username: action.payload.username,
+        email: action.payload.email,
+        loggedIn: action.payload.loggedIn,
+        tokenProps: {
+          ...state.tokenProps,
+          token: action.payload.token,
+          valid: action.payload.valid,
+        },
+      }
+    case "LOGOUT_USER": {
+      return {
+        ...initialState,
+      }
+    }
     default:
       return { ...state }
   }

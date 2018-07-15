@@ -30,11 +30,12 @@ import {
   setUserAge,
   setToken,
   setValidateTokenProps,
+  refreshTokenProps,
+  logoutUser,
 } from "../../actions/userActions"
 // Drawers
 import FilterDrawer from "./FilterDrawer"
 import SettingsDrawer from "./SettingsDrawer"
-import { mutation } from "../../../../../vendor/silverstripe/asset-admin/client/src/state/files/moveFilesMutation"
 
 const drawerWidth = 240
 const styles = theme => ({
@@ -182,7 +183,13 @@ class Actions extends Component {
   }
 
   componentWillMount() {
-    this._validateToken()
+    this._validateToken() // This will keep validating
+    //LOL below solution was because I thought I was implementing refreshToken. We should always validate Token when we launch our application.
+    // This settings container will contain all the user actions, so validatingToken when component mounts gives them access
+    // A better idea is to have a refresh token button
+    // Then we can pass down loggedIn as a prop to components and if it is false, for any user actions we will render either launch login button,
+    // which would launch login Modal. Or a refresh Token Or login as someone else. Call It LoginButton which will be its own we container.
+    // It will either display a Login button or a set of buttons {loginAsSomeoneElse, refreshToken}
   }
 
   componentDidMount = () => {
@@ -276,8 +283,9 @@ class Actions extends Component {
     localStorage.removeItem("USER_ID")
     localStorage.removeItem("AUTH_TOKEN")
     localStorage.removeItem("jwt")
+    this.props.logoutUser()
     // ToDO : this for whatever reason is not working
-    this.forceUpdate()
+    // this.forceUpdate()
     // this.props.history.push(`/`)
   }
 
@@ -305,7 +313,11 @@ class Actions extends Component {
     //   },
     // })
     const res = await this.props.refreshTokenMutation()
+    const { data } = res
+    const { refreshToken } = data
+    const { Email, FirstName, Surname, Token } = refreshToken
     console.log("REFRESH TOKEN RES", res)
+    this.props.refreshTokenProps(refreshToken)
   }
 
   render() {
@@ -405,7 +417,7 @@ class Actions extends Component {
           openLoginModal={this.openLoginModal}
           username={this.props.user.username}
           tokenProps={this.props.user.tokenProps}
-          refreshToken={() => this.refreshToken()}
+          refreshToken={() => this._refreshToken()}
         />
 
         <LoginModal
@@ -448,6 +460,8 @@ const reduxWrapper = connect(
   dispatch => ({
     updateActionBarStatus: status => dispatch(updateActionBarStatus(status)),
     setValidateTokenProps: props => dispatch(setValidateTokenProps(props)),
+    logoutUser: () => dispatch(logoutUser()),
+    refreshTokenProps: props => dispatch(refreshTokenProps(props)),
   })
 )
 

@@ -24,7 +24,7 @@ store.subscribe(
       // tags: store.getState().tags,
       user: store.getState().user,
     })
-  }, 15000)
+  }, 1500)
 )
 
 ReactDOM.render(

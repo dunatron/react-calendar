@@ -78,9 +78,11 @@ const SettingsDrawer = ({
             <ExitToAppIcon className={classes.exitToAppIcon} />
           </Button>
         </div>
-        <MenuItem onClick={() => refreshToken()}>Refresh Token</MenuItem>
+        {message !== "" && (
+          <MenuItem onClick={() => refreshToken()}>Refresh Token</MenuItem>
+        )}
         <MenuItem>{username}</MenuItem>
-        <MenuItem>{message}</MenuItem>
+        {message !== "" && <MenuItem>{message}</MenuItem>}
         <MenuItem>
           {valid ? (
             <Button color="contrast" onClick={() => logout()}>

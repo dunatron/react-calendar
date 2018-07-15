@@ -46,7 +46,20 @@ export const setValidateTokenProps = ({ Code, Message, Valid }) => {
   }
 }
 
-export const setLoginProps = ({ ID, FirstName, Token, Valid }) => {
+export const refreshTokenProps = ({ Email, FirstName, Surname, Token }) => {
+  return {
+    type: "REFRESH_TOKEN_PROPS",
+    payload: {
+      username: FirstName,
+      token: Token,
+      valid: true,
+      loggedIn: true,
+      email: Email,
+    },
+  }
+}
+
+export const setLoginProps = ({ ID, FirstName, Token, Valid, loggedIn }) => {
   return {
     type: "SET_LOGIN_PROPS",
     payload: {
@@ -54,6 +67,13 @@ export const setLoginProps = ({ ID, FirstName, Token, Valid }) => {
       id: ID,
       token: Token,
       valid: Valid,
+      loggedIn,
     },
+  }
+}
+
+export const logoutUser = () => {
+  return {
+    type: "LOGOUT_USER",
   }
 }
