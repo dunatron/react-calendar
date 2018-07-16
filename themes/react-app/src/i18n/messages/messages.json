@@ -1,0 +1,42 @@
+[
+  {
+    "id": "test.Title",
+    "defaultMessage": "some default",
+    "filepath": "src/components/Menu/Actions.jsx"
+  },
+  {
+    "id": "nomosone.currency-settings.error",
+    "defaultMessage": "{error}",
+    "filepath": "src/messages/components/Actions.js"
+  },
+  {
+    "id": "happ.file.uploadFail",
+    "defaultMessage": "Unable to parse and upload file",
+    "filepath": "src/messages/file.js"
+  },
+  {
+    "id": "happ.file.uploadSuccess",
+    "defaultMessage": "File uploaded and parsed successfully!",
+    "filepath": "src/messages/file.js"
+  },
+  {
+    "id": "happ.file.csvFileDrop",
+    "defaultMessage": "Drop a csv file here, or click to select files to upload",
+    "filepath": "src/messages/file.js"
+  },
+  {
+    "id": "happ.happTag",
+    "defaultMessage": "Tag",
+    "filepath": "src/messages/models.js"
+  },
+  {
+    "id": "happ.secondaryTag",
+    "defaultMessage": "Sub Tag",
+    "filepath": "src/messages/models.js"
+  },
+  {
+    "id": "happ.event",
+    "defaultMessage": "Event",
+    "filepath": "src/messages/models.js"
+  }
+]

@@ -36,6 +36,7 @@
     "jest": "20.0.4",
     "material-ui-pickers": "^1.0.0-rc.6",
     "node-sass": "^4.8.3",
+    "npm": "^6.2.0",
     "object-assign": "4.1.1",
     "papaparse": "^4.3.7",
     "postcss-flexbugs-fixes": "3.2.0",
@@ -47,6 +48,8 @@
     "react-copy-to-clipboard": "^5.0.1",
     "react-dev-utils": "^4.1.0",
     "react-dom": "^16.3.0",
+    "react-intl": "^2.4.0",
+    "react-intl-cra": "^0.3.3",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -76,7 +79,11 @@
     "build:env": "webpack -p --config webpack.config.js --devtool=none --env.buildType=env --env.envsettings --progress",
     "build:location": "webpack -p --env.NODE_ENV=production --config webpack.config.js --devtool=none --env.buildType=location --progress",
     "build:location:dev": "webpack  --env.NODE_ENV=development --config webpack.config.js --devtool=source-map --env.buildType=location --progress",
-    "build:location:dev:watch": "webpack --watch --config webpack.config.js --devtool=source-map --env.buildType=location --progress"
+    "build:location:dev:watch": "webpack --watch --config webpack.config.js --devtool=source-map --env.buildType=location --progress",
+    "extract-messages": "react-intl-cra 'src/**/*.{js,jsx}' -o 'src/i18n/messages/messages.json'",
+    "default-translation": "node scripts/defaultTranslation.js",
+    "manage-translations": "node scripts/translationRunner.js",
+    "translations": "npm-run-all extract-messages default-translation manage-translations"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -120,6 +127,7 @@
     "extends": "react-app"
   },
   "devDependencies": {
+    "react-intl-translations-manager": "^5.0.3",
     "apollo-client": "^2.0.1",
     "autosuggest-highlight": "^3.1.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",

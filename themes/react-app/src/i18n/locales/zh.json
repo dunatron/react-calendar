@@ -1,0 +1,10 @@
+{
+  "happ.event": "Event",
+  "happ.file.csvFileDrop": "Drop a csv file here, or click to select files to upload",
+  "happ.file.uploadFail": "Unable to parse and upload file",
+  "happ.file.uploadSuccess": "File uploaded and parsed successfully!",
+  "happ.happTag": "Tag",
+  "happ.secondaryTag": "Sub Tag",
+  "nomosone.currency-settings.error": "{error}",
+  "test.Title": "some default zh"
+}

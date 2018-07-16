@@ -1,8 +1,6 @@
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { withStyles } from "material-ui/styles"
-import Button from "material-ui/Button"
-import Paper from "material-ui/Paper"
-import ReactModal from "react-modal"
 import IconButton from "material-ui/IconButton"
 import DateRangeIcon from "material-ui-icons/DateRange"
 import Tooltip from "material-ui/Tooltip"
@@ -10,21 +8,17 @@ import SettingIcon from "material-ui-icons/Settings"
 import AddCircleIcon from "material-ui-icons/AddCircleOutline"
 import SearchIcon from "material-ui-icons/Search"
 import FilterListIcon from "material-ui-icons/FilterList"
-import CloseIcon from "material-ui-icons/Close"
 import Loader from "../Loader"
-import CategoriesList from "../../containers/CategoriesListContainer"
-import LoginForm from "../Login"
 import LoginModal from "../Modals/LoginModal"
 import { Link } from "react-router-dom"
-
-import { Drawer, MenuItem } from "material-ui"
+import { FormattedMessage } from "react-intl"
 import { withApollo } from "react-apollo"
 import { compose, gql, graphql } from "react-apollo/index"
-import store from "../../state/store"
 import { searchEvents } from "../../actions/searchEventActions"
 // Connect Redux
 import { connect } from "react-redux"
 import { updateActionBarStatus } from "../../actions/settingsActions"
+import { setLanguage } from "../../actions/locale"
 import {
   setUserName,
   setUserAge,
@@ -33,6 +27,7 @@ import {
   refreshTokenProps,
   logoutUser,
 } from "../../actions/userActions"
+import messages from "../../messages/components/Actions"
 // Drawers
 import FilterDrawer from "./FilterDrawer"
 import SettingsDrawer from "./SettingsDrawer"
@@ -206,39 +201,17 @@ class Actions extends Component {
     var pageY = window.scrollY
     //  If  we've scrolled past the height of the element, add a class
     if (el.getBoundingClientRect().bottom <= 0) {
-      // this.setState({
-      //   actionsIsFixed: true,
-      // })
       this.props.updateActionBarStatus(true)
-
       //  If we've scrolled back up to  the top of the container, remove the class
     } else if (pageY == 0) {
-      // this.setState({
-      //   actionsIsFixed: false,
-      // })
       this.props.updateActionBarStatus(false)
     }
   }
 
-  // shouldComponentUpdate = () => {
-  //
-  // };
-
   toggleDrawer = (side, open) => () => {
-    // console.log("Update Side ", side, open)
-    console.group("toggleDrawer")
-    console.log("side -> ", side)
-    console.log("open -> ", open)
-    console.groupEnd()
     this.setState({
       [side]: open,
     })
-    // this.setState({
-    //   [side]: open,
-    // })
-    // this.setState({
-    //   filterDraw: open,
-    // })
   }
 
   openModal() {
@@ -357,6 +330,20 @@ class Actions extends Component {
             : classes.ActionsWrapper
         }
         id="target">
+        <FormattedMessage
+          {...messages.rowError}
+          values={{
+            error: "Fuck Off error",
+          }}
+        />
+        <FormattedMessage id="test.Title" defaultMessage={"some default"} />
+
+        <a role="button" onClick={() => this.props.setLanguage("en")}>
+          EN
+        </a>
+        <a role="button" onClick={() => this.props.setLanguage("ru")}>
+          RU
+        </a>
         <Link to="/">
           <Tooltip id="tooltip-all-links" placement="top" title="main calendar">
             <IconButton
@@ -449,6 +436,10 @@ const REFRESH_TOKEN_MUTATION = gql`
   }
 `
 
+Actions.propTypes = {
+  setLanguage: PropTypes.func.isRequired,
+}
+
 const reduxWrapper = connect(
   state => ({
     actionsBarIsFixed: state.settings.actionsBarIsFixed,
@@ -458,6 +449,7 @@ const reduxWrapper = connect(
     user: state.user,
   }),
   dispatch => ({
+    setLanguage: language => dispatch(setLanguage(language)),
     updateActionBarStatus: status => dispatch(updateActionBarStatus(status)),
     setValidateTokenProps: props => dispatch(setValidateTokenProps(props)),
     logoutUser: () => dispatch(logoutUser()),
