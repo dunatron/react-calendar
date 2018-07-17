@@ -84,11 +84,9 @@ const reduxWrapper = connect(
     locale: state.locale,
   }),
   dispatch => ({
-    updateWindowWidth: () => dispatch(closeSingleEventModal()),
-    updateWindowHeight: () => dispatch(openSingleEventModal()),
     updateDimensions: (width, height) =>
       dispatch(updateDimensions(width, height)),
-    getEventData: (id, title) => dispatch(getSingleEventFulfilled(id, title)),
+    // getEventData: (id, title) => dispatch(getSingleEventFulfilled(id, title)),
   })
 )
 

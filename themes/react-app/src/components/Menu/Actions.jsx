@@ -406,7 +406,6 @@ class Actions extends Component {
           tokenProps={this.props.user.tokenProps}
           refreshToken={() => this._refreshToken()}
         />
-
         <LoginModal
           isOpen={this.state.loginModalIsOpen}
           close={this.closeLoginModal}
@@ -460,6 +459,6 @@ const reduxWrapper = connect(
 export default compose(
   withApollo,
   reduxWrapper,
-  graphql(REFRESH_TOKEN_MUTATION, { name: "refreshTokenMutation" }),
+  // graphql(REFRESH_TOKEN_MUTATION, { name: "refreshTokenMutation" }),
   withStyles(styles)
 )(Actions)

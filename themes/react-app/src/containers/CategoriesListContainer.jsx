@@ -57,7 +57,11 @@ class CategoriesList extends Component {
       })
       // 3. tags have been fetched, do something with them
       .then(res => {
+        console.log("fetchTags res ", res)
         this.props.dispatch(fetchTags(res.data.readHappTags))
+      })
+      .catch(err => {
+        console.log("fetchTags", err)
       })
   }
 
@@ -65,14 +69,16 @@ class CategoriesList extends Component {
     this.fetchTags().then(() => {})
   }
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.tags.fetching !== this.props.tags.fetching
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return nextProps.tags.fetching !== this.props.tags.fetching
+  // }
 
   render() {
     const {
       tags: { fetching, allTags, fetched, error },
     } = this.props
+
+    console.log("CategoriesListContainer ->  ", this.props)
 
     if (fetching) {
       return <Loader loadingText={"fetching tags"} size={20} fontSize={18} />

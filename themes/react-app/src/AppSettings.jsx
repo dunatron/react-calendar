@@ -55,25 +55,26 @@ class AppSettings extends Component {
   }
 
   componentWillMount() {
-    this.fetchAppSettings()
+    // this.fetchAppSettings()
   }
 
   render() {
-    // const {
-    //   data: { loading, getAppSettings },
-    // } = this.props
+    const {
+      data: { loading, getAppSettings },
+    } = this.props
 
-    // if (loading) {
-    //   return <Loader loadingText={"Securing App"} size={40} fontSize={22} />
-    // }
+    if (loading) {
+      return <Loader loadingText={"Securing App"} size={40} fontSize={22} />
+    }
 
     console.log("APP SETTINGS PROPS ", this.props)
-    // Get app settings from query and apply to MUITheme
-    // const AppSettings = getAppSettings[0]
-    // const { HappLogo, ClientLogo } = AppSettings
-    let HappLogo, ClientLogo
+    //Get app settings from query and apply to MUITheme
+    const AppSettings = getAppSettings[0]
+    const { HappLogo, ClientLogo } = AppSettings
     const dynamicTheme = DynamicTheme(AppSettings)
 
+    console.log("APP SETTINGS ", AppSettings)
+    // console.log("dynamicTheme ", dynamicTheme)
     this.props.logoUpdate("happLogo", HappLogo)
     this.props.logoUpdate("clientLogo", ClientLogo)
 
@@ -95,7 +96,7 @@ const reduxWrapper = connect(
 )
 export default compose(
   withApollo,
-  reduxWrapper
-  // graphql(APP_SETTINGS_QUERY)
+  reduxWrapper,
+  graphql(APP_SETTINGS_QUERY)
   // graphql(APP_SETTINGS_QUERY, { name: "appSettingsQuery" })
 )(AppSettings)
