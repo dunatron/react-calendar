@@ -178,7 +178,8 @@ class Actions extends Component {
   }
 
   componentWillMount() {
-    this._validateToken() // This will keep validating
+    // this._validateToken()
+    // This will keep validating
     //LOL below solution was because I thought I was implementing refreshToken. We should always validate Token when we launch our application.
     // This settings container will contain all the user actions, so validatingToken when component mounts gives them access
     // A better idea is to have a refresh token button
@@ -310,11 +311,11 @@ class Actions extends Component {
     // const {
     //   data: { validateToken, loading },
     // } = this.props
-    if (loading) {
-      return (
-        <Loader loadingText={"applying settings"} size={20} fontSize={12} />
-      )
-    }
+    // if (loading) {
+    //   return (
+    //     <Loader loadingText={"applying settings"} size={20} fontSize={12} />
+    //   )
+    // }
 
     // Loading props will now come from the redux store
 

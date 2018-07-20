@@ -29,12 +29,6 @@ export function setToken(token) {
   }
 }
 
-// export function setValidateToken(name) {
-//   return {
-//     type: "SET_VALIDATE_TOKEN_PROPS",
-//     payload: name,
-//   }
-// }
 export const setValidateTokenProps = ({ Code, Message, Valid }) => {
   return {
     type: "SET_VALIDATE_TOKEN_PROPS",

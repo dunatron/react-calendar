@@ -54,5 +54,6 @@ const ApolloApp = ({ token }) => (
 
 export default connect(state => ({
   // token: state.token,
-  token: state.user.tokenProps.token,
+  //token: state.user.tokenProps.token,
+  token: localStorage.getItem("jwt"),
 }))(ApolloApp)

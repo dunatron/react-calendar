@@ -4,7 +4,7 @@ const initialState = {
   age: null,
   email: "",
   tokenProps: {
-    token: "",
+    token: localStorage.getItem("jwt"),
     valid: false,
     message: "",
     code: 401,
@@ -20,6 +20,7 @@ export default function reducer(state = initialState, action) {
       }
     }
     case "SET_USER_TOKEN":
+      localStorage.setItem("jwt", action.payload)
       return {
         ...state,
         tokenProps: {
@@ -29,6 +30,7 @@ export default function reducer(state = initialState, action) {
         },
       }
     case "SET_LOGIN_PROPS":
+      localStorage.setItem("jwt", action.payload.token)
       return {
         ...state,
         username: action.payload.username,
@@ -51,6 +53,7 @@ export default function reducer(state = initialState, action) {
         },
       }
     case "REFRESH_TOKEN_PROPS":
+      localStorage.setItem("jwt", action.payload.token)
       return {
         ...state,
         username: action.payload.username,
