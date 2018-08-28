@@ -31,7 +31,7 @@ SilverStripe\GraphQL\Controller:
           nestedQueries:
             Events: true
         MyOrg\Model\Event:
-          fields: [ID, Title, Date, Owner, Description, Venue, Start, Finish, Approved, Free, Website, TicketUrl, TicketPhone, Restriction, SpecEntry, AccessType, Thumbnail, IsEventFindaEvent, EventFindaID, EventFindaUrl, LocationText, Lat, Lon, Image, SecondaryTag]
+          fields: [ID, Title, Date, Owner, Description, Venue, Start, Finish, Approved, Free, Website, TicketUrl, TicketPhone, Restriction, SpecEntry, AccessType, Thumbnail, BestImage, IsEventFindaEvent, EventFindaID, EventFindaUrl, LocationText, Lat, Lon, Image, SecondaryTag]
           operations:
             read: true
             create: true
@@ -64,6 +64,13 @@ SilverStripe\GraphQL\Controller:
           operations:
             create: true
             read: true
+        SilverStripe\Assets\Image:
+          fields: [URL, Filename]
+          operations:
+            create: true
+            read: true
+        SilverStripe\Assets\File:
+          fields: [Filename, URL]
       mutations:
         addEventImage:
           type: MyOrg\Model\Event

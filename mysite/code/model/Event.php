@@ -35,6 +35,7 @@ use SilverStripe\Forms\ReadonlyField;
 class Event extends DataObject implements ScaffoldingProvider
 {
 
+    //https://github.com/unclecheese/silverstripe-graphql
     private static $create_table_options = [
         MySQLSchemaManager::ID => 'ENGINE=MyISAM'
     ];
@@ -90,6 +91,11 @@ class Event extends DataObject implements ScaffoldingProvider
     public function getThumbnail()
     {
         return $this->Image()->exists() ? $this->Image()->Fill(300, 300)->AbsoluteURL : null;
+    }
+
+    public function getBestImage()
+    {
+        return $this->Image()->exists() ? $this->Image()->Fill(1200, 800)->AbsoluteURL : null;
     }
 
     public function canView($member = null)
@@ -232,7 +238,7 @@ class Event extends DataObject implements ScaffoldingProvider
                     $eventLocation,
                     $eventDateTime,
                     $eventApproval,
-                    $eventRestrictions,
+                    // $eventRestrictions,
                     $eventAccess
                 ),
                 new Tab('TicketDetails', 'Ticket Details',

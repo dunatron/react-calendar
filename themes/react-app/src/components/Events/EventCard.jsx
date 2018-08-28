@@ -1,149 +1,170 @@
-import React, {Component} from 'react';
-import {withStyles} from 'material-ui/styles';
-import classnames from 'classnames';
-import Card, {CardHeader, CardMedia, CardContent, CardActions} from 'material-ui/Card';
-import Collapse from 'material-ui/transitions/Collapse';
-import Avatar from 'material-ui/Avatar';
-import IconButton from 'material-ui/IconButton';
-import Typography from 'material-ui/Typography';
-import red from 'material-ui/colors/red';
-import FavoriteIcon from 'material-ui-icons/Favorite';
-import ShareIcon from 'material-ui-icons/Share';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import MoreVertIcon from 'material-ui-icons/MoreVert';
-import Drawer from 'material-ui/Drawer';
-import MapIcon from 'material-ui-icons/Map';
-import TimeIcon from 'material-ui-icons/AccessTime';
-import LocationIcon from 'material-ui-icons/LocationOn';
+import React, { Component } from "react"
+import { withStyles } from "material-ui/styles"
+import classnames from "classnames"
+import Card, {
+  CardHeader,
+  CardMedia,
+  CardContent,
+  CardActions,
+} from "material-ui/Card"
+import Collapse from "material-ui/transitions/Collapse"
+import Avatar from "material-ui/Avatar"
+import IconButton from "material-ui/IconButton"
+import Typography from "material-ui/Typography"
+import red from "material-ui/colors/red"
+import FavoriteIcon from "material-ui-icons/Favorite"
+import ShareIcon from "material-ui-icons/Share"
+import ExpandMoreIcon from "material-ui-icons/ExpandMore"
+import MoreVertIcon from "material-ui-icons/MoreVert"
+import Drawer from "material-ui/Drawer"
+import MapIcon from "material-ui-icons/Map"
+import TimeIcon from "material-ui-icons/AccessTime"
+import LocationIcon from "material-ui-icons/LocationOn"
 
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-import HappMap from '../HappMap';
+import { CopyToClipboard } from "react-copy-to-clipboard"
+import HappMap from "../HappMap"
 
 const styles = theme => ({
-  root: {
-
-  },
+  root: {},
   card: {
-    'alignSelf': 'stretch',
-    'maxWidth': '450px',
-    'flex-shrink': '0',
-    'margin': '10px',
+    alignSelf: "stretch",
+    maxWidth: "450px",
+    "flex-shrink": "0",
+    margin: "10px",
   },
-  cardActions: {
-
-  },
+  cardActions: {},
   media: {
     height: 194,
   },
   expand: {
-    transform: 'rotate(0deg)',
+    transform: "rotate(0deg)",
     color: theme.palette.primary.main,
-    transition: theme.transitions.create('transform', {
+    transition: theme.transitions.create("transform", {
       duration: theme.transitions.duration.shortest,
     }),
   },
   expandOpen: {
-    transform: 'rotate(180deg)',
+    transform: "rotate(180deg)",
   },
   avatar: {
     backgroundColor: theme.palette.secondary.main,
   },
   flexGrow: {
-    flex: '1 1 auto',
+    flex: "1 1 auto",
   },
   closeButton: {
-    'left': '30px',
-    'float': 'right',
-    'top': '-30px'
+    left: "30px",
+    float: "right",
+    top: "-30px",
   },
   list: {
     width: 250,
   },
   listFull: {
-    width: 'auto',
+    width: "auto",
   },
   timeHolder: {
-    'display': 'flex',
-    'align-items': 'center',
-    'padding': '5px 0'
+    display: "flex",
+    "align-items": "center",
+    padding: "5px 0",
   },
   locationHolder: {
-    'display': 'flex',
-    'align-items': 'center',
-    'padding': '5px 0'
+    display: "flex",
+    "align-items": "center",
+    padding: "5px 0",
   },
   description: {
-    'padding': '10px 0 0 0'
+    padding: "10px 0 0 0",
   },
   staticIcon: {
     color: theme.palette.secondary.main,
-    'margin-right': '15px'
+    "margin-right": "15px",
   },
   MyModal: {
-    'width': 'max-content'
+    width: "max-content",
   },
-});
+})
 
 class EventCard extends Component {
-
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       expanded: false,
       bottomDraw: false,
-      clipboardValue: '',
-      copied: false
-    };
-
+      clipboardValue: "",
+      copied: false,
+    }
   }
 
   toggleDrawer = (side, open) => () => {
     this.setState({
       [side]: open,
-    });
-  };
+    })
+  }
 
   handleExpandClick = () => {
-    this.setState({expanded: !this.state.expanded});
-  };
+    this.setState({ expanded: !this.state.expanded })
+  }
 
-  onChange = ({target: {value}}) => {
-    this.setState({value, copied: false});
-  };
+  onChange = ({ target: { value } }) => {
+    this.setState({ value, copied: false })
+  }
 
   onCopy = () => {
     this.setState({
-      copied: true
-    });
-  };
+      copied: true,
+    })
+  }
 
   render() {
-    console.log('eventCard render');
-    const {classes, eventObject: {Title, Date, Start, Finish, LocationText, Description, Lat, Lon, IsEventFindaEvent}} = this.props;
+    console.log("eventCard render")
+    const {
+      classes,
+      eventObject: {
+        Title,
+        Date,
+        Start,
+        Finish,
+        LocationText,
+        Description,
+        Lat,
+        Lon,
+        IsEventFindaEvent,
+      },
+    } = this.props
 
     const EventCardMedia = () => {
       switch (IsEventFindaEvent) {
         case false: {
-          return <CardMedia
-            className={classes.media}
-            image={this.props.eventObject.Thumbnail}
-            title="Contemplative Reptile" />
+          return (
+            <CardMedia
+              className={classes.media}
+              image={this.props.eventObject.BestImage}
+              title="Contemplative Reptile"
+            />
+          )
         }
         case true: {
-          return <CardMedia
-            className={classes.media}
-            image={this.props.eventObject.EventFindaImages.edges[0].node.URL}
-            title="Contemplative Reptile"/>
+          return (
+            <CardMedia
+              className={classes.media}
+              image={this.props.eventObject.EventFindaImages.edges[0].node.URL}
+              title="Contemplative Reptile"
+            />
+          )
         }
         default: {
-          return <CardMedia
-            className={classes.media}
-            image="http://via.placeholder.com/350x150"
-            title="Contemplative Reptile"/>
+          return (
+            <CardMedia
+              className={classes.media}
+              image="http://via.placeholder.com/350x150"
+              title="Contemplative Reptile"
+            />
+          )
         }
       }
-    };
+    }
 
     return (
       <div className={classes.root}>
@@ -156,32 +177,29 @@ class EventCard extends Component {
             }
             action={
               <IconButton color={"primary"}>
-                <MoreVertIcon/>
+                <MoreVertIcon />
               </IconButton>
             }
             title={Title}
             subheader={Date}
           />
           {/*<CardMedia*/}
-            {/*className={classes.media}*/}
-            {/*image="http://via.placeholder.com/350x150"*/}
-            {/*title="Contemplative Reptile"*/}
+          {/*className={classes.media}*/}
+          {/*image="http://via.placeholder.com/350x150"*/}
+          {/*title="Contemplative Reptile"*/}
           {/*/>*/}
           {/*<CardMedia*/}
-            {/*className={classes.media}*/}
-            {/*image={this.props.eventObject.EventFindaImages.edges[0].node.URL}*/}
-            {/*title="Contemplative Reptile"*/}
+          {/*className={classes.media}*/}
+          {/*image={this.props.eventObject.EventFindaImages.edges[0].node.URL}*/}
+          {/*title="Contemplative Reptile"*/}
           {/*/>*/}
 
           <EventCardMedia />
 
-
           <CardContent>
             <div className={classes.locationHolder}>
-              <LocationIcon className={classes.staticIcon}/>
-              <Typography component="p">
-                {LocationText}
-              </Typography>
+              <LocationIcon className={classes.staticIcon} />
+              <Typography component="p">{LocationText}</Typography>
             </div>
             <div className={classes.timeHolder}>
               <TimeIcon className={classes.staticIcon} />
@@ -195,30 +213,30 @@ class EventCard extends Component {
           </CardContent>
           <CardActions disableActionSpacing className={classes.cardActions}>
             <IconButton aria-label="Add to favorites" color={"primary"}>
-              <FavoriteIcon/>
+              <FavoriteIcon />
             </IconButton>
             <CopyToClipboard text={window.location.href} onCopy={this.onCopy}>
               <IconButton aria-label="Share" color={"primary"}>
-                <ShareIcon/>
+                <ShareIcon />
               </IconButton>
             </CopyToClipboard>
-            <div>
-              {this.state.copied ? <span >Copied.</span> : null}
-            </div>
-            <IconButton aria-label="show-map" color={"primary"} onClick={this.toggleDrawer('bottomDraw', true)}>
-              <MapIcon/>
+            <div>{this.state.copied ? <span>Copied.</span> : null}</div>
+            <IconButton
+              aria-label="show-map"
+              color={"primary"}
+              onClick={this.toggleDrawer("bottomDraw", true)}>
+              <MapIcon />
             </IconButton>
 
-            <div className={classes.flexGrow}/>
+            <div className={classes.flexGrow} />
             <IconButton
               className={classnames(classes.expand, {
                 [classes.expandOpen]: this.state.expanded,
               })}
               onClick={this.handleExpandClick}
               aria-expanded={this.state.expanded}
-              aria-label="Show more"
-            >
-              <ExpandMoreIcon/>
+              aria-label="Show more">
+              <ExpandMoreIcon />
             </IconButton>
           </CardActions>
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
@@ -227,26 +245,32 @@ class EventCard extends Component {
                 Full Description:
               </Typography>
               <Typography paragraph>
-                Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-                minutes.
+                Heat 1/2 cup of the broth in a pot until simmering, add saffron
+                and set aside for 10 minutes.
               </Typography>
               <Typography paragraph>
-                Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-                heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
-                browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving
-                chicken and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion,
-                salt and pepper, and cook, stirring often until thickened and fragrant, about 10
-                minutes. Add saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
+                Heat oil in a (14- to 16-inch) paella pan or a large, deep
+                skillet over medium-high heat. Add chicken, shrimp and chorizo,
+                and cook, stirring occasionally until lightly browned, 6 to 8
+                minutes. Transfer shrimp to a large plate and set aside, leaving
+                chicken and chorizo in the pan. Add pimentón, bay leaves,
+                garlic, tomatoes, onion, salt and pepper, and cook, stirring
+                often until thickened and fragrant, about 10 minutes. Add
+                saffron broth and remaining 4 1/2 cups chicken broth; bring to a
+                boil.
               </Typography>
               <Typography paragraph>
-                Add rice and stir very gently to distribute. Top with artichokes and peppers, and
-                cook without stirring, until most of the liquid is absorbed, 15 to 18 minutes.
-                Reduce heat to medium-low, add reserved shrimp and mussels, tucking them down into
-                the rice, and cook again without stirring, until mussels have opened and rice is
-                just tender, 5 to 7 minutes more. (Discard any mussels that don’t open.)
+                Add rice and stir very gently to distribute. Top with artichokes
+                and peppers, and cook without stirring, until most of the liquid
+                is absorbed, 15 to 18 minutes. Reduce heat to medium-low, add
+                reserved shrimp and mussels, tucking them down into the rice,
+                and cook again without stirring, until mussels have opened and
+                rice is just tender, 5 to 7 minutes more. (Discard any mussels
+                that don’t open.)
               </Typography>
               <Typography>
-                Set aside off of the heat to let rest for 10 minutes, and then serve.
+                Set aside off of the heat to let rest for 10 minutes, and then
+                serve.
               </Typography>
             </CardContent>
           </Collapse>
@@ -254,16 +278,18 @@ class EventCard extends Component {
         <Drawer
           anchor="bottom"
           open={this.state.bottomDraw}
-          onClose={this.toggleDrawer('bottomDraw', false)}
-        >
+          onClose={this.toggleDrawer("bottomDraw", false)}>
           <div>
-            <HappMap defaultZoom={15} lat={parseFloat(Lat)} lng={parseFloat(Lon)}/>
+            <HappMap
+              defaultZoom={15}
+              lat={parseFloat(Lat)}
+              lng={parseFloat(Lon)}
+            />
           </div>
         </Drawer>
       </div>
-    );
+    )
   }
 }
 
-
-export default withStyles(styles)(EventCard);
+export default withStyles(styles)(EventCard)
